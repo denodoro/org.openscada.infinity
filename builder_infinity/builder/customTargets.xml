@@ -103,6 +103,8 @@
   	
   	<openscada.builder.copyPlugin id="org.openscada.chart"/>
   	<openscada.builder.copyPlugin id="org.openscada.chart.swt"/>
+  	
+  	<openscada.builder.copyPlugin id="org.openscada.chart.swt.test"/>
   </target>
 
   <!-- ===================================================================== -->
