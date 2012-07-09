@@ -75,7 +75,14 @@ public class YAxis extends AbstractPropertyChange
     {
         final double diff = ( this.max - this.min ) * factor;
 
-        setMinMax ( this.min + diff, this.max - diff );
+        if ( factor > 1.0 )
+        {
+            setMinMax ( this.min - diff, this.max + diff );
+        }
+        else
+        {
+            setMinMax ( this.min + diff, this.max - diff );
+        }
     }
 
     public void transform ( final double offset, final int clientHeight )

@@ -76,7 +76,14 @@ public class XAxis extends AbstractPropertyChange
         double diff = this.max - this.min;
         diff = diff * factor;
 
-        setMinMax ( (long) ( this.min + diff ), (long) ( this.max - diff ) );
+        if ( factor > 1.0 )
+        {
+            setMinMax ( (long) ( this.min - diff ), (long) ( this.max + diff ) );
+        }
+        else
+        {
+            setMinMax ( (long) ( this.min + diff ), (long) ( this.max - diff ) );
+        }
     }
 
     public void transform ( final long offset, final int clientWidth )

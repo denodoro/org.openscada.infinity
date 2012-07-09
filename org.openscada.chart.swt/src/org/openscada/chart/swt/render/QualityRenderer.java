@@ -74,7 +74,7 @@ public class QualityRenderer extends AbstractRenderer
         translateToPoint ( clientRect, xAxis, yAxis, point, last );
         if ( point.x >= 0 && point.x < clientRect.width )
         {
-            e.gc.fillRectangle ( (int)point.x, 0, (int) ( clientRect.width - point.x ), clientRect.height );
+            e.gc.fillRectangle ( (int)point.x, 0, (int) ( clientRect.width - 1 - point.x ), clientRect.height );
         }
         else if ( point.x < 0 )
         {

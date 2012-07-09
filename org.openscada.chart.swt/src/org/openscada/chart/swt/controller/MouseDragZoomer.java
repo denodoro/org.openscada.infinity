@@ -149,7 +149,16 @@ public class MouseDragZoomer implements Renderer
 
             this.xAxis.setMinMax ( minTimestamp, maxTimestamp );
             this.yAxis.setMinMax ( minValue, maxValue );
+        }
+        else
+        {
+            final int widthSelection = Math.abs ( selection.width );
+            final int heightSelection = Math.abs ( selection.height );
+            final int widthClient = client.width;
+            final int heightClient = client.height;
 
+            this.xAxis.zoom ( 1.0 + Math.abs ( (double)widthSelection ) / widthClient );
+            this.yAxis.zoom ( 1.0 + Math.abs ( (double)heightSelection ) / heightClient );
         }
     }
 }
