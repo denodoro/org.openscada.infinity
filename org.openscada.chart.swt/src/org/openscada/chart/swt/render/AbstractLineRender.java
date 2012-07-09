@@ -21,7 +21,7 @@ package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.LineAttributes;
-import org.openscada.chart.swt.Series;
+import org.openscada.chart.Series;
 
 public abstract class AbstractLineRender extends AbstractRenderer
 {

@@ -27,10 +27,10 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
+import org.openscada.chart.Series;
+import org.openscada.chart.XAxis;
+import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.DataPoint;
-import org.openscada.chart.swt.Series;
-import org.openscada.chart.swt.XAxis;
-import org.openscada.chart.swt.YAxis;
 
 public class StepRenderer extends AbstractLineRender implements Renderer
 {

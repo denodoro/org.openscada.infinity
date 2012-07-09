@@ -5,9 +5,9 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.openscada.chart.XAxis;
+import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
-import org.openscada.chart.swt.XAxis;
-import org.openscada.chart.swt.YAxis;
 
 public class MouseZoomer implements MouseWheelListener
 {

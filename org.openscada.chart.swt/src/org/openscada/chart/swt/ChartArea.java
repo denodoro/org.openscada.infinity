@@ -28,6 +28,8 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.openscada.chart.XAxis;
+import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.render.Renderer;
 
 public class ChartArea extends Canvas

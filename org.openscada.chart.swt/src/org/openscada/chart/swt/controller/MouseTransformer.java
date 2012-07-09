@@ -25,9 +25,9 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Rectangle;
+import org.openscada.chart.XAxis;
+import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
-import org.openscada.chart.swt.XAxis;
-import org.openscada.chart.swt.YAxis;
 
 public class MouseTransformer implements MouseListener, MouseMoveListener
 {

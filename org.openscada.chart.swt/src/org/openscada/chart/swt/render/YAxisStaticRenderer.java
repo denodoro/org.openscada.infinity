@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
-import org.openscada.chart.swt.YAxis;
+import org.openscada.chart.YAxis;
 
 public class YAxisStaticRenderer extends AbstractStaticRenderer
 {

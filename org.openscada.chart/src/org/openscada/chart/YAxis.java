@@ -17,11 +17,11 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt;
+package org.openscada.chart;
 
 import org.openscada.utils.beans.AbstractPropertyChange;
 
-public class XAxis extends AbstractPropertyChange
+public class YAxis extends AbstractPropertyChange
 {
     public static final String PROP_MIN = "min";
 
@@ -29,9 +29,9 @@ public class XAxis extends AbstractPropertyChange
 
     public static final String PROP_LABEL = "label";
 
-    private long min;
+    private double min;
 
-    private long max;
+    private double max;
 
     private String label;
 
@@ -45,27 +45,27 @@ public class XAxis extends AbstractPropertyChange
         firePropertyChange ( PROP_LABEL, this.label, this.label = label );
     }
 
-    public long getMin ()
+    public double getMin ()
     {
         return this.min;
     }
 
-    public void setMin ( final long min )
+    public void setMin ( final double min )
     {
         firePropertyChange ( PROP_MIN, this.min, this.min = min );
     }
 
-    public long getMax ()
+    public double getMax ()
     {
         return this.max;
     }
 
-    public void setMax ( final long max )
+    public void setMax ( final double max )
     {
         firePropertyChange ( PROP_MAX, this.max, this.max = max );
     }
 
-    public void setMinMax ( final long min, final long max )
+    public void setMinMax ( final double min, final double max )
     {
         setMin ( min );
         setMax ( max );
@@ -73,37 +73,37 @@ public class XAxis extends AbstractPropertyChange
 
     public void zoom ( final double factor )
     {
-        double diff = this.max - this.min;
-        diff = diff * factor;
+        final double diff = ( this.max - this.min ) * factor;
 
-        setMinMax ( (long) ( this.min + diff ), (long) ( this.max - diff ) );
+        setMinMax ( this.min + diff, this.max - diff );
     }
 
-    public void transform ( final long offset, final int clientWidth )
+    public void transform ( final double offset, final int clientHeight )
     {
-        final long diff = this.max - this.min;
-        final double factor = (double)diff / (double)clientWidth;
+        final double diff = this.max - this.min;
+        final double factor = diff / clientHeight;
 
-        final long clientOffset = (long) ( offset * factor );
+        final double clientOffset = offset * factor;
 
-        setMinMax ( this.min + clientOffset, this.max + clientOffset );
+        setMinMax ( this.min - clientOffset, this.max - clientOffset );
     }
 
-    public float translateToClient ( final int width, final long time )
+    public float translateToClient ( final int height, final Double value )
     {
-        final double diffX = this.max - this.min;
-        final double factorX = width / diffX;
+        final double diffY = this.max - this.min;
+        final double factorY = height / diffY;
 
-        return (float) ( factorX * ( time - this.min ) );
+        return (float) ( height - factorY * ( value - this.min ) );
+
     }
 
-    public long translateToValue ( final int width, final float position )
+    public double translateToValue ( final int height, final float position )
     {
-        final double pos = position / width;
+        final double pos = 1.0 - position / height;
 
-        final long diffX = this.max - this.min;
+        final double diffY = this.max - this.min;
 
-        return (long) ( diffX * pos ) + this.min;
+        return diffY * pos + this.min;
     }
 
 }

@@ -1,6 +1,5 @@
-package org.openscada.chart.swt;
+package org.openscada.chart;
 
-import org.openscada.chart.WritableSeriesData;
 
 public class WritableSeries extends Series
 {

@@ -26,7 +26,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.openscada.chart.swt.XAxis;
+import org.openscada.chart.XAxis;
 
 public class XAxisStaticRenderer extends AbstractStaticRenderer
 {
