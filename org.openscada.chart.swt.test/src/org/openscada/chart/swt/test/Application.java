@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.openscada.chart.DataEntry;
 import org.openscada.chart.swt.ChartArea;
-import org.openscada.chart.swt.Series;
+import org.openscada.chart.swt.WritableSeries;
 import org.openscada.chart.swt.XAxis;
 import org.openscada.chart.swt.YAxis;
 import org.openscada.chart.swt.controller.MouseTransformer;
@@ -103,9 +103,9 @@ public class Application implements IApplication
 
         final ResourceManager resourceManager = new LocalResourceManager ( JFaceResources.getResources () );
 
-        final Series series1 = new Series ( x, y );
-        final Series series2 = new Series ( x, y );
-        final Series series3 = new Series ( x, y );
+        final WritableSeries series1 = new WritableSeries ( x, y );
+        final WritableSeries series2 = new WritableSeries ( x, y );
+        final WritableSeries series3 = new WritableSeries ( x, y );
 
         final LinearRenderer series1Renderer = new LinearRenderer ( series1 );
         series1Renderer.setLineColor ( resourceManager.createColor ( new RGB ( 255, 0, 0 ) ) );
@@ -147,7 +147,7 @@ public class Application implements IApplication
         return result;
     }
 
-    private void createSine ( final Series series, final int startTimestampOffset, final int endTimestampOffset, final double frequency, final double amplitude, final int numberOfSamples )
+    private void createSine ( final WritableSeries series, final int startTimestampOffset, final int endTimestampOffset, final double frequency, final double amplitude, final int numberOfSamples )
     {
         final long now = System.currentTimeMillis ();
 
@@ -166,7 +166,7 @@ public class Application implements IApplication
         }
     }
 
-    private void createLinear ( final Series series, final int startTimestampOffset, final int endTimestampOffset, final double ampltiude, final int numberOfSamples )
+    private void createLinear ( final WritableSeries series, final int startTimestampOffset, final int endTimestampOffset, final double ampltiude, final int numberOfSamples )
     {
         final long now = System.currentTimeMillis ();
 

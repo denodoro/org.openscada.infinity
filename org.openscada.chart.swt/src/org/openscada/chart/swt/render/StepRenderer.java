@@ -19,7 +19,7 @@
 
 package org.openscada.chart.swt.render;
 
-import java.util.TreeSet;
+import java.util.SortedSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -49,7 +49,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
 
         boolean first = true;
 
-        final TreeSet<DataEntry> entries = this.series.getData ().getEntries ();
+        final SortedSet<DataEntry> entries = this.series.getData ().getEntries ();
         if ( entries.isEmpty () )
         {
             return;

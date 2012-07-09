@@ -19,7 +19,7 @@
 
 package org.openscada.chart.swt.render;
 
-import java.util.TreeSet;
+import java.util.SortedSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -44,7 +44,7 @@ public class QualityRenderer extends AbstractRenderer
     {
         final GC gc = e.gc;
 
-        final TreeSet<DataEntry> entries = this.series.getData ().getEntries ();
+        final SortedSet<DataEntry> entries = this.series.getData ().getEntries ();
         if ( entries.isEmpty () )
         {
             // FIXME: draw full rect

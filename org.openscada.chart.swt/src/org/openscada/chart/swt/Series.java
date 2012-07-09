@@ -21,10 +21,8 @@ package org.openscada.chart.swt;
 
 import org.openscada.chart.SeriesData;
 
-public class Series
+public abstract class Series
 {
-    private SeriesData data = new SeriesData ();
-
     private final XAxis xAxis;
 
     private final YAxis yAxis;
@@ -45,20 +43,12 @@ public class Series
         return this.yAxis;
     }
 
-    public void setData ( final SeriesData data )
-    {
-        this.data = data;
-    }
-
-    public SeriesData getData ()
-    {
-        return this.data;
-    }
+    public abstract SeriesData getData ();
 
     public void fillAutoXYAxis ()
     {
-        this.xAxis.setMinMax ( this.data.getMinTimestamp (), this.data.getMaxTimestamp () );
-        this.yAxis.setMinMax ( this.data.getMinValue (), this.data.getMaxValue () );
+        this.xAxis.setMinMax ( getData ().getMinTimestamp (), getData ().getMaxTimestamp () );
+        this.yAxis.setMinMax ( getData ().getMinValue (), getData ().getMaxValue () );
     }
 
 }
