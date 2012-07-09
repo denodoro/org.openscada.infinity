@@ -43,6 +43,7 @@ import org.openscada.chart.swt.YAxis;
 import org.openscada.chart.swt.render.LinearRenderer;
 import org.openscada.chart.swt.render.QualityRenderer;
 import org.openscada.chart.swt.render.StepRenderer;
+import org.openscada.chart.swt.render.XAxisDynamicRenderer;
 import org.openscada.chart.swt.render.XAxisStaticRenderer;
 import org.openscada.chart.swt.render.YAxisDynamicRenderer;
 import org.openscada.chart.swt.render.YAxisStaticRenderer;
@@ -96,7 +97,7 @@ public class Application implements IApplication
 
         new Composite ( shell, SWT.NONE ); // dummy 
 
-        final XAxisStaticRenderer xRenderer = new XAxisStaticRenderer ( shell, SWT.TOP );
+        final XAxisDynamicRenderer xRenderer = new XAxisDynamicRenderer ( shell, SWT.TOP );
         xRenderer.setLayoutData ( new GridData ( SWT.FILL, SWT.BOTTOM, true, false ) );
 
         new Composite ( shell, SWT.NONE ); // dummy 
