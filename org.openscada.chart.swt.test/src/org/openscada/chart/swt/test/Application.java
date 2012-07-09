@@ -40,6 +40,7 @@ import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DisplayRealm;
+import org.openscada.chart.swt.controller.MouseDragZoomer;
 import org.openscada.chart.swt.controller.MouseTransformer;
 import org.openscada.chart.swt.controller.MouseWheelZoomer;
 import org.openscada.chart.swt.render.LinearRenderer;
@@ -141,8 +142,9 @@ public class Application implements IApplication
         x.setMinMax ( series1.getData ().getMinTimestamp (), series1.getData ().getMaxTimestamp () );
         y.setMinMax ( series1.getData ().getMinValue (), series1.getData ().getMaxValue () );
 
-        new MouseWheelZoomer ( x, y, chart );
+        new MouseWheelZoomer ( chart, x, y );
         new MouseTransformer ( chart, x, y );
+        new MouseDragZoomer ( chart, x, y );
 
         // start
 

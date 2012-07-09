@@ -101,9 +101,9 @@ public class YAxis extends AbstractPropertyChange
     {
         final double pos = 1.0 - position / height;
 
-        final double diffY = this.max - this.min;
+        final double diffX = this.max - this.min;
 
-        return diffY * pos + this.min;
+        return diffX * pos + this.min;
     }
 
 }

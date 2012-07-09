@@ -17,7 +17,7 @@ public class MouseWheelZoomer implements MouseWheelListener
 
     private final ChartArea chart;
 
-    public MouseWheelZoomer ( final XAxis x, final YAxis y, final ChartArea chart )
+    public MouseWheelZoomer ( final ChartArea chart, final XAxis x, final YAxis y )
     {
         this.x = x;
         this.y = y;

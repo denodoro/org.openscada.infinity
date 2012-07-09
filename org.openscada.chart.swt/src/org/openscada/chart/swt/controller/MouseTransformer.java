@@ -19,6 +19,7 @@
 
 package org.openscada.chart.swt.controller;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -76,6 +77,11 @@ public class MouseTransformer implements MouseListener, MouseMoveListener
     @Override
     public void mouseDown ( final MouseEvent e )
     {
+        if ( e.button != 1 || e.stateMask != SWT.MOD1 )
+        {
+            return;
+        }
+
         this.active = true;
         this.startX = e.x;
         this.startY = e.y;
