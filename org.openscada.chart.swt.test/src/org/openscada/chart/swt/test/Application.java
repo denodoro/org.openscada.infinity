@@ -23,7 +23,7 @@ import org.openscada.chart.swt.QualityRenderer;
 import org.openscada.chart.swt.Series;
 import org.openscada.chart.swt.StepRenderer;
 import org.openscada.chart.swt.XAxis;
-import org.openscada.chart.swt.XAxisRenderer;
+import org.openscada.chart.swt.XAxisStaticRenderer;
 import org.openscada.chart.swt.YAxis;
 import org.openscada.chart.swt.YAxisDynamicRenderer;
 import org.openscada.chart.swt.YAxisStaticRenderer;
@@ -78,7 +78,7 @@ public class Application implements IApplication
 
         new Composite ( shell, SWT.NONE ); // dummy 
 
-        final XAxisRenderer xRenderer = new XAxisRenderer ( shell, SWT.TOP );
+        final XAxisStaticRenderer xRenderer = new XAxisStaticRenderer ( shell, SWT.TOP );
         xRenderer.setLayoutData ( new GridData ( SWT.FILL, SWT.BOTTOM, true, false ) );
 
         new Composite ( shell, SWT.NONE ); // dummy 
@@ -99,7 +99,7 @@ public class Application implements IApplication
 
         new Composite ( shell, SWT.NONE ); // dummy 
 
-        final XAxisRenderer xRendererButtom = new XAxisRenderer ( shell, SWT.BOTTOM );
+        final XAxisStaticRenderer xRendererButtom = new XAxisStaticRenderer ( shell, SWT.BOTTOM );
         xRendererButtom.setLayoutData ( new GridData ( SWT.FILL, SWT.TOP, true, false ) );
 
         final XAxis x = new XAxis ();

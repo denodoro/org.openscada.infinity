@@ -1,30 +1,15 @@
 package org.openscada.chart.swt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-public class YAxisStaticRenderer extends Canvas
+public class YAxisStaticRenderer extends AbstractStaticRenderer
 {
-
     private YAxis axis;
-
-    private final LineAttributes lineAttributes;
-
-    private int labelSpacing;
-
-    private final PropertyChangeListener propertyChangeListener;
 
     private String format;
 
@@ -32,39 +17,9 @@ public class YAxisStaticRenderer extends Canvas
 
     public YAxisStaticRenderer ( final Composite parent, final int style )
     {
-        super ( parent, SWT.DOUBLE_BUFFERED );
+        super ( parent );
 
         this.left = ( style & SWT.RIGHT ) > 0;
-
-        this.propertyChangeListener = new PropertyChangeListener () {
-
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                handlePropertyChange ( evt );
-            }
-        };
-
-        addPaintListener ( new PaintListener () {
-
-            @Override
-            public void paintControl ( final PaintEvent e )
-            {
-                onPaint ( e );
-            }
-        } );
-
-        this.lineAttributes = new LineAttributes ( 1.0f, SWT.CAP_FLAT, SWT.JOIN_BEVEL, SWT.LINE_SOLID, new float[0], 0.0f, 0.0f );
-        this.labelSpacing = 20;
-
-        addDisposeListener ( new DisposeListener () {
-
-            @Override
-            public void widgetDisposed ( final DisposeEvent e )
-            {
-                onDispose ();
-            }
-        } );
     }
 
     public void setFormat ( final String format )
@@ -72,22 +27,10 @@ public class YAxisStaticRenderer extends Canvas
         this.format = format != null ? format : "%s";
     }
 
-    protected void handlePropertyChange ( final PropertyChangeEvent evt )
-    {
-        redraw ();
-    }
-
+    @Override
     protected void onDispose ()
     {
         setAxis ( null );
-    }
-
-    public void setLabelSpacing ( final int labelSpacing )
-    {
-        checkWidget ();
-
-        this.labelSpacing = labelSpacing;
-        redraw ();
     }
 
     public void setAxis ( final YAxis axis )
@@ -109,6 +52,7 @@ public class YAxisStaticRenderer extends Canvas
         }
     }
 
+    @Override
     protected void onPaint ( final PaintEvent e )
     {
         final Rectangle rect = getClientArea ();
