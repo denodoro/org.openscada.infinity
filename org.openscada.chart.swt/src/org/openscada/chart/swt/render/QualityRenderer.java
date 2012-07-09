@@ -47,17 +47,17 @@ public class QualityRenderer extends AbstractRenderer
         final XAxis xAxis = this.seriesData.getXAxis ();
         final YAxis yAxis = this.seriesData.getYAxis ();
 
+        gc.setBackground ( gc.getDevice ().getSystemColor ( SWT.COLOR_RED ) );
+        gc.setAlpha ( 128 );
+
         final SortedSet<DataEntry> entries = this.seriesData.getView ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
         if ( entries.isEmpty () )
         {
-            // FIXME: draw full rect
+            e.gc.fillRectangle ( clientRect );
             return;
         }
 
         final DataPoint point = new DataPoint ();
-
-        gc.setBackground ( gc.getDevice ().getSystemColor ( SWT.COLOR_RED ) );
-        gc.setAlpha ( 128 );
 
         Integer lastPosition = null;
         Integer lastValidPosition = null;
@@ -71,9 +71,13 @@ public class QualityRenderer extends AbstractRenderer
 
         final DataEntry last = entries.last ();
         translateToPoint ( clientRect, xAxis, yAxis, point, last );
-        if ( point.x > 0 && point.x < clientRect.width )
+        if ( point.x >= 0 && point.x < clientRect.width )
         {
             e.gc.fillRectangle ( (int)point.x, 0, (int) ( clientRect.width - point.x ), clientRect.height );
+        }
+        else if ( point.x < 0 )
+        {
+            e.gc.fillRectangle ( clientRect );
         }
 
         for ( final DataEntry entry : entries )
