@@ -105,7 +105,6 @@ public class XAxisDynamicRenderer extends AbstractStaticRenderer
 
             final String label = String.format ( this.format, value );
             final Point labelSize = e.gc.textExtent ( label );
-            // e.gc.drawText ( label, this.bottom ? y + 10 : x - ( labelSize.x + 10 ), y - labelSize.y / 2 );
 
             e.gc.drawText ( label, x, this.bottom ? y - ( labelSize.y + 5 ) : 5 );
             e.gc.drawLine ( x, y, x, this.bottom ? y - 3 : 3 );
