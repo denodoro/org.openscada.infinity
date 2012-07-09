@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.openscada.infinity_1.0.0.qualifier.jar" id="org.openscada.infinity" version="1.0.0.qualifier">
+      <category name="org.openscada.infinity.category"/>
+   </feature>
+   <feature url="features/org.openscada.infinity.sdk_1.0.0.qualifier.jar" id="org.openscada.infinity.sdk" version="1.0.0.qualifier">
+      <category name="org.openscada.infinity.sdk.category"/>
+   </feature>
+   <category-def name="org.openscada.infinity.category" label="openSCADA Infinity">
+      <description>
+         Chart components for openSCADA.
+      </description>
+   </category-def>
+   <category-def name="org.openscada.infinity.sdk.category" label="openSCADA Infinity SDK">
+      <description>
+         Binaries and sources of the openSCADA Infinity modules.
+      </description>
+   </category-def>
+</site>

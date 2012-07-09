@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.openscada.infinity.sdk"
+      label="openSCADA Infinity SDK"
+      version="1.0.0.qualifier"
+      provider-name="TH4 SYSTEMS GmbH">
+
+   <description>
+      openSCADA UI Components SDK
+   </description>
+
+   <copyright url="http://opensource.org/licenses/lgpl-3.0.html">
+      %copyright
+   </copyright>
+
+   <license url="http://opensource.org/licenses/lgpl-3.0.html">
+      %license
+   </license>
+
+   <includes
+         id="org.openscada.infinity"
+         version="0.0.0"/>
+
+   <includes
+         id="org.openscada.infinity.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.openscada.chart.swt.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
