@@ -25,4 +25,6 @@ import org.eclipse.swt.graphics.Rectangle;
 public interface Renderer
 {
     public void render ( PaintEvent e, Rectangle clientRectangle );
+
+    public void resize ( Rectangle clientRectangle );
 }

@@ -96,6 +96,12 @@ public class XAxisDynamicRenderer extends AbstractStaticRenderer
 
         final Point sampleLabelSize = e.gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
         final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, rect.width, this.axis.getMax () - this.axis.getMin () );
+
+        if ( step <= 0 )
+        {
+            return;
+        }
+
         long value = stepValue ( this.axis.getMin () - step /*previous step*/, step );
 
         while ( value < this.axis.getMax () )
@@ -129,7 +135,13 @@ public class XAxisDynamicRenderer extends AbstractStaticRenderer
 
     private long makeDynamicStep ( final int textWidth, final int clientWidth, final long valueWidth )
     {
-        return valueWidth / ( clientWidth / textWidth );
+        final long l = clientWidth / textWidth;
+        if ( l == 0 )
+        {
+            return 0;
+        }
+
+        return valueWidth / l;
     }
 
     private long stepValue ( final long value, final long step )

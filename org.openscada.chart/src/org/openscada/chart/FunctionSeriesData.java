@@ -21,17 +21,58 @@ package org.openscada.chart;
 public abstract class FunctionSeriesData extends SeriesData
 {
 
+    private static final class Request
+    {
+        private final long start;
+
+        private final long end;
+
+        private final int width;
+
+        public Request ( final long start, final long end, final int width )
+        {
+            super ();
+            this.start = start;
+            this.end = end;
+            this.width = width;
+        }
+
+        public long getStart ()
+        {
+            return this.start;
+        }
+
+        public long getEnd ()
+        {
+            return this.end;
+        }
+
+        public int getWidth ()
+        {
+            return this.width;
+        }
+
+    }
+
+    private Request request;
+
     public FunctionSeriesData ( final XAxis xAxis, final YAxis yAxis )
     {
         super ( xAxis, yAxis );
+        this.request = new Request ( xAxis.getMin (), xAxis.getMax (), 1 );
     }
 
     @Override
-    public SeriesViewData getViewData ( final long startTimestamp, final long endTimestamp, final int width )
+    public SeriesViewData getViewData ()
     {
+        final Request request = this.request;
+
         final WritableSeriesData result = new WritableSeriesData ();
 
-        final double step = (double) ( endTimestamp - startTimestamp ) / (double)width;
+        final long startTimestamp = request.getStart ();
+        final long endTimestamp = request.getEnd ();
+
+        final double step = (double) ( endTimestamp - startTimestamp ) / (double)request.getWidth ();
 
         for ( double i = startTimestamp; i < endTimestamp; i += step )
         {
@@ -43,5 +84,24 @@ public abstract class FunctionSeriesData extends SeriesData
     }
 
     protected abstract Double eval ( long timestamp );
+
+    @Override
+    public void setRequestWidth ( final int width )
+    {
+        final Request request = this.request;
+        setRequest ( new Request ( request.getStart (), request.getEnd (), width ) );
+    }
+
+    @Override
+    public void setRequestWindow ( final long startTimestamp, final long endTimestamp )
+    {
+        final Request request = this.request;
+        setRequest ( new Request ( startTimestamp, endTimestamp, request.getWidth () ) );
+    }
+
+    private void setRequest ( final Request request )
+    {
+        this.request = request;
+    }
 
 }

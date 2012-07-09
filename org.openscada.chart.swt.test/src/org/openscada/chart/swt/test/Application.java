@@ -126,7 +126,7 @@ public class Application implements IApplication
         series1Renderer.setLineColor ( resourceManager.createColor ( new RGB ( 255, 0, 0 ) ) );
         chart.addRenderer ( series1Renderer );
 
-        chart.addRenderer ( new LinearRenderer ( series4 ) );
+        chart.addRenderer ( new StepRenderer ( series4 ) );
         chart.addRenderer ( new StepRenderer ( series3 ) );
         chart.addRenderer ( new QualityRenderer ( series3 ) );
 

@@ -19,16 +19,42 @@
 
 package org.openscada.chart;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 public abstract class SeriesData
 {
     private final XAxis xAxis;
 
     private final YAxis yAxis;
 
+    private final PropertyChangeListener listener;
+
     public SeriesData ( final XAxis xAxis, final YAxis yAxis )
     {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
+
+        this.listener = new PropertyChangeListener () {
+
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                handlePropertyChange ( evt );
+            }
+        };
+
+        xAxis.addPropertyChangeListener ( this.listener );
+    }
+
+    protected void handlePropertyChange ( final PropertyChangeEvent evt )
+    {
+        setRequestWindow ( this.xAxis.getMin (), this.xAxis.getMax () );
+    }
+
+    public void dispose ()
+    {
+        this.xAxis.removePropertyChangeListener ( this.listener );
     }
 
     public XAxis getXAxis ()
@@ -41,10 +67,10 @@ public abstract class SeriesData
         return this.yAxis;
     }
 
-    public void dispose ()
-    {
-    }
+    public abstract void setRequestWindow ( final long startTimestamp, final long endTimestamp );
 
-    public abstract SeriesViewData getViewData ( long startTimestamp, long endTimestamp, int width );
+    public abstract void setRequestWidth ( final int width );
+
+    public abstract SeriesViewData getViewData ();
 
 }
