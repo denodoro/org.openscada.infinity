@@ -177,7 +177,7 @@
   <!-- ===================================================================== -->
   <target name="postBuild">
     <antcall target="gatherLogs" />
-  	<openscada.deploy.repository name="org.openscada.orilla.sdk"/>
+  	<openscada.deploy.repository name="org.openscada.infinity.sdk"/>
   </target>
 
   <!-- ===================================================================== -->
