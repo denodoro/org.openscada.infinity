@@ -112,17 +112,15 @@ public class YAxisDynamicRenderer extends AbstractStaticRenderer
         final String label = this.axis.getLabel ();
         if ( label != null )
         {
-            final Transform rotate = new Transform ( e.gc.getDevice () );
             try
             {
-                rotate.rotate ( -90 );
-                e.gc.setTransform ( rotate );
+                e.gc.setTransform ( this.rotate );
                 final Point size = e.gc.textExtent ( label );
                 e.gc.drawText ( label, -rect.height + rect.height / 2 - size.x / 2, this.left ? rect.width - size.y : 0 );
             }
             finally
             {
-                rotate.dispose ();
+                e.gc.setTransform ( null );
             }
         }
 
