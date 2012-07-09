@@ -32,7 +32,7 @@ import org.openscada.chart.swt.Series;
 import org.openscada.chart.swt.XAxis;
 import org.openscada.chart.swt.YAxis;
 
-public class LinearRenderer extends AbstractLineRender implements SeriesRenderer
+public class LinearRenderer extends AbstractLineRender implements Renderer
 {
 
     public LinearRenderer ( final Series series )
@@ -41,7 +41,7 @@ public class LinearRenderer extends AbstractLineRender implements SeriesRenderer
     }
 
     @Override
-    public void render ( final Rectangle clientRect, final PaintEvent e )
+    public void render ( final PaintEvent e, final Rectangle clientRect )
     {
         final GC gc = e.gc;
 

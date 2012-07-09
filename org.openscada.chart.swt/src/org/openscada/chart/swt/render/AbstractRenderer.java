@@ -26,7 +26,7 @@ import org.openscada.chart.swt.Series;
 import org.openscada.chart.swt.XAxis;
 import org.openscada.chart.swt.YAxis;
 
-public abstract class AbstractRenderer implements SeriesRenderer
+public abstract class AbstractRenderer implements Renderer
 {
 
     protected final Series series;

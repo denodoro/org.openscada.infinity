@@ -22,7 +22,7 @@ package org.openscada.chart.swt.render;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Rectangle;
 
-public interface SeriesRenderer
+public interface Renderer
 {
-    public void render ( Rectangle rectangle, PaintEvent e );
+    public void render ( PaintEvent e, Rectangle clientRectangle );
 }

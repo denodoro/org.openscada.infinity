@@ -40,7 +40,7 @@ public class QualityRenderer extends AbstractRenderer
     }
 
     @Override
-    public void render ( final Rectangle clientRect, final PaintEvent e )
+    public void render ( final PaintEvent e, final Rectangle clientRect )
     {
         final GC gc = e.gc;
 

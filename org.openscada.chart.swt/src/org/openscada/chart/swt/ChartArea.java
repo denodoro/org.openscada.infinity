@@ -28,12 +28,12 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.openscada.chart.swt.render.SeriesRenderer;
+import org.openscada.chart.swt.render.Renderer;
 
 public class ChartArea extends Canvas
 {
 
-    private final List<SeriesRenderer> renderers = new LinkedList<SeriesRenderer> ();
+    private final List<Renderer> renderers = new LinkedList<Renderer> ();
 
     public ChartArea ( final Composite parent, final int style )
     {
@@ -60,19 +60,19 @@ public class ChartArea extends Canvas
 
         e.gc.setAntialias ( SWT.ON );
 
-        for ( final SeriesRenderer renderer : this.renderers )
+        for ( final Renderer renderer : this.renderers )
         {
-            renderer.render ( rect, e );
+            renderer.render ( e, rect );
         }
 
     }
 
-    public void addRenderer ( final SeriesRenderer renderer )
+    public void addRenderer ( final Renderer renderer )
     {
         this.renderers.add ( renderer );
     }
 
-    public void removeRenderer ( final SeriesRenderer renderer )
+    public void removeRenderer ( final Renderer renderer )
     {
         this.renderers.remove ( renderer );
     }
