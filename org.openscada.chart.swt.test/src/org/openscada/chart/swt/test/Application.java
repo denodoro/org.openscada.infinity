@@ -19,16 +19,12 @@
 
 package org.openscada.chart.swt.test;
 
-import java.util.Date;
-
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -40,6 +36,8 @@ import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.Series;
 import org.openscada.chart.swt.XAxis;
 import org.openscada.chart.swt.YAxis;
+import org.openscada.chart.swt.controller.MouseTransformer;
+import org.openscada.chart.swt.controller.MouseZoomer;
 import org.openscada.chart.swt.render.LinearRenderer;
 import org.openscada.chart.swt.render.QualityRenderer;
 import org.openscada.chart.swt.render.StepRenderer;
@@ -50,36 +48,6 @@ import org.openscada.chart.swt.render.YAxisStaticRenderer;
 
 public class Application implements IApplication
 {
-    public class MouseZoomer implements MouseWheelListener
-    {
-        private final XAxis x;
-
-        private final YAxis y;
-
-        private final ChartArea chart;
-
-        public MouseZoomer ( final XAxis x, final YAxis y, final ChartArea chart )
-        {
-            this.x = x;
-            this.y = y;
-            this.chart = chart;
-        }
-
-        @Override
-        public void mouseScrolled ( final MouseEvent e )
-        {
-            if ( e.stateMask == 0 )
-            {
-                this.x.zoom ( e.count < 0 ? 0.1 : -0.1 );
-            }
-            else if ( ( e.stateMask & SWT.MOD1 ) > 0 )
-            {
-                this.y.zoom ( e.count < 0 ? 0.1 : -0.1 );
-            }
-            this.chart.redraw ();
-        }
-    }
-
     @Override
     public Object start ( final IApplicationContext context ) throws Exception
     {
@@ -144,9 +112,7 @@ public class Application implements IApplication
         chart.addRenderer ( series1Renderer );
 
         chart.addRenderer ( new LinearRenderer ( series2 ) );
-
         chart.addRenderer ( new StepRenderer ( series3 ) );
-
         chart.addRenderer ( new QualityRenderer ( series3 ) );
 
         createSine ( series1, -10, +10, 0.05, 100.0, 100 );
@@ -155,11 +121,8 @@ public class Application implements IApplication
 
         series1.fillAutoXYAxis ();
 
-        chart.addMouseWheelListener ( new MouseZoomer ( x, y, chart ) );
-
-        final MouseTransformer tracker = new MouseTransformer ( chart, x, y );
-        chart.addMouseListener ( tracker );
-        chart.addMouseMoveListener ( tracker );
+        new MouseZoomer ( x, y, chart );
+        new MouseTransformer ( chart, x, y );
 
         // start
 
@@ -198,9 +161,7 @@ public class Application implements IApplication
         double currentTime = start;
         while ( currentTime < end )
         {
-            final Date timestamp = new Date ( (long)currentTime );
-
-            series.getData ().add ( new DataEntry ( timestamp, Math.sin ( Math.toRadians ( currentTime ) * frequency ) * amplitude ) );
+            series.getData ().add ( new DataEntry ( (long)currentTime, Math.sin ( Math.toRadians ( currentTime ) * frequency ) * amplitude ) );
             currentTime += timeSlice;
         }
     }
@@ -223,15 +184,13 @@ public class Application implements IApplication
         int cnt = 0;
         while ( currentTime < end )
         {
-            final Date timestamp = new Date ( (long)currentTime );
-
             if ( cnt % 10 == 0 )
             {
-                series.getData ().add ( new DataEntry ( timestamp, null ) );
+                series.getData ().add ( new DataEntry ( (long)currentTime, null ) );
             }
             else
             {
-                series.getData ().add ( new DataEntry ( timestamp, value ) );
+                series.getData ().add ( new DataEntry ( (long)currentTime, value ) );
             }
 
             value += add;

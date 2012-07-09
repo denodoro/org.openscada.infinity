@@ -19,21 +19,23 @@
 
 package org.openscada.chart;
 
-import java.util.Date;
-
+/**
+ * @author Jens Reimann
+ * @immutable
+ */
 public class DataEntry implements Comparable<DataEntry>
 {
-    private final Date timestamp;
+    private final long timestamp;
 
     private final Double value;
 
-    public DataEntry ( final Date timestamp, final Double value )
+    public DataEntry ( final long timestamp, final Double value )
     {
         this.timestamp = timestamp;
         this.value = value;
     }
 
-    public Date getTimestamp ()
+    public long getTimestamp ()
     {
         return this.timestamp;
     }
@@ -46,7 +48,7 @@ public class DataEntry implements Comparable<DataEntry>
     @Override
     public int compareTo ( final DataEntry o )
     {
-        return this.timestamp.compareTo ( o.timestamp );
+        return Long.valueOf ( this.timestamp ).compareTo ( o.timestamp );
     }
 
     @Override
@@ -54,7 +56,7 @@ public class DataEntry implements Comparable<DataEntry>
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ( this.timestamp == null ? 0 : this.timestamp.hashCode () );
+        result = prime * result + (int) ( this.timestamp ^ this.timestamp >>> 32 );
         return result;
     }
 
@@ -74,14 +76,7 @@ public class DataEntry implements Comparable<DataEntry>
             return false;
         }
         final DataEntry other = (DataEntry)obj;
-        if ( this.timestamp == null )
-        {
-            if ( other.timestamp != null )
-            {
-                return false;
-            }
-        }
-        else if ( !this.timestamp.equals ( other.timestamp ) )
+        if ( this.timestamp != other.timestamp )
         {
             return false;
         }

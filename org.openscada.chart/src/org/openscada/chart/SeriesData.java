@@ -25,9 +25,62 @@ public class SeriesData
 {
     private final TreeSet<DataEntry> entries = new TreeSet<DataEntry> ();
 
+    private double minValue = Double.POSITIVE_INFINITY;
+
+    private double maxValue = Double.NEGATIVE_INFINITY;
+
+    private long minTimestamp = Long.MAX_VALUE;
+
+    private long maxTimestamp = Long.MIN_VALUE;
+
     public boolean add ( final DataEntry entry )
     {
+        this.minValue = minValue ( this.minValue, entry.getValue () );
+        this.maxValue = maxValue ( this.maxValue, entry.getValue () );
+        this.minTimestamp = Math.min ( this.minTimestamp, entry.getTimestamp () );
+        this.maxTimestamp = Math.max ( this.maxTimestamp, entry.getTimestamp () );
+
         return this.entries.add ( entry );
+    }
+
+    private static double minValue ( final double a, final Double b )
+    {
+        if ( b == null )
+        {
+            return a;
+        }
+
+        return Math.min ( a, b );
+    }
+
+    private static double maxValue ( final double a, final Double b )
+    {
+        if ( b == null )
+        {
+            return a;
+        }
+
+        return Math.max ( a, b );
+    }
+
+    public long getMaxTimestamp ()
+    {
+        return this.maxTimestamp;
+    }
+
+    public long getMinTimestamp ()
+    {
+        return this.minTimestamp;
+    }
+
+    public double getMaxValue ()
+    {
+        return this.maxValue;
+    }
+
+    public double getMinValue ()
+    {
+        return this.minValue;
     }
 
     public TreeSet<DataEntry> getEntries ()

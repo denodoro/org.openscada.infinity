@@ -19,7 +19,6 @@
 
 package org.openscada.chart.swt;
 
-import org.openscada.chart.DataEntry;
 import org.openscada.chart.SeriesData;
 
 public class Series
@@ -58,36 +57,8 @@ public class Series
 
     public void fillAutoXYAxis ()
     {
-        long minX = Long.MAX_VALUE;
-        long maxX = Long.MIN_VALUE;
-
-        double minY = Double.MAX_VALUE;
-        double maxY = -Double.MAX_VALUE;
-
-        for ( final DataEntry entry : this.data.getEntries () )
-        {
-            final long timestamp = entry.getTimestamp ().getTime ();
-            final Double value = entry.getValue ();
-            if ( timestamp < minX )
-            {
-                minX = timestamp;
-            }
-            if ( timestamp > maxX )
-            {
-                maxX = timestamp;
-            }
-            if ( value < minY )
-            {
-                minY = value;
-            }
-            if ( value > maxY )
-            {
-                maxY = value;
-            }
-        }
-
-        this.xAxis.setMinMax ( minX, maxX );
-        this.yAxis.setMinMax ( minY, maxY );
+        this.xAxis.setMinMax ( this.data.getMinTimestamp (), this.data.getMaxTimestamp () );
+        this.yAxis.setMinMax ( this.data.getMinValue (), this.data.getMaxValue () );
     }
 
 }

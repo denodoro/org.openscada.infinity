@@ -17,8 +17,10 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt.test;
+package org.openscada.chart.swt.controller;
 
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -46,6 +48,24 @@ public class MouseTransformer implements MouseListener, MouseMoveListener
         this.chartArea = chartArea;
         this.xAxis = xAxis;
         this.yAxis = yAxis;
+
+        chartArea.addDisposeListener ( new DisposeListener () {
+
+            @Override
+            public void widgetDisposed ( final DisposeEvent e )
+            {
+                dispose ();
+            }
+        } );
+
+        chartArea.addMouseListener ( this );
+        chartArea.addMouseMoveListener ( this );
+    }
+
+    public void dispose ()
+    {
+        this.chartArea.removeMouseListener ( this );
+        this.chartArea.removeMouseMoveListener ( this );
     }
 
     @Override

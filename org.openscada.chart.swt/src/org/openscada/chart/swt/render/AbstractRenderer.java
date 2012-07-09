@@ -38,7 +38,7 @@ public abstract class AbstractRenderer implements Renderer
 
     protected static boolean translateToPoint ( final Rectangle clientRect, final XAxis x, final YAxis y, final DataPoint point, final DataEntry entry )
     {
-        point.x = x.translateToClient ( clientRect.width, entry.getTimestamp ().getTime () );
+        point.x = x.translateToClient ( clientRect.width, entry.getTimestamp () );
 
         final Double value = entry.getValue ();
         if ( value == null )
