@@ -17,7 +17,7 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt;
+package org.openscada.chart.swt.render;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Date;
@@ -27,6 +27,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.openscada.chart.swt.XAxis;
 
 public class XAxisStaticRenderer extends AbstractStaticRenderer
 {

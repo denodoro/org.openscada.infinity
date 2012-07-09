@@ -17,7 +17,7 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt;
+package org.openscada.chart.swt.render;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

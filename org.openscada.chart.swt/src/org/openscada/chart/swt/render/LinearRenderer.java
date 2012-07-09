@@ -17,7 +17,7 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt;
+package org.openscada.chart.swt.render;
 
 import java.util.TreeSet;
 
@@ -27,6 +27,10 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
+import org.openscada.chart.swt.DataPoint;
+import org.openscada.chart.swt.Series;
+import org.openscada.chart.swt.XAxis;
+import org.openscada.chart.swt.YAxis;
 
 public class LinearRenderer extends AbstractLineRender implements SeriesRenderer
 {

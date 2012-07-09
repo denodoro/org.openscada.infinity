@@ -17,34 +17,36 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt;
+package org.openscada.chart.swt.render;
 
-import org.eclipse.swt.graphics.Rectangle;
-import org.openscada.chart.DataEntry;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.LineAttributes;
+import org.openscada.chart.swt.Series;
 
-public abstract class AbstractRenderer implements SeriesRenderer
+public abstract class AbstractLineRender extends AbstractRenderer
 {
+    protected Color lineColor;
 
-    protected final Series series;
+    protected LineAttributes lineAttributes;
 
-    public AbstractRenderer ( final Series series )
+    public AbstractLineRender ( final Series series )
     {
-        this.series = series;
+        super ( series );
+        this.lineAttributes = new LineAttributes ( 1.0f );
     }
 
-    protected static boolean translateToPoint ( final Rectangle clientRect, final XAxis x, final YAxis y, final DataPoint point, final DataEntry entry )
+    public void setLineAttributes ( final LineAttributes lineAttributes )
     {
-        point.x = x.translateToClient ( clientRect.width, entry.getTimestamp ().getTime () );
-
-        final Double value = entry.getValue ();
-        if ( value == null )
-        {
-            return false;
-        }
-
-        point.y = y.translateToClient ( clientRect.height, value );
-
-        return true;
+        this.lineAttributes = lineAttributes;
     }
 
+    public void setLineWidth ( final float width )
+    {
+        this.lineAttributes.width = width;
+    }
+
+    public void setLineColor ( final Color lineColor )
+    {
+        this.lineColor = lineColor;
+    }
 }

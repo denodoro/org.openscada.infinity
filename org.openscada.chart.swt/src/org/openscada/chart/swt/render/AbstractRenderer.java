@@ -17,12 +17,38 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt;
+package org.openscada.chart.swt.render;
 
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Rectangle;
+import org.openscada.chart.DataEntry;
+import org.openscada.chart.swt.DataPoint;
+import org.openscada.chart.swt.Series;
+import org.openscada.chart.swt.XAxis;
+import org.openscada.chart.swt.YAxis;
 
-public interface SeriesRenderer
+public abstract class AbstractRenderer implements SeriesRenderer
 {
-    public void render ( Rectangle rectangle, PaintEvent e );
+
+    protected final Series series;
+
+    public AbstractRenderer ( final Series series )
+    {
+        this.series = series;
+    }
+
+    protected static boolean translateToPoint ( final Rectangle clientRect, final XAxis x, final YAxis y, final DataPoint point, final DataEntry entry )
+    {
+        point.x = x.translateToClient ( clientRect.width, entry.getTimestamp ().getTime () );
+
+        final Double value = entry.getValue ();
+        if ( value == null )
+        {
+            return false;
+        }
+
+        point.y = y.translateToClient ( clientRect.height, value );
+
+        return true;
+    }
+
 }

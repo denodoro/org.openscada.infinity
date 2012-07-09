@@ -17,21 +17,24 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart.swt;
+package org.openscada.chart.swt.render;
 
 import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
+import org.openscada.chart.swt.DataPoint;
+import org.openscada.chart.swt.Series;
+import org.openscada.chart.swt.XAxis;
+import org.openscada.chart.swt.YAxis;
 
-public class StepRenderer extends AbstractLineRender implements SeriesRenderer
+public class QualityRenderer extends AbstractRenderer
 {
 
-    public StepRenderer ( final Series series )
+    public QualityRenderer ( final Series series )
     {
         super ( series );
     }
@@ -41,47 +44,61 @@ public class StepRenderer extends AbstractLineRender implements SeriesRenderer
     {
         final GC gc = e.gc;
 
-        final Path path = new Path ( gc.getDevice () );
-
-        boolean first = true;
-
         final TreeSet<DataEntry> entries = this.series.getData ().getEntries ();
         if ( entries.isEmpty () )
         {
+            // FIXME: draw full rect
             return;
         }
 
         final DataPoint point = new DataPoint ();
-        Float previousY = null;
 
         final XAxis xAxis = this.series.getXAxis ();
         final YAxis yAxis = this.series.getYAxis ();
 
+        gc.setBackground ( gc.getDevice ().getSystemColor ( SWT.COLOR_RED ) );
+        gc.setAlpha ( 128 );
+
+        Integer lastPosition = null;
+        Integer lastValidPosition = null;
+
+        final DataEntry first = entries.first ();
+        translateToPoint ( clientRect, xAxis, yAxis, point, first );
+        if ( point.x > 0 )
+        {
+            e.gc.fillRectangle ( 0, 0, (int)point.x, clientRect.height );
+        }
+
+        final DataEntry last = entries.last ();
+        translateToPoint ( clientRect, xAxis, yAxis, point, last );
+        if ( point.x > 0 && point.x < clientRect.width )
+        {
+            e.gc.fillRectangle ( (int)point.x, 0, (int) ( clientRect.width - point.x ), clientRect.height );
+        }
+
         for ( final DataEntry entry : entries )
         {
             final boolean hasData = translateToPoint ( clientRect, xAxis, yAxis, point, entry );
-            if ( hasData )
+
+            if ( lastPosition != null )
             {
-                if ( first )
+                e.gc.fillRectangle ( lastPosition, 0, (int)point.x - lastPosition, clientRect.height );
+            }
+
+            if ( !hasData )
+            {
+                if ( lastValidPosition != null && lastPosition == null )
                 {
-                    first = false;
-                    path.moveTo ( point.x, point.y );
+                    e.gc.fillRectangle ( lastValidPosition, 0, (int)point.x - lastValidPosition, clientRect.height );
                 }
-                else
-                {
-                    path.lineTo ( point.x, previousY );
-                    path.lineTo ( point.x, point.y );
-                }
-                previousY = point.y;
+                lastPosition = (int)point.x;
             }
             else
             {
-                first = true;
+                lastValidPosition = (int)point.x;
+                lastPosition = null;
             }
         }
 
-        gc.setLineAttributes ( this.lineAttributes );
-        gc.setForeground ( this.lineColor != null ? this.lineColor : gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
-        gc.drawPath ( path );
     }
 }

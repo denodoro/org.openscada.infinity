@@ -37,15 +37,15 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.openscada.chart.DataEntry;
 import org.openscada.chart.swt.ChartArea;
-import org.openscada.chart.swt.LinearRenderer;
-import org.openscada.chart.swt.QualityRenderer;
 import org.openscada.chart.swt.Series;
-import org.openscada.chart.swt.StepRenderer;
 import org.openscada.chart.swt.XAxis;
-import org.openscada.chart.swt.XAxisStaticRenderer;
 import org.openscada.chart.swt.YAxis;
-import org.openscada.chart.swt.YAxisDynamicRenderer;
-import org.openscada.chart.swt.YAxisStaticRenderer;
+import org.openscada.chart.swt.render.LinearRenderer;
+import org.openscada.chart.swt.render.QualityRenderer;
+import org.openscada.chart.swt.render.StepRenderer;
+import org.openscada.chart.swt.render.XAxisStaticRenderer;
+import org.openscada.chart.swt.render.YAxisDynamicRenderer;
+import org.openscada.chart.swt.render.YAxisStaticRenderer;
 
 public class Application implements IApplication
 {
