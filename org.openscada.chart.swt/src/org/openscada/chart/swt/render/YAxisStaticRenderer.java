@@ -21,6 +21,7 @@ package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
@@ -35,9 +36,13 @@ public class YAxisStaticRenderer extends AbstractStaticRenderer
 
     private final boolean left;
 
+    private final Transform rotate;
+
     public YAxisStaticRenderer ( final Composite parent, final int style )
     {
         super ( parent );
+
+        this.rotate = createTransform ( parent.getDisplay () );
 
         this.left = ( style & SWT.RIGHT ) > 0;
     }
@@ -51,6 +56,7 @@ public class YAxisStaticRenderer extends AbstractStaticRenderer
     protected void onDispose ()
     {
         setAxis ( null );
+        this.rotate.dispose ();
     }
 
     public void setAxis ( final YAxis axis )
@@ -102,19 +108,24 @@ public class YAxisStaticRenderer extends AbstractStaticRenderer
         final String label = this.axis.getLabel ();
         if ( label != null )
         {
-            final Transform rotate = new Transform ( e.gc.getDevice () ); // FIXME: should be cached
             try
             {
-                rotate.rotate ( -90 );
-                e.gc.setTransform ( rotate );
+                e.gc.setTransform ( this.rotate );
                 final Point size = e.gc.textExtent ( label );
                 e.gc.drawText ( label, -rect.height + rect.height / 2 - size.x / 2, this.left ? rect.width - size.y : 0 );
             }
             finally
             {
-                rotate.dispose ();
+                e.gc.setTransform ( null );
             }
         }
+    }
+
+    private Transform createTransform ( final Device device )
+    {
+        final Transform rotate = new Transform ( device );
+        rotate.rotate ( -90 );
+        return rotate;
     }
 
     private int findStart ( final Rectangle rect )
