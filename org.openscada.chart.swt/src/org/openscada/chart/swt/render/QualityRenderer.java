@@ -26,7 +26,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
-import org.openscada.chart.Series;
+import org.openscada.chart.SeriesData;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.DataPoint;
@@ -34,9 +34,9 @@ import org.openscada.chart.swt.DataPoint;
 public class QualityRenderer extends AbstractRenderer
 {
 
-    public QualityRenderer ( final Series series )
+    public QualityRenderer ( final SeriesData seriesData )
     {
-        super ( series );
+        super ( seriesData );
     }
 
     @Override
@@ -44,7 +44,7 @@ public class QualityRenderer extends AbstractRenderer
     {
         final GC gc = e.gc;
 
-        final SortedSet<DataEntry> entries = this.series.getData ().getEntries ();
+        final SortedSet<DataEntry> entries = this.seriesData.getData ().getEntries ();
         if ( entries.isEmpty () )
         {
             // FIXME: draw full rect
@@ -53,8 +53,8 @@ public class QualityRenderer extends AbstractRenderer
 
         final DataPoint point = new DataPoint ();
 
-        final XAxis xAxis = this.series.getXAxis ();
-        final YAxis yAxis = this.series.getYAxis ();
+        final XAxis xAxis = this.seriesData.getXAxis ();
+        final YAxis yAxis = this.seriesData.getYAxis ();
 
         gc.setBackground ( gc.getDevice ().getSystemColor ( SWT.COLOR_RED ) );
         gc.setAlpha ( 128 );

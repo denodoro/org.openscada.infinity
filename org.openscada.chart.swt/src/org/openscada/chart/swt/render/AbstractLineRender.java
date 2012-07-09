@@ -21,7 +21,7 @@ package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.LineAttributes;
-import org.openscada.chart.Series;
+import org.openscada.chart.SeriesData;
 
 public abstract class AbstractLineRender extends AbstractRenderer
 {
@@ -29,9 +29,9 @@ public abstract class AbstractLineRender extends AbstractRenderer
 
     protected LineAttributes lineAttributes;
 
-    public AbstractLineRender ( final Series series )
+    public AbstractLineRender ( final SeriesData seriesData )
     {
-        super ( series );
+        super ( seriesData );
         this.lineAttributes = new LineAttributes ( 1.0f );
     }
 

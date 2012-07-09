@@ -19,35 +19,22 @@
 
 package org.openscada.chart;
 
+import java.util.SortedSet;
 
-public abstract class Series
+public interface SeriesDataView
 {
-    private final XAxis xAxis;
+    /**
+     * get the unmodifiable set of data entries
+     * 
+     * @return an unmodifiable data set
+     */
+    public SortedSet<DataEntry> getEntries ();
 
-    private final YAxis yAxis;
+    public double getMinValue ();
 
-    public Series ( final XAxis xAxis, final YAxis yAxis )
-    {
-        this.xAxis = xAxis;
-        this.yAxis = yAxis;
-    }
+    public double getMaxValue ();
 
-    public XAxis getXAxis ()
-    {
-        return this.xAxis;
-    }
+    public long getMinTimestamp ();
 
-    public YAxis getYAxis ()
-    {
-        return this.yAxis;
-    }
-
-    public abstract SeriesData getData ();
-
-    public void fillAutoXYAxis ()
-    {
-        this.xAxis.setMinMax ( getData ().getMinTimestamp (), getData ().getMaxTimestamp () );
-        this.yAxis.setMinMax ( getData ().getMinValue (), getData ().getMaxValue () );
-    }
-
+    public long getMaxTimestamp ();
 }

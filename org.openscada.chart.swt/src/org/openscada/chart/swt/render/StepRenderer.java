@@ -27,7 +27,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
-import org.openscada.chart.Series;
+import org.openscada.chart.SeriesData;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.DataPoint;
@@ -35,9 +35,9 @@ import org.openscada.chart.swt.DataPoint;
 public class StepRenderer extends AbstractLineRender implements Renderer
 {
 
-    public StepRenderer ( final Series series )
+    public StepRenderer ( final SeriesData seriesData )
     {
-        super ( series );
+        super ( seriesData );
     }
 
     @Override
@@ -49,7 +49,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
 
         boolean first = true;
 
-        final SortedSet<DataEntry> entries = this.series.getData ().getEntries ();
+        final SortedSet<DataEntry> entries = this.seriesData.getData ().getEntries ();
         if ( entries.isEmpty () )
         {
             return;
@@ -58,8 +58,8 @@ public class StepRenderer extends AbstractLineRender implements Renderer
         final DataPoint point = new DataPoint ();
         Float previousY = null;
 
-        final XAxis xAxis = this.series.getXAxis ();
-        final YAxis yAxis = this.series.getYAxis ();
+        final XAxis xAxis = this.seriesData.getXAxis ();
+        final YAxis yAxis = this.seriesData.getYAxis ();
 
         for ( final DataEntry entry : entries )
         {

@@ -21,7 +21,7 @@ package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
-import org.openscada.chart.Series;
+import org.openscada.chart.SeriesData;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.DataPoint;
@@ -29,11 +29,11 @@ import org.openscada.chart.swt.DataPoint;
 public abstract class AbstractRenderer implements Renderer
 {
 
-    protected final Series series;
+    protected final SeriesData seriesData;
 
-    public AbstractRenderer ( final Series series )
+    public AbstractRenderer ( final SeriesData seriesData )
     {
-        this.series = series;
+        this.seriesData = seriesData;
     }
 
     protected static boolean translateToPoint ( final Rectangle clientRect, final XAxis x, final YAxis y, final DataPoint point, final DataEntry entry )

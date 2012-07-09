@@ -1,7 +1,7 @@
 package org.openscada.chart;
 
 
-public class WritableSeries extends Series
+public class WritableSeries extends SeriesData
 {
 
     private WritableSeriesData data = new WritableSeriesData ();
