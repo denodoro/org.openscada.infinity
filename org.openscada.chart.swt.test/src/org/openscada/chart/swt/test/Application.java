@@ -31,13 +31,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.openscada.chart.AsyncFunctionSeriesData;
 import org.openscada.chart.DataEntry;
-import org.openscada.chart.FunctionSeriesData;
+import org.openscada.chart.Realm;
 import org.openscada.chart.SeriesData;
 import org.openscada.chart.WritableSeries;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.DisplayRealm;
 import org.openscada.chart.swt.controller.MouseTransformer;
 import org.openscada.chart.swt.controller.MouseZoomer;
 import org.openscada.chart.swt.render.LinearRenderer;
@@ -105,10 +107,12 @@ public class Application implements IApplication
 
         final ResourceManager resourceManager = new LocalResourceManager ( JFaceResources.getResources () );
 
-        final WritableSeries series1 = new WritableSeries ( x, y );
-        final WritableSeries series2 = new WritableSeries ( x, y );
-        final WritableSeries series3 = new WritableSeries ( x, y );
-        final SeriesData series4 = new FunctionSeriesData ( x, y ) {
+        final Realm realm = new DisplayRealm ( Display.getDefault () );
+
+        final WritableSeries series1 = new WritableSeries ( realm, x, y );
+        final WritableSeries series2 = new WritableSeries ( realm, x, y );
+        final WritableSeries series3 = new WritableSeries ( realm, x, y );
+        final SeriesData series4 = new AsyncFunctionSeriesData ( realm, x, y ) {
 
             @Override
             protected Double eval ( final long timestamp )
@@ -122,13 +126,13 @@ public class Application implements IApplication
             }
         };
 
-        final LinearRenderer series1Renderer = new LinearRenderer ( series1 );
+        final LinearRenderer series1Renderer = new LinearRenderer ( chart, series1 );
         series1Renderer.setLineColor ( resourceManager.createColor ( new RGB ( 255, 0, 0 ) ) );
         chart.addRenderer ( series1Renderer );
 
-        chart.addRenderer ( new StepRenderer ( series4 ) );
-        chart.addRenderer ( new StepRenderer ( series3 ) );
-        chart.addRenderer ( new QualityRenderer ( series3 ) );
+        chart.addRenderer ( new LinearRenderer ( chart, series4 ) );
+        chart.addRenderer ( new StepRenderer ( chart, series3 ) );
+        chart.addRenderer ( new QualityRenderer ( chart, series4 ) );
 
         createSine ( series1, -10, +10, 0.05, 100.0, 100 );
         createSine ( series2, -20, +20, 0.1, 50.0, 200 );

@@ -30,14 +30,15 @@ import org.openscada.chart.DataEntry;
 import org.openscada.chart.SeriesData;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
+import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DataPoint;
 
 public class LinearRenderer extends AbstractLineRender implements Renderer
 {
 
-    public LinearRenderer ( final SeriesData seriesData )
+    public LinearRenderer ( final ChartArea chartArea, final SeriesData seriesData )
     {
-        super ( seriesData );
+        super ( chartArea, seriesData );
     }
 
     @Override

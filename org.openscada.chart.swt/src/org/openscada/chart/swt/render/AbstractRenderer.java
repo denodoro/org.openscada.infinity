@@ -22,8 +22,10 @@ package org.openscada.chart.swt.render;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
 import org.openscada.chart.SeriesData;
+import org.openscada.chart.SeriesDataListener;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
+import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DataPoint;
 
 public abstract class AbstractRenderer implements Renderer
@@ -31,9 +33,33 @@ public abstract class AbstractRenderer implements Renderer
 
     protected final SeriesData seriesData;
 
-    public AbstractRenderer ( final SeriesData seriesData )
+    private SeriesDataListener listener;
+
+    private final ChartArea chartArea;
+
+    public AbstractRenderer ( final ChartArea chartArea, final SeriesData seriesData )
     {
+        this.chartArea = chartArea;
         this.seriesData = seriesData;
+
+        seriesData.addListener ( this.listener = new SeriesDataListener () {
+
+            @Override
+            public void dataUpdate ( final long startTimestamp, final long endTimestamp )
+            {
+                handleDataUpdate ( startTimestamp, endTimestamp );
+            }
+        } );
+    }
+
+    protected void handleDataUpdate ( final long startTimestamp, final long endTimestamp )
+    {
+        this.chartArea.redraw ();
+    }
+
+    public void dispose ()
+    {
+        this.seriesData.removeListener ( this.listener );
     }
 
     @Override

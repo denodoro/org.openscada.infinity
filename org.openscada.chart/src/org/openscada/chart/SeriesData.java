@@ -21,6 +21,8 @@ package org.openscada.chart;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class SeriesData
 {
@@ -30,8 +32,13 @@ public abstract class SeriesData
 
     private final PropertyChangeListener listener;
 
-    public SeriesData ( final XAxis xAxis, final YAxis yAxis )
+    private final Set<SeriesDataListener> listeners = new HashSet<SeriesDataListener> ();
+
+    private final Realm realm;
+
+    public SeriesData ( final Realm realm, final XAxis xAxis, final YAxis yAxis )
     {
+        this.realm = realm;
         this.xAxis = xAxis;
         this.yAxis = yAxis;
 
@@ -45,6 +52,30 @@ public abstract class SeriesData
         };
 
         xAxis.addPropertyChangeListener ( this.listener );
+    }
+
+    public void addListener ( final SeriesDataListener listener )
+    {
+        this.listeners.add ( listener );
+    }
+
+    public void removeListener ( final SeriesDataListener listener )
+    {
+        this.listeners.remove ( listener );
+    }
+
+    protected void fireUpdateListener ( final long startTimestamp, final long endTimestamp )
+    {
+        this.realm.asyncExec ( new Runnable () {
+            @Override
+            public void run ()
+            {
+                for ( final SeriesDataListener listener : SeriesData.this.listeners )
+                {
+                    listener.dataUpdate ( startTimestamp, endTimestamp );
+                }
+            }
+        } );
     }
 
     protected void handlePropertyChange ( final PropertyChangeEvent evt )

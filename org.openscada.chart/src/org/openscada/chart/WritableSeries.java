@@ -23,9 +23,9 @@ public class WritableSeries extends SeriesData
 
     private WritableSeriesData data = new WritableSeriesData ();
 
-    public WritableSeries ( final XAxis xAxis, final YAxis yAxis )
+    public WritableSeries ( final Realm realm, final XAxis xAxis, final YAxis yAxis )
     {
-        super ( xAxis, yAxis );
+        super ( realm, xAxis, yAxis );
     }
 
     public void setData ( final WritableSeriesData data )

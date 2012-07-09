@@ -19,18 +19,15 @@
 
 package org.openscada.chart;
 
-public abstract class FunctionSeriesData extends AbstractFunctionSeriesData
+public interface SeriesDataListener
 {
-
-    public FunctionSeriesData ( final Realm realm, final XAxis xAxis, final YAxis yAxis )
-    {
-        super ( realm, xAxis, yAxis );
-        this.request = new Request ( xAxis.getMin (), xAxis.getMax (), 1 );
-    }
-
-    @Override
-    public SeriesViewData getViewData ()
-    {
-        return makeData ( this.request );
-    }
+    /**
+     * A data update has occurred in the provided timestamp
+     * 
+     * @param startTimestamp
+     *            the start timestamp of the update
+     * @param endTimestamp
+     *            the end timestamp of the update
+     */
+    public void dataUpdate ( long startTimestamp, long endTimestamp );
 }
