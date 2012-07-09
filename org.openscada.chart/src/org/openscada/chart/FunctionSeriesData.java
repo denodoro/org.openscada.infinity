@@ -16,31 +16,32 @@
  * version 3 along with openSCADA. If not, see
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
-
 package org.openscada.chart;
 
-public abstract class SeriesData
+public abstract class FunctionSeriesData extends SeriesData
 {
-    private final XAxis xAxis;
 
-    private final YAxis yAxis;
-
-    public SeriesData ( final XAxis xAxis, final YAxis yAxis )
+    public FunctionSeriesData ( final XAxis xAxis, final YAxis yAxis )
     {
-        this.xAxis = xAxis;
-        this.yAxis = yAxis;
+        super ( xAxis, yAxis );
     }
 
-    public XAxis getXAxis ()
+    @Override
+    public SeriesDataView getView ( final long startTimestamp, final long endTimestamp, final int width )
     {
-        return this.xAxis;
+        final WritableSeriesData result = new WritableSeriesData ();
+
+        final double step = (double) ( endTimestamp - startTimestamp ) / (double)width;
+
+        for ( double i = startTimestamp; i < endTimestamp; i += step )
+        {
+            final long tx = (long)i;
+            result.add ( new DataEntry ( tx, eval ( tx ) ) );
+        }
+
+        return result;
     }
 
-    public YAxis getYAxis ()
-    {
-        return this.yAxis;
-    }
-
-    public abstract SeriesDataView getView ( long startTimestamp, long endTimestamp, int width );
+    protected abstract Double eval ( long timestamp );
 
 }

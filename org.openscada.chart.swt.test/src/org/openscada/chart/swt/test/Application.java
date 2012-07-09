@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.openscada.chart.DataEntry;
+import org.openscada.chart.FunctionSeriesData;
+import org.openscada.chart.SeriesData;
 import org.openscada.chart.WritableSeries;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
@@ -106,12 +108,24 @@ public class Application implements IApplication
         final WritableSeries series1 = new WritableSeries ( x, y );
         final WritableSeries series2 = new WritableSeries ( x, y );
         final WritableSeries series3 = new WritableSeries ( x, y );
+        final SeriesData series4 = new FunctionSeriesData ( x, y ) {
+
+            @Override
+            protected Double eval ( final long timestamp )
+            {
+                double v = Math.sin ( Math.toRadians ( timestamp / 100.0 ) ) * 100.0;
+
+                v = v + Math.sin ( Math.toRadians ( timestamp ) ) * 10.0;
+
+                return v;
+            }
+        };
 
         final LinearRenderer series1Renderer = new LinearRenderer ( series1 );
         series1Renderer.setLineColor ( resourceManager.createColor ( new RGB ( 255, 0, 0 ) ) );
         chart.addRenderer ( series1Renderer );
 
-        chart.addRenderer ( new LinearRenderer ( series2 ) );
+        chart.addRenderer ( new LinearRenderer ( series4 ) );
         chart.addRenderer ( new StepRenderer ( series3 ) );
         chart.addRenderer ( new QualityRenderer ( series3 ) );
 
@@ -119,7 +133,8 @@ public class Application implements IApplication
         createSine ( series2, -20, +20, 0.1, 50.0, 200 );
         createLinear ( series3, 40, 240, 80.0, 40 );
 
-        series1.fillAutoXYAxis ();
+        x.setMinMax ( series1.getData ().getMinTimestamp (), series1.getData ().getMaxTimestamp () );
+        y.setMinMax ( series1.getData ().getMinValue (), series1.getData ().getMaxValue () );
 
         new MouseZoomer ( x, y, chart );
         new MouseTransformer ( chart, x, y );

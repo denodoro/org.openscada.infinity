@@ -45,47 +45,54 @@ public class StepRenderer extends AbstractLineRender implements Renderer
     {
         final GC gc = e.gc;
 
-        final Path path = new Path ( gc.getDevice () );
+        final XAxis xAxis = this.seriesData.getXAxis ();
+        final YAxis yAxis = this.seriesData.getYAxis ();
 
-        boolean first = true;
-
-        final SortedSet<DataEntry> entries = this.seriesData.getData ().getEntries ();
+        final SortedSet<DataEntry> entries = this.seriesData.getView ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
         if ( entries.isEmpty () )
         {
             return;
         }
 
-        final DataPoint point = new DataPoint ();
-        Float previousY = null;
-
-        final XAxis xAxis = this.seriesData.getXAxis ();
-        final YAxis yAxis = this.seriesData.getYAxis ();
-
-        for ( final DataEntry entry : entries )
+        final Path path = new Path ( gc.getDevice () );
+        try
         {
-            final boolean hasData = translateToPoint ( clientRect, xAxis, yAxis, point, entry );
-            if ( hasData )
+
+            boolean first = true;
+
+            final DataPoint point = new DataPoint ();
+            Float previousY = null;
+
+            for ( final DataEntry entry : entries )
             {
-                if ( first )
+                final boolean hasData = translateToPoint ( clientRect, xAxis, yAxis, point, entry );
+                if ( hasData )
                 {
-                    first = false;
-                    path.moveTo ( point.x, point.y );
+                    if ( first )
+                    {
+                        first = false;
+                        path.moveTo ( point.x, point.y );
+                    }
+                    else
+                    {
+                        path.lineTo ( point.x, previousY );
+                        path.lineTo ( point.x, point.y );
+                    }
+                    previousY = point.y;
                 }
                 else
                 {
-                    path.lineTo ( point.x, previousY );
-                    path.lineTo ( point.x, point.y );
+                    first = true;
                 }
-                previousY = point.y;
             }
-            else
-            {
-                first = true;
-            }
-        }
 
-        gc.setLineAttributes ( this.lineAttributes );
-        gc.setForeground ( this.lineColor != null ? this.lineColor : gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
-        gc.drawPath ( path );
+            gc.setLineAttributes ( this.lineAttributes );
+            gc.setForeground ( this.lineColor != null ? this.lineColor : gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
+            gc.drawPath ( path );
+        }
+        finally
+        {
+            path.dispose ();
+        }
     }
 }

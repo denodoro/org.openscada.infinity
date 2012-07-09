@@ -44,7 +44,10 @@ public class QualityRenderer extends AbstractRenderer
     {
         final GC gc = e.gc;
 
-        final SortedSet<DataEntry> entries = this.seriesData.getData ().getEntries ();
+        final XAxis xAxis = this.seriesData.getXAxis ();
+        final YAxis yAxis = this.seriesData.getYAxis ();
+
+        final SortedSet<DataEntry> entries = this.seriesData.getView ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
         if ( entries.isEmpty () )
         {
             // FIXME: draw full rect
@@ -52,9 +55,6 @@ public class QualityRenderer extends AbstractRenderer
         }
 
         final DataPoint point = new DataPoint ();
-
-        final XAxis xAxis = this.seriesData.getXAxis ();
-        final YAxis yAxis = this.seriesData.getYAxis ();
 
         gc.setBackground ( gc.getDevice ().getSystemColor ( SWT.COLOR_RED ) );
         gc.setAlpha ( 128 );

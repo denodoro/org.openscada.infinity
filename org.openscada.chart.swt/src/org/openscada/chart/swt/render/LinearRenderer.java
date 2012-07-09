@@ -47,19 +47,19 @@ public class LinearRenderer extends AbstractLineRender implements Renderer
 
         final Path path = new Path ( gc.getDevice () );
 
-        boolean first = true;
+        // eval min/max
+        final XAxis xAxis = this.seriesData.getXAxis ();
+        final YAxis yAxis = this.seriesData.getYAxis ();
 
-        final SortedSet<DataEntry> entries = this.seriesData.getData ().getEntries ();
+        final SortedSet<DataEntry> entries = this.seriesData.getView ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
         if ( entries.isEmpty () )
         {
             return;
         }
 
-        final DataPoint point = new DataPoint ();
+        boolean first = true;
 
-        // eval min/max
-        final XAxis xAxis = this.seriesData.getXAxis ();
-        final YAxis yAxis = this.seriesData.getYAxis ();
+        final DataPoint point = new DataPoint ();
 
         for ( final DataEntry entry : entries )
         {
