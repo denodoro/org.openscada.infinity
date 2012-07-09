@@ -9,7 +9,7 @@ import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
 
-public class MouseZoomer implements MouseWheelListener
+public class MouseWheelZoomer implements MouseWheelListener
 {
     private final XAxis x;
 
@@ -17,7 +17,7 @@ public class MouseZoomer implements MouseWheelListener
 
     private final ChartArea chart;
 
-    public MouseZoomer ( final XAxis x, final YAxis y, final ChartArea chart )
+    public MouseWheelZoomer ( final XAxis x, final YAxis y, final ChartArea chart )
     {
         this.x = x;
         this.y = y;
