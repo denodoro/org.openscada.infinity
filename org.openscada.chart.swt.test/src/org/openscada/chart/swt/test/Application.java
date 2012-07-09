@@ -116,6 +116,7 @@ public class Application implements IApplication
                 double v = Math.sin ( Math.toRadians ( timestamp / 100.0 ) ) * 100.0;
 
                 v = v + Math.sin ( Math.toRadians ( timestamp ) ) * 10.0;
+                v = v + Math.sin ( Math.toRadians ( timestamp / 10000.0 ) ) * 100.0;
 
                 return v;
             }
