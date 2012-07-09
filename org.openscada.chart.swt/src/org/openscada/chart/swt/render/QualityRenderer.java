@@ -50,7 +50,7 @@ public class QualityRenderer extends AbstractRenderer
         gc.setBackground ( gc.getDevice ().getSystemColor ( SWT.COLOR_RED ) );
         gc.setAlpha ( 128 );
 
-        final SortedSet<DataEntry> entries = this.seriesData.getView ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
+        final SortedSet<DataEntry> entries = this.seriesData.getViewData ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
         if ( entries.isEmpty () )
         {
             e.gc.fillRectangle ( clientRect );

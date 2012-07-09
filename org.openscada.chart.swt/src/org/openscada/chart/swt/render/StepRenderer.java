@@ -48,7 +48,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
         final XAxis xAxis = this.seriesData.getXAxis ();
         final YAxis yAxis = this.seriesData.getYAxis ();
 
-        final SortedSet<DataEntry> entries = this.seriesData.getView ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
+        final SortedSet<DataEntry> entries = this.seriesData.getViewData ( xAxis.getMin (), xAxis.getMax (), clientRect.width ).getEntries ();
         if ( entries.isEmpty () )
         {
             return;

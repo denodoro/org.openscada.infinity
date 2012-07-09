@@ -39,7 +39,7 @@ public class WritableSeries extends SeriesData
     }
 
     @Override
-    public SeriesDataView getView ( final long startTimestamp, final long endTimestamp, final int width )
+    public SeriesViewData getViewData ( final long startTimestamp, final long endTimestamp, final int width )
     {
         return this.data;
     }

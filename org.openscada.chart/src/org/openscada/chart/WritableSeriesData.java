@@ -22,7 +22,7 @@ package org.openscada.chart;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class WritableSeriesData implements SeriesDataView
+public class WritableSeriesData implements SeriesViewData
 {
 
     private double minValue = Double.POSITIVE_INFINITY;

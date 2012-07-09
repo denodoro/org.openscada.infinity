@@ -41,6 +41,10 @@ public abstract class SeriesData
         return this.yAxis;
     }
 
-    public abstract SeriesDataView getView ( long startTimestamp, long endTimestamp, int width );
+    public void dispose ()
+    {
+    }
+
+    public abstract SeriesViewData getViewData ( long startTimestamp, long endTimestamp, int width );
 
 }

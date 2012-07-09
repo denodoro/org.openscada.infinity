@@ -21,7 +21,7 @@ package org.openscada.chart;
 
 import java.util.SortedSet;
 
-public interface SeriesDataView
+public interface SeriesViewData
 {
     /**
      * get the unmodifiable set of data entries
