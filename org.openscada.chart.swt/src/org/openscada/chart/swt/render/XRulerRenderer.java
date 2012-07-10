@@ -17,44 +17,32 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart;
+package org.openscada.chart.swt.render;
 
-public class WritableSeries extends SeriesData
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.openscada.chart.XAxis;
+
+public class XRulerRenderer extends AbstractXRuler
 {
 
-    private WritableSeriesData data;
+    private long position;
 
-    public WritableSeries ( final Realm realm, final XAxis xAxis, final YAxis yAxis )
+    public XRulerRenderer ( final XAxis axis )
     {
-        super ( realm, xAxis, yAxis );
-        this.data = new WritableSeriesData ( this );
+        super ( axis );
+        this.color = Display.getCurrent ().getSystemColor ( SWT.COLOR_BLACK );
     }
 
-    public void setData ( final WritableSeriesData data )
+    public void setPosition ( final long position )
     {
-        this.data = data;
-    }
-
-    public WritableSeriesData getData ()
-    {
-        return this.data;
+        this.position = position;
     }
 
     @Override
-    public SeriesViewData getViewData ()
+    public long getPosition ()
     {
-        return this.data;
+        return this.position;
     }
 
-    @Override
-    public void setRequestWindow ( final long startTimestamp, final long endTimestamp )
-    {
-        // no-op
-    }
-
-    @Override
-    public void setRequestWidth ( final int width )
-    {
-        // no-op
-    }
 }

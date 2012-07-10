@@ -98,6 +98,11 @@ public abstract class SeriesData
         return this.yAxis;
     }
 
+    public Realm getRealm ()
+    {
+        return this.realm;
+    }
+
     public abstract void setRequestWindow ( final long startTimestamp, final long endTimestamp );
 
     public abstract void setRequestWidth ( final int width );

@@ -96,12 +96,10 @@ public abstract class AsyncFunctionSeriesData extends AbstractFunctionSeriesData
     {
         try
         {
-            Thread.sleep ( 2000 );
+            Thread.sleep ( 1000 );
         }
         catch ( final InterruptedException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace ();
         }
         this.data = data;
         fireUpdateListener ( data.getMinTimestamp (), data.getMaxTimestamp () );

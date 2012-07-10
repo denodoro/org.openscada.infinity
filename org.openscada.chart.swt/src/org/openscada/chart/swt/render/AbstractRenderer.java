@@ -27,9 +27,13 @@ import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DataPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractRenderer implements Renderer
 {
+
+    private final static Logger logger = LoggerFactory.getLogger ( AbstractRenderer.class );
 
     protected final SeriesData seriesData;
 
@@ -54,6 +58,11 @@ public abstract class AbstractRenderer implements Renderer
 
     protected void handleDataUpdate ( final long startTimestamp, final long endTimestamp )
     {
+        logger.debug ( "Data update - {} -> {}", startTimestamp, endTimestamp );
+        if ( this.chartArea.isDisposed () )
+        {
+            return;
+        }
         this.chartArea.redraw ();
     }
 

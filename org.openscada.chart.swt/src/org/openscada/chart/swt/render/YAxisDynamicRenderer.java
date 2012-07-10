@@ -48,6 +48,7 @@ public class YAxisDynamicRenderer extends AbstractStaticRenderer
         this.rotate = createTransform ( parent.getDisplay () );
 
         this.left = ( style & SWT.RIGHT ) > 0;
+        this.format = "%s";
     }
 
     public void setFormat ( final String format )

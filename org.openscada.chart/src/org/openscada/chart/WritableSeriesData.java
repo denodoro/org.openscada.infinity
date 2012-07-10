@@ -35,6 +35,18 @@ public class WritableSeriesData implements SeriesViewData
 
     private final TreeSet<DataEntry> entries = new TreeSet<DataEntry> ();
 
+    private final WritableSeries writableSeries;
+
+    public WritableSeriesData ()
+    {
+        this ( null );
+    }
+
+    public WritableSeriesData ( final WritableSeries writableSeries )
+    {
+        this.writableSeries = writableSeries;
+    }
+
     public boolean add ( final DataEntry entry )
     {
         this.minValue = minValue ( this.minValue, entry.getValue () );
@@ -42,7 +54,29 @@ public class WritableSeriesData implements SeriesViewData
         this.minTimestamp = Math.min ( this.minTimestamp, entry.getTimestamp () );
         this.maxTimestamp = Math.max ( this.maxTimestamp, entry.getTimestamp () );
 
-        return this.entries.add ( entry );
+        final boolean result = this.entries.add ( entry );
+
+        if ( this.writableSeries != null )
+        {
+            this.writableSeries.fireUpdateListener ( entry.getTimestamp (), entry.getTimestamp () );
+        }
+
+        return result;
+    }
+
+    public void addAsLast ( final DataEntry entry )
+    {
+        this.entries.tailSet ( entry, true ).clear ();
+        add ( entry );
+    }
+
+    public boolean remove ( final DataEntry entry )
+    {
+        final boolean result = this.entries.remove ( entry );
+
+        this.writableSeries.fireUpdateListener ( entry.getTimestamp (), entry.getTimestamp () );
+
+        return result;
     }
 
     private static double minValue ( final double a, final Double b )

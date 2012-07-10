@@ -84,6 +84,11 @@ public class StepRenderer extends AbstractLineRender implements Renderer
                 else
                 {
                     first = true;
+                    if ( previousY != null )
+                    {
+                        path.lineTo ( point.x, previousY );
+                        previousY = null;
+                    }
                 }
             }
 

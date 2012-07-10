@@ -41,7 +41,7 @@ public class ChartArea extends Canvas
 
     public ChartArea ( final Composite parent, final int style )
     {
-        super ( parent, style | SWT.DOUBLE_BUFFERED );
+        super ( parent, SWT.DOUBLE_BUFFERED );
 
         addPaintListener ( new PaintListener () {
 

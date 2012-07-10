@@ -17,44 +17,22 @@
  * <http://opensource.org/licenses/lgpl-3.0.html> for a copy of the LGPLv3 License.
  */
 
-package org.openscada.chart;
+package org.openscada.chart.swt.render;
 
-public class WritableSeries extends SeriesData
+import org.openscada.chart.XAxis;
+
+public class CurrentTimeRuler extends AbstractXRuler
 {
 
-    private WritableSeriesData data;
-
-    public WritableSeries ( final Realm realm, final XAxis xAxis, final YAxis yAxis )
+    public CurrentTimeRuler ( final XAxis axis )
     {
-        super ( realm, xAxis, yAxis );
-        this.data = new WritableSeriesData ( this );
-    }
-
-    public void setData ( final WritableSeriesData data )
-    {
-        this.data = data;
-    }
-
-    public WritableSeriesData getData ()
-    {
-        return this.data;
+        super ( axis );
     }
 
     @Override
-    public SeriesViewData getViewData ()
+    public long getPosition ()
     {
-        return this.data;
+        return System.currentTimeMillis ();
     }
 
-    @Override
-    public void setRequestWindow ( final long startTimestamp, final long endTimestamp )
-    {
-        // no-op
-    }
-
-    @Override
-    public void setRequestWidth ( final int width )
-    {
-        // no-op
-    }
 }
