@@ -82,6 +82,7 @@ public class LinearRenderer extends AbstractLineRender implements Renderer
                 first = true;
             }
         }
+        gc.setAlpha ( 255 );
         gc.setLineAttributes ( this.lineAttributes );
         gc.setForeground ( this.lineColor != null ? this.lineColor : gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
         gc.drawPath ( path );

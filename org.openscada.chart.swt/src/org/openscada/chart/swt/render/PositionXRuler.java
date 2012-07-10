@@ -23,12 +23,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.openscada.chart.XAxis;
 
-public class XRulerRenderer extends AbstractXRuler
+public class PositionXRuler extends AbstractPositionXRuler
 {
 
     private long position;
 
-    public XRulerRenderer ( final XAxis axis )
+    public PositionXRuler ( final XAxis axis )
     {
         super ( axis );
         this.color = Display.getCurrent ().getSystemColor ( SWT.COLOR_BLACK );

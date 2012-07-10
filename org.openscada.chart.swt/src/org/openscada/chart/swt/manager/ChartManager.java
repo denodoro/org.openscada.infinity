@@ -173,10 +173,11 @@ public class ChartManager extends Composite
         return renderer;
     }
 
-    public void addStepSeries ( final SeriesData seriesData )
+    public StepRenderer createStepSeries ( final SeriesData seriesData )
     {
         final StepRenderer renderer = new StepRenderer ( this.chartArea, seriesData );
         this.chartArea.addRenderer ( renderer );
+        return renderer;
     }
 
     public void setTitle ( final String title )
@@ -197,5 +198,10 @@ public class ChartManager extends Composite
     public void addRenderer ( final Renderer renderer )
     {
         this.chartArea.addRenderer ( renderer );
+    }
+
+    public void removeRenderer ( final Renderer renderer )
+    {
+        this.chartArea.removeRenderer ( renderer );
     }
 }

@@ -20,27 +20,19 @@
 package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
 
-public abstract class AbstractXRuler implements Renderer
+public abstract class AbstractPositionXRuler extends AbstractRuler
 {
-
-    protected Color color;
 
     public abstract long getPosition ();
 
     protected XAxis axis;
 
-    public AbstractXRuler ( final XAxis axis )
+    public AbstractPositionXRuler ( final XAxis axis )
     {
         this.axis = axis;
-    }
-
-    public void setColor ( final Color color )
-    {
-        this.color = color;
     }
 
     public void setAxis ( final XAxis axis )
@@ -49,9 +41,9 @@ public abstract class AbstractXRuler implements Renderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRectangle )
+    protected void doRender ( final PaintEvent e, final Rectangle clientRectangle )
     {
-        if ( this.axis == null || this.color == null )
+        if ( this.axis == null )
         {
             return;
         }
@@ -63,13 +55,7 @@ public abstract class AbstractXRuler implements Renderer
             return;
         }
 
-        e.gc.setForeground ( this.color );
         e.gc.drawLine ( x, 0, x, clientRectangle.height );
-    }
-
-    @Override
-    public void resize ( final Rectangle clientRectangle )
-    {
     }
 
 }

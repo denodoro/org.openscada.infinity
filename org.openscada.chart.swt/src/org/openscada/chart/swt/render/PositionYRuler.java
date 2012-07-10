@@ -19,20 +19,27 @@
 
 package org.openscada.chart.swt.render;
 
-import org.openscada.chart.XAxis;
+import org.openscada.chart.YAxis;
 
-public class CurrentTimeRuler extends AbstractPositionXRuler
+public class PositionYRuler extends AbstractPositionYRuler
 {
 
-    public CurrentTimeRuler ( final XAxis axis )
+    private Double position;
+
+    public PositionYRuler ( final YAxis axis, final int style )
     {
-        super ( axis );
+        super ( axis, style );
+    }
+
+    public void setPosition ( final Double position )
+    {
+        this.position = position;
     }
 
     @Override
-    public long getPosition ()
+    public Double getPosition ()
     {
-        return System.currentTimeMillis ();
+        return this.position;
     }
 
 }

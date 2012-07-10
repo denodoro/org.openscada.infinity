@@ -95,7 +95,7 @@ public class YAxis extends AbstractPropertyChange
         setMinMax ( this.min - clientOffset, this.max - clientOffset );
     }
 
-    public float translateToClient ( final int height, final Double value )
+    public float translateToClient ( final int height, final double value )
     {
         final double diffY = this.max - this.min;
         final double factorY = height / diffY;
