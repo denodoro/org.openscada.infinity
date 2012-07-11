@@ -30,10 +30,10 @@ import org.openscada.chart.swt.DataPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractRenderer implements Renderer
+public abstract class AbstractDataSeriesRenderer implements Renderer
 {
 
-    private final static Logger logger = LoggerFactory.getLogger ( AbstractRenderer.class );
+    private final static Logger logger = LoggerFactory.getLogger ( AbstractDataSeriesRenderer.class );
 
     protected final SeriesData seriesData;
 
@@ -41,7 +41,7 @@ public abstract class AbstractRenderer implements Renderer
 
     private final ChartArea chartArea;
 
-    public AbstractRenderer ( final ChartArea chartArea, final SeriesData seriesData )
+    public AbstractDataSeriesRenderer ( final ChartArea chartArea, final SeriesData seriesData )
     {
         this.chartArea = chartArea;
         this.seriesData = seriesData;

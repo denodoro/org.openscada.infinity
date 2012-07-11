@@ -32,7 +32,7 @@ import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DataPoint;
 
-public class QualityRenderer extends AbstractRenderer
+public class QualityRenderer extends AbstractDataSeriesRenderer
 {
 
     public QualityRenderer ( final ChartArea chartArea, final SeriesData seriesData )

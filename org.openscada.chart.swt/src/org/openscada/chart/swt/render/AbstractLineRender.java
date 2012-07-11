@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.LineAttributes;
 import org.openscada.chart.SeriesData;
 import org.openscada.chart.swt.ChartArea;
 
-public abstract class AbstractLineRender extends AbstractRenderer
+public abstract class AbstractLineRender extends AbstractDataSeriesRenderer
 {
     protected Color lineColor;
 
