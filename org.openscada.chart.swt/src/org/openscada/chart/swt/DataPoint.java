@@ -22,4 +22,10 @@ package org.openscada.chart.swt;
 public class DataPoint
 {
     public float x, y;
+
+    @Override
+    public String toString ()
+    {
+        return String.format ( "[%s,%s]", this.x, this.y );
+    }
 }

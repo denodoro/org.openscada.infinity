@@ -204,4 +204,5 @@ public class ChartManager extends Composite
     {
         this.chartArea.removeRenderer ( renderer );
     }
+
 }

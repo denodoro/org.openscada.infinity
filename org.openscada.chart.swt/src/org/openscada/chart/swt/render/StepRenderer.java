@@ -32,9 +32,13 @@ import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DataPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StepRenderer extends AbstractLineRender implements Renderer
 {
+
+    private final static Logger logger = LoggerFactory.getLogger ( StepRenderer.class );
 
     public StepRenderer ( final ChartArea chartArea, final SeriesData seriesData )
     {
@@ -64,9 +68,14 @@ public class StepRenderer extends AbstractLineRender implements Renderer
             final DataPoint point = new DataPoint ();
             Float previousY = null;
 
+            logger.trace ( "Render steps" );
+
             for ( final DataEntry entry : entries )
             {
                 final boolean hasData = translateToPoint ( clientRect, xAxis, yAxis, point, entry );
+
+                logger.trace ( "Entry - {}, hasData: {}, point: {}", new Object[] { entry, hasData, point } );
+
                 if ( hasData )
                 {
                     if ( first )

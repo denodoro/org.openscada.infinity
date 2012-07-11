@@ -83,4 +83,9 @@ public class DataEntry implements Comparable<DataEntry>
         return true;
     }
 
+    @Override
+    public String toString ()
+    {
+        return String.format ( "[%1$tF %1$tT.%1$tL]=%2$s", this.timestamp, this.value );
+    }
 }
