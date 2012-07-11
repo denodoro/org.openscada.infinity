@@ -126,11 +126,11 @@ public class ChartArea extends Canvas
         }
     }
 
-    public void setStale ( final boolean stale )
+    public void setStale ( final boolean stale, final boolean forceUpdate )
     {
         checkWidget ();
         this.stale = stale;
-        if ( !stale && this.updatePending )
+        if ( !stale && ( this.updatePending || forceUpdate ) )
         {
             this.updatePending = false;
             redraw ();
