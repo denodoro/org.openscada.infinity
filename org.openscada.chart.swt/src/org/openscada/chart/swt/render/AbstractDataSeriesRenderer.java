@@ -63,7 +63,7 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
         {
             return;
         }
-        this.chartArea.redraw ();
+        this.chartArea.refreshData ();
     }
 
     public void dispose ()

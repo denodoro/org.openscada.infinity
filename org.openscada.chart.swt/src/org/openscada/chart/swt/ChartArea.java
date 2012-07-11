@@ -39,6 +39,10 @@ public class ChartArea extends Canvas
 
     private final List<Renderer> renderers = new LinkedList<Renderer> ();
 
+    private boolean stale;
+
+    private boolean updatePending;
+
     public ChartArea ( final Composite parent, final int style )
     {
         super ( parent, SWT.DOUBLE_BUFFERED );
@@ -109,4 +113,27 @@ public class ChartArea extends Canvas
         return axis;
     }
 
+    public void refreshData ()
+    {
+        checkWidget ();
+        if ( this.stale )
+        {
+            this.updatePending = true;
+        }
+        else
+        {
+            redraw ();
+        }
+    }
+
+    public void setStale ( final boolean stale )
+    {
+        checkWidget ();
+        this.stale = stale;
+        if ( !stale && this.updatePending )
+        {
+            this.updatePending = false;
+            redraw ();
+        }
+    }
 }

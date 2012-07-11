@@ -139,6 +139,11 @@ public class ChartManager extends Composite
     {
     }
 
+    public ChartArea getChartArea ()
+    {
+        return this.chartArea;
+    }
+
     public void setChartBackground ( final Color color )
     {
         this.chartArea.setBackground ( color );
