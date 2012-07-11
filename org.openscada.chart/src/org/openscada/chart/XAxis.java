@@ -134,4 +134,11 @@ public class XAxis extends AbstractPropertyChange
         setMinMax ( this.min + millis, this.max + millis );
     }
 
+    public void setNowCenter ()
+    {
+        final long diff = this.max - this.min;
+        final long now = System.currentTimeMillis ();
+        setMinMax ( now - diff / 2, now + diff / 2 );
+    }
+
 }
