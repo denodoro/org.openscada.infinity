@@ -93,7 +93,10 @@ public class ChartArea extends Canvas
 
     public void addRenderer ( final Renderer renderer )
     {
-        this.renderers.add ( renderer );
+        if ( this.renderers.add ( renderer ) )
+        {
+            renderer.resize ( getClientArea () );
+        }
     }
 
     public void removeRenderer ( final Renderer renderer )
