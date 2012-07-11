@@ -19,7 +19,7 @@
 
 package org.openscada.chart;
 
-import java.util.SortedSet;
+import java.util.NavigableSet;
 
 public interface SeriesViewData
 {
@@ -28,7 +28,7 @@ public interface SeriesViewData
      * 
      * @return an unmodifiable data set
      */
-    public SortedSet<DataEntry> getEntries ();
+    public NavigableSet<DataEntry> getEntries ();
 
     public double getMinValue ();
 

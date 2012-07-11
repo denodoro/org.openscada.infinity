@@ -19,7 +19,7 @@
 
 package org.openscada.chart;
 
-import java.util.SortedSet;
+import java.util.NavigableSet;
 import java.util.TreeSet;
 
 public class WritableSeriesData implements SeriesViewData
@@ -124,7 +124,7 @@ public class WritableSeriesData implements SeriesViewData
     }
 
     @Override
-    public SortedSet<DataEntry> getEntries ()
+    public NavigableSet<DataEntry> getEntries ()
     {
         return this.entries;
     }

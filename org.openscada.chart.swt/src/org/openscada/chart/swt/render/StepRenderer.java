@@ -19,7 +19,7 @@
 
 package org.openscada.chart.swt.render;
 
-import java.util.SortedSet;
+import java.util.NavigableSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -53,7 +53,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
         final XAxis xAxis = this.seriesData.getXAxis ();
         final YAxis yAxis = this.seriesData.getYAxis ();
 
-        final SortedSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
+        final NavigableSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
         if ( entries.isEmpty () )
         {
             return;
