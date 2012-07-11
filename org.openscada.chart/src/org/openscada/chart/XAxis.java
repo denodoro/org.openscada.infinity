@@ -67,6 +67,11 @@ public class XAxis extends AbstractPropertyChange
 
     public void setMinMax ( final long min, final long max )
     {
+        if ( min >= max )
+        {
+            return;
+        }
+
         setMin ( min );
         setMax ( max );
     }

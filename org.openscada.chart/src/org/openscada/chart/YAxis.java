@@ -67,6 +67,11 @@ public class YAxis extends AbstractPropertyChange
 
     public void setMinMax ( final double min, final double max )
     {
+        if ( min >= max )
+        {
+            return;
+        }
+
         setMin ( min );
         setMax ( max );
     }
