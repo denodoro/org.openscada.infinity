@@ -19,6 +19,8 @@
 
 package org.openscada.chart;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openscada.utils.beans.AbstractPropertyChange;
 
 public class XAxis extends AbstractPropertyChange
@@ -116,6 +118,20 @@ public class XAxis extends AbstractPropertyChange
         final long diffX = this.max - this.min;
 
         return (long) ( diffX * pos ) + this.min;
+    }
+
+    public void setByTimespan ( final long amount, final TimeUnit timeUnit )
+    {
+        final long millis = timeUnit.toMillis ( amount );
+
+        final long pos = this.min + ( this.max - this.min ) / 2;
+        setMinMax ( pos - millis / 2, pos + millis / 2 );
+    }
+
+    public void shiftByTimespan ( final long duration, final TimeUnit timeUnit )
+    {
+        final long millis = timeUnit.toMillis ( duration );
+        setMinMax ( this.min + millis, this.max + millis );
     }
 
 }
