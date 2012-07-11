@@ -126,6 +126,11 @@ public class ChartArea extends Canvas
         }
     }
 
+    public void setStale ( final boolean stale )
+    {
+        setStale ( stale, false );
+    }
+
     public void setStale ( final boolean stale, final boolean forceUpdate )
     {
         checkWidget ();
