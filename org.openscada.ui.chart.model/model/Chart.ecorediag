@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_agAtIdSuEeGG6ZRHVvsIug" type="EcoreTools" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_ahG5UNSuEeGG6ZRHVvsIug" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_ahQDQNSuEeGG6ZRHVvsIug" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_ahRRYNSuEeGG6ZRHVvsIug" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_cHKRINSuEeGG6ZRHVvsIug" type="2001">
+        <element xmi:type="ecore:EAttribute" href="Chart.ecore#//Chart/title"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_cHKRIdSuEeGG6ZRHVvsIug"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_ahRRYdSuEeGG6ZRHVvsIug"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_ahRRYtSuEeGG6ZRHVvsIug"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_ahRRY9SuEeGG6ZRHVvsIug"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_ahRRZNSuEeGG6ZRHVvsIug" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_ahRRZdSuEeGG6ZRHVvsIug"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_ahRRZtSuEeGG6ZRHVvsIug"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_ahRRZ9SuEeGG6ZRHVvsIug"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_ahG5UdSuEeGG6ZRHVvsIug" fontColor="4210752" fontName="Ubuntu" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="Chart.ecore#//Chart"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ahG5UtSuEeGG6ZRHVvsIug" x="72" y="48" width="327" height="183"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_agBUMNSuEeGG6ZRHVvsIug"/>
+  <element xmi:type="ecore:EPackage" href="Chart.ecore#/"/>
+</notation:Diagram>
