@@ -73,7 +73,6 @@ public class ChartManager extends Composite
 
         this.title = new Label ( this, SWT.NONE );
         this.title.setLayoutData ( new GridData ( GridData.CENTER, GridData.FILL, true, false, 3, 1 ) );
-        this.title.setText ( "Test" );
 
         // row 1
 
@@ -190,6 +189,11 @@ public class ChartManager extends Composite
         this.title.setText ( title );
         this.title.pack ();
         layout ();
+    }
+
+    public String getTitle ()
+    {
+        return this.title.getText ();
     }
 
     public DropTarget createDropTarget ( final Transfer[] transfers, final DropTargetListener dropTargetListener )
