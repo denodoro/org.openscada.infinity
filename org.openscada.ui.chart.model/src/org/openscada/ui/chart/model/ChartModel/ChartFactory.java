@@ -36,6 +36,60 @@ public interface ChartFactory extends EFactory
     Chart createChart ();
 
     /**
+     * Returns a new object of class '<em>XAxis</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>XAxis</em>'.
+     * @generated
+     */
+    XAxis createXAxis ();
+
+    /**
+     * Returns a new object of class '<em>YAxis</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>YAxis</em>'.
+     * @generated
+     */
+    YAxis createYAxis ();
+
+    /**
+     * Returns a new object of class '<em>Data Item Series</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Data Item Series</em>'.
+     * @generated
+     */
+    DataItemSeries createDataItemSeries ();
+
+    /**
+     * Returns a new object of class '<em>Archive Series</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Archive Series</em>'.
+     * @generated
+     */
+    ArchiveSeries createArchiveSeries ();
+
+    /**
+     * Returns a new object of class '<em>Uri Item</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Uri Item</em>'.
+     * @generated
+     */
+    UriItem createUriItem ();
+
+    /**
+     * Returns a new object of class '<em>Id Item</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Id Item</em>'.
+     * @generated
+     */
+    IdItem createIdItem ();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

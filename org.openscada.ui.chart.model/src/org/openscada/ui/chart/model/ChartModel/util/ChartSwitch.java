@@ -84,6 +84,104 @@ public class ChartSwitch<T> extends Switch<T>
                     result = defaultCase ( theEObject );
                 return result;
             }
+            case ChartPackage.XAXIS:
+            {
+                XAxis xAxis = (XAxis)theEObject;
+                T result = caseXAxis ( xAxis );
+                if ( result == null )
+                    result = caseAxis ( xAxis );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.YAXIS:
+            {
+                YAxis yAxis = (YAxis)theEObject;
+                T result = caseYAxis ( yAxis );
+                if ( result == null )
+                    result = caseAxis ( yAxis );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.AXIS:
+            {
+                Axis axis = (Axis)theEObject;
+                T result = caseAxis ( axis );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.DATA_SERIES:
+            {
+                DataSeries dataSeries = (DataSeries)theEObject;
+                T result = caseDataSeries ( dataSeries );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.DATA_ITEM_SERIES:
+            {
+                DataItemSeries dataItemSeries = (DataItemSeries)theEObject;
+                T result = caseDataItemSeries ( dataItemSeries );
+                if ( result == null )
+                    result = caseItemDataSeries ( dataItemSeries );
+                if ( result == null )
+                    result = caseDataSeries ( dataItemSeries );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.ARCHIVE_SERIES:
+            {
+                ArchiveSeries archiveSeries = (ArchiveSeries)theEObject;
+                T result = caseArchiveSeries ( archiveSeries );
+                if ( result == null )
+                    result = caseItemDataSeries ( archiveSeries );
+                if ( result == null )
+                    result = caseDataSeries ( archiveSeries );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.ITEM:
+            {
+                Item item = (Item)theEObject;
+                T result = caseItem ( item );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.URI_ITEM:
+            {
+                UriItem uriItem = (UriItem)theEObject;
+                T result = caseUriItem ( uriItem );
+                if ( result == null )
+                    result = caseItem ( uriItem );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.ID_ITEM:
+            {
+                IdItem idItem = (IdItem)theEObject;
+                T result = caseIdItem ( idItem );
+                if ( result == null )
+                    result = caseItem ( idItem );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
+            case ChartPackage.ITEM_DATA_SERIES:
+            {
+                ItemDataSeries itemDataSeries = (ItemDataSeries)theEObject;
+                T result = caseItemDataSeries ( itemDataSeries );
+                if ( result == null )
+                    result = caseDataSeries ( itemDataSeries );
+                if ( result == null )
+                    result = defaultCase ( theEObject );
+                return result;
+            }
             default:
                 return defaultCase ( theEObject );
         }
@@ -101,6 +199,166 @@ public class ChartSwitch<T> extends Switch<T>
      * @generated
      */
     public T caseChart ( Chart object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>XAxis</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>XAxis</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseXAxis ( XAxis object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>YAxis</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>YAxis</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseYAxis ( YAxis object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Axis</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Axis</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseAxis ( Axis object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Data Series</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Data Series</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDataSeries ( DataSeries object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Data Item Series</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Data Item Series</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDataItemSeries ( DataItemSeries object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Archive Series</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Archive Series</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseArchiveSeries ( ArchiveSeries object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Item</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Item</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseItem ( Item object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Uri Item</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Uri Item</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseUriItem ( UriItem object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Id Item</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Id Item</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIdItem ( IdItem object )
+    {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Item Data Series</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Item Data Series</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseItemDataSeries ( ItemDataSeries object )
     {
         return null;
     }

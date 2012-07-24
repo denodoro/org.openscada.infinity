@@ -83,6 +83,66 @@ public class ChartAdapterFactory extends AdapterFactoryImpl
         }
 
         @Override
+        public Adapter caseXAxis ( XAxis object )
+        {
+            return createXAxisAdapter ();
+        }
+
+        @Override
+        public Adapter caseYAxis ( YAxis object )
+        {
+            return createYAxisAdapter ();
+        }
+
+        @Override
+        public Adapter caseAxis ( Axis object )
+        {
+            return createAxisAdapter ();
+        }
+
+        @Override
+        public Adapter caseDataSeries ( DataSeries object )
+        {
+            return createDataSeriesAdapter ();
+        }
+
+        @Override
+        public Adapter caseDataItemSeries ( DataItemSeries object )
+        {
+            return createDataItemSeriesAdapter ();
+        }
+
+        @Override
+        public Adapter caseArchiveSeries ( ArchiveSeries object )
+        {
+            return createArchiveSeriesAdapter ();
+        }
+
+        @Override
+        public Adapter caseItem ( Item object )
+        {
+            return createItemAdapter ();
+        }
+
+        @Override
+        public Adapter caseUriItem ( UriItem object )
+        {
+            return createUriItemAdapter ();
+        }
+
+        @Override
+        public Adapter caseIdItem ( IdItem object )
+        {
+            return createIdItemAdapter ();
+        }
+
+        @Override
+        public Adapter caseItemDataSeries ( ItemDataSeries object )
+        {
+            return createItemDataSeriesAdapter ();
+        }
+
+        @Override
         public Adapter defaultCase ( EObject object )
         {
             return createEObjectAdapter ();
@@ -114,6 +174,156 @@ public class ChartAdapterFactory extends AdapterFactoryImpl
      * @generated
      */
     public Adapter createChartAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.XAxis <em>XAxis</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.XAxis
+     * @generated
+     */
+    public Adapter createXAxisAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.YAxis <em>YAxis</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.YAxis
+     * @generated
+     */
+    public Adapter createYAxisAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.Axis <em>Axis</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.Axis
+     * @generated
+     */
+    public Adapter createAxisAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.DataSeries <em>Data Series</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.DataSeries
+     * @generated
+     */
+    public Adapter createDataSeriesAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.DataItemSeries <em>Data Item Series</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.DataItemSeries
+     * @generated
+     */
+    public Adapter createDataItemSeriesAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.ArchiveSeries <em>Archive Series</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.ArchiveSeries
+     * @generated
+     */
+    public Adapter createArchiveSeriesAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.Item <em>Item</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.Item
+     * @generated
+     */
+    public Adapter createItemAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.UriItem <em>Uri Item</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.UriItem
+     * @generated
+     */
+    public Adapter createUriItemAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.IdItem <em>Id Item</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.IdItem
+     * @generated
+     */
+    public Adapter createIdItemAdapter ()
+    {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.openscada.ui.chart.model.ChartModel.ItemDataSeries <em>Item Data Series</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.openscada.ui.chart.model.ChartModel.ItemDataSeries
+     * @generated
+     */
+    public Adapter createItemDataSeriesAdapter ()
     {
         return null;
     }
