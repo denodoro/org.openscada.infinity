@@ -52,6 +52,11 @@ public class YAxisStaticRenderer extends AbstractStaticRenderer
         this.format = format != null ? format : "%s";
     }
 
+    public String getFormat ()
+    {
+        return this.format;
+    }
+
     @Override
     protected void onDispose ()
     {

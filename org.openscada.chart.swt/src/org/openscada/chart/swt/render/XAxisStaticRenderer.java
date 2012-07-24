@@ -49,6 +49,11 @@ public class XAxisStaticRenderer extends AbstractStaticRenderer
         this.format = format;
     }
 
+    public String getFormat ()
+    {
+        return this.format;
+    }
+
     @Override
     protected void onDispose ()
     {

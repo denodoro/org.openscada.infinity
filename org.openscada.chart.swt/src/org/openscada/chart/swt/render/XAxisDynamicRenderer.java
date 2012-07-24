@@ -49,6 +49,11 @@ public class XAxisDynamicRenderer extends AbstractStaticRenderer
         this.format = format;
     }
 
+    public String getFormat ()
+    {
+        return this.format;
+    }
+
     public void setStep ( final Long step )
     {
         this.step = step;
