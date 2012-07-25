@@ -20,6 +20,12 @@ public class DisplayRealm implements Realm
     }
 
     @Override
+    public boolean isDisposed ()
+    {
+        return this.display.isDisposed ();
+    }
+
+    @Override
     public void checkRealm () throws IllegalAccessException
     {
         if ( Display.getCurrent () == this.display )
