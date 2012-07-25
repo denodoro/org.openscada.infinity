@@ -56,12 +56,13 @@ public class ChartManager extends Composite
 
     private final Composite cell21;
 
-    @SuppressWarnings ( "unused" )
     private final Composite cell23;
 
     private final Composite cell32;
 
     private final Label title;
+
+    private final Composite cell12;
 
     public ChartManager ( final Composite parent, final int style )
     {
@@ -77,7 +78,7 @@ public class ChartManager extends Composite
         // row 1
 
         new EmptyComposite ( this, SWT.NONE );
-        new EmptyComposite ( this, SWT.NONE );
+        this.cell12 = makeCell ( SWT.VERTICAL );
         new EmptyComposite ( this, SWT.NONE );
 
         // row 2
@@ -145,40 +146,54 @@ public class ChartManager extends Composite
 
     public void setChartBackground ( final Color color )
     {
+        checkWidget ();
+
         this.chartArea.setBackground ( color );
     }
 
     public void addDefaultControllers ( final XAxis x, final YAxis y )
     {
+        checkWidget ();
+
         new MouseTransformer ( this.chartArea, x, y );
         new MouseDragZoomer ( this.chartArea, x, y );
         new MouseWheelZoomer ( this.chartArea, x, y );
     }
 
-    public XAxisDynamicRenderer addDynamicXAxis ( final XAxis x )
+    public XAxisDynamicRenderer addDynamicXAxis ( final XAxis x, final boolean top )
     {
-        this.cell32.setVisible ( true );
+        checkWidget ();
 
-        final XAxisDynamicRenderer renderer = new XAxisDynamicRenderer ( this.cell32, SWT.BOTTOM );
+        final Composite cell = top ? this.cell12 : this.cell32;
+
+        cell.setVisible ( true );
+
+        final XAxisDynamicRenderer renderer = new XAxisDynamicRenderer ( cell, top ? SWT.TOP : SWT.BOTTOM );
         renderer.setAxis ( x );
-        this.cell32.layout ();
+        cell.layout ();
         layout ();
         return renderer;
     }
 
-    public YAxisDynamicRenderer addDynamicYAxis ( final YAxis y )
+    public YAxisDynamicRenderer addDynamicYAxis ( final YAxis y, final boolean left )
     {
-        this.cell21.setVisible ( true );
+        checkWidget ();
 
-        final YAxisDynamicRenderer renderer = new YAxisDynamicRenderer ( this.cell21, SWT.LEFT );
+        final Composite cell = left ? this.cell21 : this.cell23;
+
+        cell.setVisible ( true );
+
+        final YAxisDynamicRenderer renderer = new YAxisDynamicRenderer ( cell, left ? SWT.LEFT : SWT.RIGHT );
         renderer.setAxis ( y );
-        this.cell21.layout ();
+        cell.layout ();
         layout ();
         return renderer;
     }
 
     public StepRenderer createStepSeries ( final SeriesData seriesData )
     {
+        checkWidget ();
+
         final StepRenderer renderer = new StepRenderer ( this.chartArea, seriesData );
         this.chartArea.addRenderer ( renderer );
         return renderer;
@@ -186,6 +201,8 @@ public class ChartManager extends Composite
 
     public void setTitle ( final String title )
     {
+        checkWidget ();
+
         this.title.setText ( title );
         this.title.pack ();
         layout ();
@@ -193,11 +210,15 @@ public class ChartManager extends Composite
 
     public String getTitle ()
     {
+        checkWidget ();
+
         return this.title.getText ();
     }
 
     public DropTarget createDropTarget ( final Transfer[] transfers, final DropTargetListener dropTargetListener )
     {
+        checkWidget ();
+
         final DropTarget target = new DropTarget ( this.chartArea, DND.DROP_DEFAULT | DND.DROP_COPY | DND.DROP_LINK );
         target.setTransfer ( transfers );
         target.addDropListener ( dropTargetListener );
@@ -206,11 +227,15 @@ public class ChartManager extends Composite
 
     public void addRenderer ( final Renderer renderer )
     {
+        checkWidget ();
+
         this.chartArea.addRenderer ( renderer );
     }
 
     public void removeRenderer ( final Renderer renderer )
     {
+        checkWidget ();
+
         this.chartArea.removeRenderer ( renderer );
     }
 
