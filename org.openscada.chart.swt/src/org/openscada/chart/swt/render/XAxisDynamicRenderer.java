@@ -46,7 +46,7 @@ public class XAxisDynamicRenderer extends AbstractStaticRenderer
 
     public void setFormat ( final String format )
     {
-        this.format = format;
+        this.format = format != null ? format : "%s";
     }
 
     public String getFormat ()

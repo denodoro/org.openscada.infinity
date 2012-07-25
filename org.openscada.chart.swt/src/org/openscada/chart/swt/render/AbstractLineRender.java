@@ -46,6 +46,11 @@ public abstract class AbstractLineRender extends AbstractDataSeriesRenderer
         this.lineAttributes.width = width;
     }
 
+    public float getLineWidth ()
+    {
+        return this.lineAttributes.width;
+    }
+
     public void setLineColor ( final Color lineColor )
     {
         this.lineColor = lineColor;
