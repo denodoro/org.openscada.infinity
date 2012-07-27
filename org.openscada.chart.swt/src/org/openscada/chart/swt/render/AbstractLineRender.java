@@ -55,4 +55,14 @@ public abstract class AbstractLineRender extends AbstractDataSeriesRenderer
     {
         this.lineColor = lineColor;
     }
+
+    public Color getLineColor ()
+    {
+        return this.lineColor;
+    }
+
+    public LineAttributes getLineAttributes ()
+    {
+        return this.lineAttributes;
+    }
 }
