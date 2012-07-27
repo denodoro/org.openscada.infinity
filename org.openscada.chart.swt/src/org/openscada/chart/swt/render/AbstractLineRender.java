@@ -30,9 +30,9 @@ public abstract class AbstractLineRender extends AbstractDataSeriesRenderer
 
     protected LineAttributes lineAttributes;
 
-    public AbstractLineRender ( final ChartArea chartArea, final SeriesData seriesData )
+    public AbstractLineRender ( final ChartArea chartArea, final SeriesData abstractSeriesData )
     {
-        super ( chartArea, seriesData );
+        super ( chartArea, abstractSeriesData );
         this.lineAttributes = new LineAttributes ( 1.0f );
     }
 

@@ -35,9 +35,9 @@ import org.openscada.chart.swt.DataPoint;
 public class QualityRenderer extends AbstractDataSeriesRenderer
 {
 
-    public QualityRenderer ( final ChartArea chartArea, final SeriesData seriesData )
+    public QualityRenderer ( final ChartArea chartArea, final SeriesData abstractSeriesData )
     {
-        super ( chartArea, seriesData );
+        super ( chartArea, abstractSeriesData );
     }
 
     @Override

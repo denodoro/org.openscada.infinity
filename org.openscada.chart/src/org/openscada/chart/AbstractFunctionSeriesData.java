@@ -22,7 +22,7 @@ package org.openscada.chart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractFunctionSeriesData extends SeriesData
+public abstract class AbstractFunctionSeriesData extends AbstractSeriesData
 {
 
     private final static Logger logger = LoggerFactory.getLogger ( AbstractFunctionSeriesData.class );

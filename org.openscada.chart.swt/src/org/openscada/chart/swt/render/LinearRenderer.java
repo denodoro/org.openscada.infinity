@@ -36,9 +36,9 @@ import org.openscada.chart.swt.DataPoint;
 public class LinearRenderer extends AbstractLineRender implements Renderer
 {
 
-    public LinearRenderer ( final ChartArea chartArea, final SeriesData seriesData )
+    public LinearRenderer ( final ChartArea chartArea, final SeriesData abstractSeriesData )
     {
-        super ( chartArea, seriesData );
+        super ( chartArea, abstractSeriesData );
     }
 
     @Override

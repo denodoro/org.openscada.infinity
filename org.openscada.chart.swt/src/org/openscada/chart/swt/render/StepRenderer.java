@@ -40,9 +40,9 @@ public class StepRenderer extends AbstractLineRender implements Renderer
 
     private final static Logger logger = LoggerFactory.getLogger ( StepRenderer.class );
 
-    public StepRenderer ( final ChartArea chartArea, final SeriesData seriesData )
+    public StepRenderer ( final ChartArea chartArea, final SeriesData abstractSeriesData )
     {
-        super ( chartArea, seriesData );
+        super ( chartArea, abstractSeriesData );
     }
 
     @Override

@@ -190,11 +190,11 @@ public class ChartManager extends Composite
         return renderer;
     }
 
-    public StepRenderer createStepSeries ( final SeriesData seriesData )
+    public StepRenderer createStepSeries ( final SeriesData abstractSeriesData )
     {
         checkWidget ();
 
-        final StepRenderer renderer = new StepRenderer ( this.chartArea, seriesData );
+        final StepRenderer renderer = new StepRenderer ( this.chartArea, abstractSeriesData );
         this.chartArea.addRenderer ( renderer );
         return renderer;
     }
