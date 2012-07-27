@@ -26,7 +26,7 @@ import org.openscada.chart.XAxis;
 public abstract class AbstractPositionXRuler extends AbstractRuler
 {
 
-    public abstract long getPosition ();
+    public abstract Long getPosition ();
 
     protected XAxis axis;
 
@@ -48,7 +48,14 @@ public abstract class AbstractPositionXRuler extends AbstractRuler
             return;
         }
 
-        final int x = (int)this.axis.translateToClient ( clientRectangle.width, getPosition () );
+        final Long position = getPosition ();
+
+        if ( position == null )
+        {
+            return;
+        }
+
+        final int x = (int)this.axis.translateToClient ( clientRectangle.width, position );
 
         if ( x < 0 || x > clientRectangle.width )
         {

@@ -30,7 +30,7 @@ public class CurrentTimeRuler extends AbstractPositionXRuler
     }
 
     @Override
-    public long getPosition ()
+    public Long getPosition ()
     {
         return System.currentTimeMillis ();
     }

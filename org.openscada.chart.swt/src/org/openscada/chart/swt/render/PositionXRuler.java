@@ -40,7 +40,7 @@ public class PositionXRuler extends AbstractPositionXRuler
     }
 
     @Override
-    public long getPosition ()
+    public Long getPosition ()
     {
         return this.position;
     }

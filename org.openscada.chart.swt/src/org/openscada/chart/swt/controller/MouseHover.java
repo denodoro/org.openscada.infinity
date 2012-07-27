@@ -19,30 +19,39 @@
 
 package org.openscada.chart.swt.controller;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.openscada.chart.XAxis;
-import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.render.AbstractPositionXRuler;
 
-public class MouseWheelZoomer implements MouseWheelListener
+public class MouseHover extends AbstractPositionXRuler implements MouseMoveListener
 {
-    private final XAxis x;
-
-    private final YAxis y;
+    public static interface Listener
+    {
+        public void mouseMove ( MouseEvent e, long timestamp );
+    }
 
     private final ChartArea chart;
 
-    public MouseWheelZoomer ( final ChartArea chart, final XAxis x, final YAxis y )
-    {
-        this.x = x;
-        this.y = y;
-        this.chart = chart;
+    private final XAxis xAxis;
 
-        this.chart.addDisposeListener ( new DisposeListener () {
+    private final Listener listener;
+
+    private long position;
+
+    public MouseHover ( final ChartArea chart, final XAxis xAxis, final Listener listener )
+    {
+        super ( xAxis );
+
+        this.chart = chart;
+        this.xAxis = xAxis;
+
+        this.listener = listener;
+
+        chart.addDisposeListener ( new DisposeListener () {
 
             @Override
             public void widgetDisposed ( final DisposeEvent e )
@@ -50,25 +59,35 @@ public class MouseWheelZoomer implements MouseWheelListener
                 dispose ();
             }
         } );
-        this.chart.addMouseWheelListener ( this );
+
+        chart.addMouseMoveListener ( this );
+        chart.addRenderer ( this );
     }
 
     public void dispose ()
     {
-        this.chart.removeMouseWheelListener ( this );
+        this.chart.removeRenderer ( this );
+        this.chart.removeMouseMoveListener ( this );
     }
 
     @Override
-    public void mouseScrolled ( final MouseEvent e )
+    public void mouseMove ( final MouseEvent e )
     {
-        if ( e.stateMask == 0 )
+        if ( this.listener != null )
         {
-            this.x.zoom ( e.count < 0 ? 0.1 : -0.1 );
+            this.position = this.xAxis.translateToValue ( this.chart.getClientArea ().width, e.x );
+            this.listener.mouseMove ( e, this.position );
+            if ( this.visible )
+            {
+                this.chart.redraw ();
+            }
         }
-        else if ( ( e.stateMask & SWT.MOD1 ) > 0 )
-        {
-            this.y.zoom ( e.count < 0 ? 0.1 : -0.1 );
-        }
-        this.chart.redraw ();
     }
+
+    @Override
+    public Long getPosition ()
+    {
+        return this.position;
+    }
+
 }
