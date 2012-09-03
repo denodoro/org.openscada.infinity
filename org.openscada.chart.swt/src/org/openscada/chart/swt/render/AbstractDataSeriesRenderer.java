@@ -72,9 +72,10 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
     }
 
     @Override
-    public void resize ( final Rectangle clientRectangle )
+    public Rectangle resize ( final Rectangle clientRectangle )
     {
         this.seriesData.setRequestWidth ( clientRectangle.width );
+        return null;
     }
 
     protected static boolean translateToPoint ( final Rectangle clientRect, final XAxis x, final YAxis y, final DataPoint point, final DataEntry entry )

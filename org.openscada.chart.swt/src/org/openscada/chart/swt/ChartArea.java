@@ -19,6 +19,9 @@
 
 package org.openscada.chart.swt;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,8 +37,30 @@ import org.openscada.chart.swt.render.Renderer;
 
 public class ChartArea extends Canvas
 {
+    private static class RendererEntry
+    {
+        private final Integer order;
 
-    private final List<Renderer> renderers = new LinkedList<Renderer> ();
+        private final Renderer renderer;
+
+        public RendererEntry ( final Renderer renderer, final int order )
+        {
+            this.renderer = renderer;
+            this.order = order;
+        }
+
+        public Integer getOrder ()
+        {
+            return this.order;
+        }
+
+        public Renderer getRenderer ()
+        {
+            return this.renderer;
+        }
+    }
+
+    private final List<RendererEntry> renderers = new LinkedList<RendererEntry> ();
 
     private boolean stale;
 
@@ -66,9 +91,9 @@ public class ChartArea extends Canvas
 
     protected void onResize ( final Rectangle clientRectangle )
     {
-        for ( final Renderer renderer : this.renderers )
+        for ( final RendererEntry renderer : this.renderers )
         {
-            renderer.resize ( clientRectangle );
+            renderer.getRenderer ().resize ( clientRectangle );
         }
     }
 
@@ -82,23 +107,44 @@ public class ChartArea extends Canvas
 
         e.gc.setAntialias ( SWT.ON );
 
-        for ( final Renderer renderer : this.renderers )
+        for ( final RendererEntry renderer : this.renderers )
         {
-            renderer.render ( e, rect );
+            renderer.getRenderer ().render ( e, rect );
         }
     }
 
     public void addRenderer ( final Renderer renderer )
     {
-        if ( this.renderers.add ( renderer ) )
-        {
-            renderer.resize ( getClientArea () );
-        }
+        addRenderer ( renderer, 0 );
+    }
+
+    public void addRenderer ( final Renderer renderer, final int order )
+    {
+        this.renderers.add ( new RendererEntry ( renderer, order ) );
+
+        Collections.sort ( this.renderers, new Comparator<RendererEntry> () {
+
+            @Override
+            public int compare ( final RendererEntry o1, final RendererEntry o2 )
+            {
+                return o1.getOrder ().compareTo ( o2.getOrder () );
+            }
+        } );
+        renderer.resize ( getClientArea () );
+
     }
 
     public void removeRenderer ( final Renderer renderer )
     {
-        this.renderers.remove ( renderer );
+        final Iterator<RendererEntry> i = this.renderers.iterator ();
+        while ( i.hasNext () )
+        {
+            final RendererEntry entry = i.next ();
+            if ( entry.getRenderer ().equals ( renderer ) )
+            {
+                i.remove ();
+            }
+        }
     }
 
     public void refreshData ()

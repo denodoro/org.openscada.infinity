@@ -42,7 +42,7 @@ public class LinearRenderer extends AbstractLineRender implements Renderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRect )
+    public Rectangle render ( final PaintEvent e, final Rectangle clientRect )
     {
         final GC gc = e.gc;
 
@@ -55,7 +55,7 @@ public class LinearRenderer extends AbstractLineRender implements Renderer
         final SortedSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
         if ( entries.isEmpty () )
         {
-            return;
+            return null;
         }
 
         boolean first = true;
@@ -86,5 +86,7 @@ public class LinearRenderer extends AbstractLineRender implements Renderer
         gc.setLineAttributes ( this.lineAttributes );
         gc.setForeground ( this.lineColor != null ? this.lineColor : gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
         gc.drawPath ( path );
+
+        return null;
     }
 }

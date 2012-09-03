@@ -28,7 +28,7 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
 import org.openscada.chart.YAxis;
 
-public class YAxisDynamicRenderer extends AbstractStaticRenderer
+public class YAxisDynamicWidget extends AbstractStaticRenderer
 {
 
     private YAxis axis;
@@ -41,7 +41,7 @@ public class YAxisDynamicRenderer extends AbstractStaticRenderer
 
     private final Transform rotate;
 
-    public YAxisDynamicRenderer ( final Composite parent, final int style )
+    public YAxisDynamicWidget ( final Composite parent, final int style )
     {
         super ( parent );
 

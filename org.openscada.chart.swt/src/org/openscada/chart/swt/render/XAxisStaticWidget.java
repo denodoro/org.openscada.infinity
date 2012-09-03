@@ -19,37 +19,34 @@
 
 package org.openscada.chart.swt.render;
 
+import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
-import org.openscada.chart.YAxis;
+import org.openscada.chart.XAxis;
 
-public class YAxisStaticRenderer extends AbstractStaticRenderer
+public class XAxisStaticWidget extends AbstractStaticRenderer
 {
-    private YAxis axis;
 
-    private String format;
+    private XAxis axis;
 
-    private final boolean left;
+    private final boolean bottom;
 
-    private final Transform rotate;
+    private String format = "%tc";
 
-    public YAxisStaticRenderer ( final Composite parent, final int style )
+    public XAxisStaticWidget ( final Composite parent, final int style )
     {
         super ( parent );
 
-        this.rotate = createTransform ( parent.getDisplay () );
-
-        this.left = ( style & SWT.RIGHT ) > 0;
+        this.bottom = ( style & SWT.TOP ) > 0;
     }
 
     public void setFormat ( final String format )
     {
-        this.format = format != null ? format : "%s";
+        this.format = format;
     }
 
     public String getFormat ()
@@ -61,10 +58,9 @@ public class YAxisStaticRenderer extends AbstractStaticRenderer
     protected void onDispose ()
     {
         setAxis ( null );
-        this.rotate.dispose ();
     }
 
-    public void setAxis ( final YAxis axis )
+    public void setAxis ( final XAxis axis )
     {
         checkWidget ();
 
@@ -91,57 +87,40 @@ public class YAxisStaticRenderer extends AbstractStaticRenderer
         {
             return;
         }
+
         e.gc.setLineAttributes ( this.lineAttributes );
 
-        final int x = this.left ? 0 : rect.width - 1;
+        final int y = this.bottom ? rect.height - 1 : 0;
 
-        e.gc.drawLine ( x, 0, x, rect.height );
+        e.gc.drawLine ( 0, y, rect.width, y );
 
-        int y = findStart ( rect );
-
+        int x = 0;
         do
         {
-            final double value = this.axis.translateToValue ( rect.height, y );
-            final String label = String.format ( this.format, value );
+            final long time = this.axis.translateToValue ( rect.width, x );
+            final String label = String.format ( this.format, new Date ( time ) );
             final Point labelSize = e.gc.textExtent ( label );
-            e.gc.drawText ( label, this.left ? x + 10 : x - ( labelSize.x + 10 ), y - labelSize.y );
-            e.gc.drawLine ( x, y, x + ( this.left ? 1 : -1 ) * 4, y );
-            y -= labelSize.y + this.labelSpacing;
+            e.gc.drawText ( label, x, this.bottom ? y - ( labelSize.y + 5 ) : 5 );
+            e.gc.drawLine ( x, y, x, this.bottom ? y - 3 : 3 );
+            x += labelSize.x + this.labelSpacing;
 
-        } while ( y > 0 );
+        } while ( x < rect.width );
+
+        // drawLabel
 
         final String label = this.axis.getLabel ();
         if ( label != null )
         {
-            try
-            {
-                e.gc.setTransform ( this.rotate );
-                final Point size = e.gc.textExtent ( label );
-                e.gc.drawText ( label, -rect.height + rect.height / 2 - size.x / 2, this.left ? rect.width - size.y : 0 );
-            }
-            finally
-            {
-                e.gc.setTransform ( null );
-            }
+            final Point size = e.gc.textExtent ( label );
+            final int labelX = rect.width / 2 - size.x / 2;
+            e.gc.drawText ( label, labelX, this.bottom ? 0 : rect.height - size.y );
         }
-    }
-
-    private Transform createTransform ( final Device device )
-    {
-        final Transform rotate = new Transform ( device );
-        rotate.rotate ( -90 );
-        return rotate;
-    }
-
-    private int findStart ( final Rectangle rect )
-    {
-        return rect.height - 1;
     }
 
     @Override
     public Point computeSize ( final int wHint, final int hHint, final boolean changed )
     {
-        return new Point ( 100, hHint );
+        return new Point ( wHint, 60 );
     }
 
 }

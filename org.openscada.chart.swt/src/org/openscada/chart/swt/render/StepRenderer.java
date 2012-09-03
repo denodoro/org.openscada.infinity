@@ -46,7 +46,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRect )
+    public Rectangle render ( final PaintEvent e, final Rectangle clientRect )
     {
         final GC gc = e.gc;
 
@@ -56,7 +56,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
         final NavigableSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
         if ( entries.isEmpty () )
         {
-            return;
+            return null;
         }
 
         final Path path = new Path ( gc.getDevice () );
@@ -110,5 +110,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
         {
             path.dispose ();
         }
+
+        return null;
     }
 }

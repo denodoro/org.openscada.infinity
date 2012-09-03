@@ -41,7 +41,7 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRect )
+    public Rectangle render ( final PaintEvent e, final Rectangle clientRect )
     {
         final GC gc = e.gc;
 
@@ -55,7 +55,7 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
         if ( entries.isEmpty () )
         {
             e.gc.fillRectangle ( clientRect );
-            return;
+            return null;
         }
 
         final DataPoint point = new DataPoint ();
@@ -105,5 +105,6 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
             }
         }
 
+        return null;
     }
 }

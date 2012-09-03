@@ -23,8 +23,8 @@ import org.openscada.chart.swt.controller.MouseTransformer;
 import org.openscada.chart.swt.controller.MouseWheelZoomer;
 import org.openscada.chart.swt.render.Renderer;
 import org.openscada.chart.swt.render.StepRenderer;
-import org.openscada.chart.swt.render.XAxisDynamicRenderer;
-import org.openscada.chart.swt.render.YAxisDynamicRenderer;
+import org.openscada.chart.swt.render.XAxisDynamicWidget;
+import org.openscada.chart.swt.render.YAxisDynamicWidget;
 
 public class ChartManager extends Composite
 {
@@ -160,7 +160,7 @@ public class ChartManager extends Composite
         new MouseWheelZoomer ( this.chartArea, x, y );
     }
 
-    public XAxisDynamicRenderer addDynamicXAxis ( final XAxis x, final boolean top )
+    public XAxisDynamicWidget addDynamicXAxis ( final XAxis x, final boolean top )
     {
         checkWidget ();
 
@@ -168,14 +168,14 @@ public class ChartManager extends Composite
 
         cell.setVisible ( true );
 
-        final XAxisDynamicRenderer renderer = new XAxisDynamicRenderer ( cell, top ? SWT.TOP : SWT.BOTTOM );
+        final XAxisDynamicWidget renderer = new XAxisDynamicWidget ( cell, top ? SWT.TOP : SWT.BOTTOM );
         renderer.setAxis ( x );
         cell.layout ();
         layout ();
         return renderer;
     }
 
-    public YAxisDynamicRenderer addDynamicYAxis ( final YAxis y, final boolean left )
+    public YAxisDynamicWidget addDynamicYAxis ( final YAxis y, final boolean left )
     {
         checkWidget ();
 
@@ -183,7 +183,7 @@ public class ChartManager extends Composite
 
         cell.setVisible ( true );
 
-        final YAxisDynamicRenderer renderer = new YAxisDynamicRenderer ( cell, left ? SWT.LEFT : SWT.RIGHT );
+        final YAxisDynamicWidget renderer = new YAxisDynamicWidget ( cell, left ? SWT.LEFT : SWT.RIGHT );
         renderer.setAxis ( y );
         cell.layout ();
         layout ();

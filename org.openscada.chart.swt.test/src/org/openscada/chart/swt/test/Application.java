@@ -46,10 +46,10 @@ import org.openscada.chart.swt.controller.MouseWheelZoomer;
 import org.openscada.chart.swt.render.LinearRenderer;
 import org.openscada.chart.swt.render.QualityRenderer;
 import org.openscada.chart.swt.render.StepRenderer;
-import org.openscada.chart.swt.render.XAxisDynamicRenderer;
-import org.openscada.chart.swt.render.XAxisStaticRenderer;
-import org.openscada.chart.swt.render.YAxisDynamicRenderer;
-import org.openscada.chart.swt.render.YAxisStaticRenderer;
+import org.openscada.chart.swt.render.XAxisDynamicWidget;
+import org.openscada.chart.swt.render.XAxisStaticWidget;
+import org.openscada.chart.swt.render.YAxisDynamicWidget;
+import org.openscada.chart.swt.render.YAxisStaticWidget;
 
 public class Application implements IApplication
 {
@@ -70,12 +70,12 @@ public class Application implements IApplication
 
         new Composite ( shell, SWT.NONE ); // dummy 
 
-        final XAxisDynamicRenderer xRenderer = new XAxisDynamicRenderer ( shell, SWT.TOP );
+        final XAxisDynamicWidget xRenderer = new XAxisDynamicWidget ( shell, SWT.TOP );
         xRenderer.setLayoutData ( new GridData ( SWT.FILL, SWT.BOTTOM, true, false ) );
 
         new Composite ( shell, SWT.NONE ); // dummy 
 
-        final YAxisDynamicRenderer yRenderer = new YAxisDynamicRenderer ( shell, SWT.NONE );
+        final YAxisDynamicWidget yRenderer = new YAxisDynamicWidget ( shell, SWT.NONE );
         yRenderer.setLayoutData ( new GridData ( SWT.END, SWT.FILL, false, true ) );
         // yRenderer.setStep ( 15.0 );
         // yRenderer.setQuantizer ( new Quantizer1 ( 100 ) );
@@ -84,14 +84,14 @@ public class Application implements IApplication
         chart.setLayoutData ( makeCenterData () );
         chart.setBackground ( Display.getCurrent ().getSystemColor ( SWT.COLOR_WHITE ) );
 
-        final YAxisStaticRenderer yRendererRight = new YAxisStaticRenderer ( shell, SWT.RIGHT );
+        final YAxisStaticWidget yRendererRight = new YAxisStaticWidget ( shell, SWT.RIGHT );
         yRendererRight.setLayoutData ( new GridData ( SWT.END, SWT.FILL, false, true ) );
 
         // new row
 
         new Composite ( shell, SWT.NONE ); // dummy 
 
-        final XAxisStaticRenderer xRendererButtom = new XAxisStaticRenderer ( shell, SWT.BOTTOM );
+        final XAxisStaticWidget xRendererButtom = new XAxisStaticWidget ( shell, SWT.BOTTOM );
         xRendererButtom.setLayoutData ( new GridData ( SWT.FILL, SWT.TOP, true, false ) );
 
         final XAxis x = new XAxis ();

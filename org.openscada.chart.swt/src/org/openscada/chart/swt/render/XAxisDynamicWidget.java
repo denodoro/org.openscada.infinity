@@ -19,8 +19,6 @@
 
 package org.openscada.chart.swt.render;
 
-import java.util.Date;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Point;
@@ -28,16 +26,18 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.openscada.chart.XAxis;
 
-public class XAxisStaticRenderer extends AbstractStaticRenderer
+public class XAxisDynamicWidget extends AbstractStaticRenderer
 {
 
     private XAxis axis;
 
     private final boolean bottom;
 
+    private Long step;
+
     private String format = "%tc";
 
-    public XAxisStaticRenderer ( final Composite parent, final int style )
+    public XAxisDynamicWidget ( final Composite parent, final int style )
     {
         super ( parent );
 
@@ -46,12 +46,17 @@ public class XAxisStaticRenderer extends AbstractStaticRenderer
 
     public void setFormat ( final String format )
     {
-        this.format = format;
+        this.format = format != null ? format : "%s";
     }
 
     public String getFormat ()
     {
         return this.format;
+    }
+
+    public void setStep ( final Long step )
+    {
+        this.step = step;
     }
 
     @Override
@@ -94,17 +99,27 @@ public class XAxisStaticRenderer extends AbstractStaticRenderer
 
         e.gc.drawLine ( 0, y, rect.width, y );
 
-        int x = 0;
-        do
+        final Point sampleLabelSize = e.gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
+        final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, rect.width, this.axis.getMax () - this.axis.getMin () );
+
+        if ( step <= 0 )
         {
-            final long time = this.axis.translateToValue ( rect.width, x );
-            final String label = String.format ( this.format, new Date ( time ) );
+            return;
+        }
+
+        long value = stepValue ( this.axis.getMin () - step /*previous step*/, step );
+
+        while ( value < this.axis.getMax () )
+        {
+            value = value + step;
+            final int x = (int)this.axis.translateToClient ( rect.width, value );
+
+            final String label = String.format ( this.format, value );
             final Point labelSize = e.gc.textExtent ( label );
+
             e.gc.drawText ( label, x, this.bottom ? y - ( labelSize.y + 5 ) : 5 );
             e.gc.drawLine ( x, y, x, this.bottom ? y - 3 : 3 );
-            x += labelSize.x + this.labelSpacing;
-
-        } while ( x < rect.width );
+        }
 
         // drawLabel
 
@@ -121,6 +136,22 @@ public class XAxisStaticRenderer extends AbstractStaticRenderer
     public Point computeSize ( final int wHint, final int hHint, final boolean changed )
     {
         return new Point ( wHint, 60 );
+    }
+
+    private long makeDynamicStep ( final int textWidth, final int clientWidth, final long valueWidth )
+    {
+        final long l = clientWidth / textWidth;
+        if ( l == 0 )
+        {
+            return 0;
+        }
+
+        return valueWidth / l;
+    }
+
+    private long stepValue ( final long value, final long step )
+    {
+        return (long) ( Math.floor ( (double)value / (double)step ) * step );
     }
 
 }

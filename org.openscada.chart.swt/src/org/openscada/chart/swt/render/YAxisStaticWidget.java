@@ -21,27 +21,30 @@ package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Composite;
-import org.openscada.chart.XAxis;
+import org.openscada.chart.YAxis;
 
-public class XAxisDynamicRenderer extends AbstractStaticRenderer
+public class YAxisStaticWidget extends AbstractStaticRenderer
 {
+    private YAxis axis;
 
-    private XAxis axis;
+    private String format;
 
-    private final boolean bottom;
+    private final boolean left;
 
-    private Long step;
+    private final Transform rotate;
 
-    private String format = "%tc";
-
-    public XAxisDynamicRenderer ( final Composite parent, final int style )
+    public YAxisStaticWidget ( final Composite parent, final int style )
     {
         super ( parent );
 
-        this.bottom = ( style & SWT.TOP ) > 0;
+        this.rotate = createTransform ( parent.getDisplay () );
+
+        this.left = ( style & SWT.RIGHT ) > 0;
     }
 
     public void setFormat ( final String format )
@@ -54,18 +57,14 @@ public class XAxisDynamicRenderer extends AbstractStaticRenderer
         return this.format;
     }
 
-    public void setStep ( final Long step )
-    {
-        this.step = step;
-    }
-
     @Override
     protected void onDispose ()
     {
         setAxis ( null );
+        this.rotate.dispose ();
     }
 
-    public void setAxis ( final XAxis axis )
+    public void setAxis ( final YAxis axis )
     {
         checkWidget ();
 
@@ -92,66 +91,57 @@ public class XAxisDynamicRenderer extends AbstractStaticRenderer
         {
             return;
         }
-
         e.gc.setLineAttributes ( this.lineAttributes );
 
-        final int y = this.bottom ? rect.height - 1 : 0;
+        final int x = this.left ? 0 : rect.width - 1;
 
-        e.gc.drawLine ( 0, y, rect.width, y );
+        e.gc.drawLine ( x, 0, x, rect.height );
 
-        final Point sampleLabelSize = e.gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
-        final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, rect.width, this.axis.getMax () - this.axis.getMin () );
+        int y = findStart ( rect );
 
-        if ( step <= 0 )
+        do
         {
-            return;
-        }
-
-        long value = stepValue ( this.axis.getMin () - step /*previous step*/, step );
-
-        while ( value < this.axis.getMax () )
-        {
-            value = value + step;
-            final int x = (int)this.axis.translateToClient ( rect.width, value );
-
+            final double value = this.axis.translateToValue ( rect.height, y );
             final String label = String.format ( this.format, value );
             final Point labelSize = e.gc.textExtent ( label );
+            e.gc.drawText ( label, this.left ? x + 10 : x - ( labelSize.x + 10 ), y - labelSize.y );
+            e.gc.drawLine ( x, y, x + ( this.left ? 1 : -1 ) * 4, y );
+            y -= labelSize.y + this.labelSpacing;
 
-            e.gc.drawText ( label, x, this.bottom ? y - ( labelSize.y + 5 ) : 5 );
-            e.gc.drawLine ( x, y, x, this.bottom ? y - 3 : 3 );
-        }
-
-        // drawLabel
+        } while ( y > 0 );
 
         final String label = this.axis.getLabel ();
         if ( label != null )
         {
-            final Point size = e.gc.textExtent ( label );
-            final int labelX = rect.width / 2 - size.x / 2;
-            e.gc.drawText ( label, labelX, this.bottom ? 0 : rect.height - size.y );
+            try
+            {
+                e.gc.setTransform ( this.rotate );
+                final Point size = e.gc.textExtent ( label );
+                e.gc.drawText ( label, -rect.height + rect.height / 2 - size.x / 2, this.left ? rect.width - size.y : 0 );
+            }
+            finally
+            {
+                e.gc.setTransform ( null );
+            }
         }
+    }
+
+    private Transform createTransform ( final Device device )
+    {
+        final Transform rotate = new Transform ( device );
+        rotate.rotate ( -90 );
+        return rotate;
+    }
+
+    private int findStart ( final Rectangle rect )
+    {
+        return rect.height - 1;
     }
 
     @Override
     public Point computeSize ( final int wHint, final int hHint, final boolean changed )
     {
-        return new Point ( wHint, 60 );
-    }
-
-    private long makeDynamicStep ( final int textWidth, final int clientWidth, final long valueWidth )
-    {
-        final long l = clientWidth / textWidth;
-        if ( l == 0 )
-        {
-            return 0;
-        }
-
-        return valueWidth / l;
-    }
-
-    private long stepValue ( final long value, final long step )
-    {
-        return (long) ( Math.floor ( (double)value / (double)step ) * step );
+        return new Point ( 100, hHint );
     }
 
 }
