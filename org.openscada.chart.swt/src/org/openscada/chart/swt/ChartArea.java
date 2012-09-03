@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.openscada.chart.XAxis;
-import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.render.Renderer;
 
 public class ChartArea extends Canvas
@@ -88,7 +86,6 @@ public class ChartArea extends Canvas
         {
             renderer.render ( e, rect );
         }
-
     }
 
     public void addRenderer ( final Renderer renderer )
@@ -102,18 +99,6 @@ public class ChartArea extends Canvas
     public void removeRenderer ( final Renderer renderer )
     {
         this.renderers.remove ( renderer );
-    }
-
-    public XAxis createXAxis ()
-    {
-        final XAxis axis = new XAxis ();
-        return axis;
-    }
-
-    public YAxis createYAxis ()
-    {
-        final YAxis axis = new YAxis ();
-        return axis;
     }
 
     public void refreshData ()
