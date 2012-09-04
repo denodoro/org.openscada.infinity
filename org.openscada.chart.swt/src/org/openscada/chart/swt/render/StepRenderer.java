@@ -104,7 +104,6 @@ public class StepRenderer extends AbstractLineRender implements Renderer
 
             g.setClipping ( clientRect );
             g.drawPath ( path );
-            g.setClipping ( (Rectangle)null );
         }
         finally
         {

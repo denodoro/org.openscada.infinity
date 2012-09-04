@@ -170,7 +170,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
             final Point size = g.textExtent ( label );
             g.drawText ( label, -this.rect.height + this.rect.height / 2 - size.x / 2, !this.left ? this.rect.width - size.y : 0, -90.0f );
         }
-        g.setClipping ( (Rectangle)null );
+        g.setClipping ( clientRectangle );
     }
 
     @Override

@@ -104,6 +104,6 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
             }
         }
 
-        g.setClipping ( (Rectangle)null );
+        g.setClipping ( clientRect );
     }
 }

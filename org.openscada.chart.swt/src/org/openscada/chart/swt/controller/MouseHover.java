@@ -19,19 +19,19 @@
 
 package org.openscada.chart.swt.controller;
 
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
+import org.openscada.chart.swt.ChartMouseListener.MouseState;
+import org.openscada.chart.swt.ChartMouseMoveListener;
 import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.DisposeListener;
 import org.openscada.chart.swt.render.AbstractPositionXRuler;
 
-public class MouseHover extends AbstractPositionXRuler implements MouseMoveListener
+public class MouseHover extends AbstractPositionXRuler implements ChartMouseMoveListener
 {
     public static interface Listener
     {
-        public void mouseMove ( MouseEvent e, long timestamp );
+        public void mouseMove ( MouseState state, long timestamp );
     }
 
     private final ChartRenderer chart;
@@ -73,12 +73,12 @@ public class MouseHover extends AbstractPositionXRuler implements MouseMoveListe
     }
 
     @Override
-    public void mouseMove ( final MouseEvent e )
+    public void onMouseMove ( final MouseState state )
     {
         if ( this.listener != null )
         {
-            this.position = this.xAxis.translateToValue ( this.clientRect.width, e.x - this.clientRect.x );
-            this.listener.mouseMove ( e, this.position );
+            this.position = this.xAxis.translateToValue ( this.clientRect.width, state.x - this.clientRect.x );
+            this.listener.mouseMove ( state, this.position );
             if ( this.visible )
             {
                 this.chart.redraw ();

@@ -20,14 +20,14 @@
 package org.openscada.chart.swt.controller;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
+import org.openscada.chart.swt.ChartMouseListener;
+import org.openscada.chart.swt.ChartMouseListener.MouseState;
+import org.openscada.chart.swt.ChartMouseMoveListener;
 import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.DisposeListener;
 import org.openscada.chart.swt.Graphics;
@@ -37,7 +37,7 @@ public class MouseDragZoomer implements Renderer
 {
     private final ChartRenderer chart;
 
-    private final MouseMoveListener mouseMoveListener;
+    private final ChartMouseMoveListener mouseMoveListener;
 
     private Point start;
 
@@ -55,30 +55,35 @@ public class MouseDragZoomer implements Renderer
 
         chart.addRenderer ( this );
 
-        this.mouseMoveListener = new MouseMoveListener () {
+        this.mouseMoveListener = new ChartMouseMoveListener () {
 
             @Override
-            public void mouseMove ( final MouseEvent e )
+            public void onMouseMove ( final MouseState state )
             {
-                handleMouseMove ( e );
+                handleMouseMove ( state );
             }
         };
 
-        chart.addMouseListener ( new MouseAdapter () {
+        chart.addMouseListener ( new ChartMouseListener () {
 
             @Override
-            public void mouseUp ( final MouseEvent e )
+            public void onMouseDoubleClick ( final MouseState state )
             {
-                endZoom ( e );
             }
 
             @Override
-            public void mouseDown ( final MouseEvent e )
+            public void onMouseDown ( final MouseState state )
             {
-                if ( e.button == 1 && e.stateMask == 0 )
+                if ( state.button == 1 && state.state == 0 )
                 {
-                    startZoom ( e );
+                    startZoom ( state );
                 }
+            }
+
+            @Override
+            public void onMouseUp ( final MouseState state )
+            {
+                endZoom ( state );
             }
 
         } );
@@ -104,7 +109,7 @@ public class MouseDragZoomer implements Renderer
         detachMouseMoveListener ();
     }
 
-    protected void endZoom ( final MouseEvent e )
+    protected void endZoom ( final MouseState e )
     {
         processZoom ( this.selection );
         detachMouseMoveListener ();
@@ -112,15 +117,15 @@ public class MouseDragZoomer implements Renderer
         this.chart.redraw ();
     }
 
-    protected void startZoom ( final MouseEvent e )
+    protected void startZoom ( final MouseState state )
     {
         this.chart.addMouseMoveListener ( this.mouseMoveListener );
-        this.start = new Point ( e.x, e.y );
+        this.start = new Point ( state.x, state.y );
     }
 
-    protected void handleMouseMove ( final MouseEvent e )
+    protected void handleMouseMove ( final MouseState state )
     {
-        this.selection = makeSelection ( new Point ( e.x, e.y ) );
+        this.selection = makeSelection ( new Point ( state.x, state.y ) );
         this.chart.redraw ();
     }
 

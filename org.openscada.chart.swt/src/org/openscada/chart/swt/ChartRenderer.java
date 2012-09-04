@@ -28,9 +28,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.util.SafeRunnable;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.openscada.chart.swt.render.Renderer;
@@ -81,7 +83,7 @@ public abstract class ChartRenderer
 
     private boolean disposed;
 
-    protected void resizeAll ( Rectangle clientRectangle )
+    public void resizeAll ( Rectangle clientRectangle )
     {
         for ( final RendererEntry renderer : this.renderers )
         {
@@ -105,6 +107,12 @@ public abstract class ChartRenderer
     public void paint ( final Graphics g )
     {
         g.setAntialias ( true );
+
+        if ( this.background != null )
+        {
+            g.setBackground ( this.background );
+            g.fillRectangle ( getClientArea () );
+        }
 
         for ( final RendererEntry renderer : this.renderers )
         {
@@ -204,19 +212,23 @@ public abstract class ChartRenderer
 
     private final Set<DisposeListener> disposeListeners = new LinkedHashSet<DisposeListener> ();
 
+    private Color background;
+
+    private String title;
+
     public void addDisposeListener ( final DisposeListener disposeListener )
     {
         checkWidget ();
         this.disposeListeners.add ( disposeListener );
     }
 
-    public abstract void addMouseListener ( MouseListener mouseListener );
+    public abstract void addMouseListener ( ChartMouseListener mouseListener );
 
-    public abstract void removeMouseListener ( MouseListener mouseListener );
+    public abstract void removeMouseListener ( ChartMouseListener mouseListener );
 
-    public abstract void addMouseMoveListener ( MouseMoveListener mouseMoveListener );
+    public abstract void addMouseMoveListener ( ChartMouseMoveListener mouseMoveListener );
 
-    public abstract void removeMouseMoveListener ( MouseMoveListener mouseMoveListener );
+    public abstract void removeMouseMoveListener ( ChartMouseMoveListener mouseMoveListener );
 
     public abstract void addMouseWheelListener ( MouseWheelListener listener );
 
@@ -228,5 +240,29 @@ public abstract class ChartRenderer
     }
 
     public abstract Display getDisplay ();
+
+    public void setChartBackground ( final Color background )
+    {
+        this.background = background;
+    }
+
+    public void setFocus ()
+    {
+    }
+
+    public DropTarget createDropTarget ( final Transfer[] transfers, final DropTargetAdapter createDropTarget )
+    {
+        return null;
+    }
+
+    public void setTitle ( final String title )
+    {
+        this.title = title;
+    }
+
+    public String getTitle ()
+    {
+        return this.title;
+    }
 
 }

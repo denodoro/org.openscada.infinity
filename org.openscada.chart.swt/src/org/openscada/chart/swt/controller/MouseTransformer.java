@@ -20,16 +20,15 @@
 package org.openscada.chart.swt.controller;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
+import org.openscada.chart.swt.ChartMouseListener;
+import org.openscada.chart.swt.ChartMouseMoveListener;
 import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.DisposeListener;
 
-public class MouseTransformer implements MouseListener, MouseMoveListener
+public class MouseTransformer implements ChartMouseListener, ChartMouseMoveListener
 {
     private boolean active;
 
@@ -69,14 +68,14 @@ public class MouseTransformer implements MouseListener, MouseMoveListener
     }
 
     @Override
-    public void mouseDoubleClick ( final MouseEvent e )
+    public void onMouseDoubleClick ( final MouseState state )
     {
     }
 
     @Override
-    public void mouseDown ( final MouseEvent e )
+    public void onMouseDown ( final MouseState e )
     {
-        if ( e.button != 1 || e.stateMask != SWT.MOD1 )
+        if ( e.button != 1 || e.state != SWT.MOD1 )
         {
             return;
         }
@@ -87,24 +86,24 @@ public class MouseTransformer implements MouseListener, MouseMoveListener
     }
 
     @Override
-    public void mouseUp ( final MouseEvent e )
+    public void onMouseUp ( final MouseState state )
     {
         this.active = false;
     }
 
     @Override
-    public void mouseMove ( final MouseEvent e )
+    public void onMouseMove ( final MouseState state )
     {
         if ( !this.active )
         {
             return;
         }
 
-        final int diffX = this.startX - e.x;
-        this.startX = e.x;
+        final int diffX = this.startX - state.x;
+        this.startX = state.x;
 
-        final int diffY = this.startY - e.y;
-        this.startY = e.y;
+        final int diffY = this.startY - state.y;
+        this.startY = state.y;
 
         final Rectangle rect = this.chartArea.getClientArea ();
         boolean update = false;

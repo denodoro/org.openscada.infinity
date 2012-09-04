@@ -22,85 +22,16 @@ package org.openscada.chart.swt;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 public class ChartArea extends Canvas
 {
-
-    public static class ChartAreaRenderer extends ChartRenderer
-    {
-
-        private final Composite control;
-
-        public ChartAreaRenderer ( final Composite control )
-        {
-            this.control = control;
-        }
-
-        @Override
-        public Display getDisplay ()
-        {
-            return this.control.getDisplay ();
-        }
-
-        @Override
-        public void redraw ()
-        {
-            this.control.redraw ();
-        }
-
-        @Override
-        public Rectangle getClientArea ()
-        {
-            return this.control.getClientArea ();
-        }
-
-        @Override
-        public void addMouseListener ( final MouseListener listener )
-        {
-            this.control.addMouseListener ( listener );
-        }
-
-        @Override
-        public void addMouseMoveListener ( final MouseMoveListener listener )
-        {
-            this.control.addMouseMoveListener ( listener );
-        }
-
-        @Override
-        public void addMouseWheelListener ( final MouseWheelListener listener )
-        {
-            this.control.addMouseWheelListener ( listener );
-        }
-
-        @Override
-        public void removeMouseListener ( final MouseListener listener )
-        {
-            this.control.removeMouseListener ( listener );
-        }
-
-        @Override
-        public void removeMouseMoveListener ( final MouseMoveListener listener )
-        {
-            this.control.removeMouseMoveListener ( listener );
-        }
-
-        @Override
-        public void removeMouseWheelListener ( final MouseWheelListener listener )
-        {
-            this.control.removeMouseWheelListener ( listener );
-        }
-    }
 
     private final ChartRenderer chartRenderer;
 

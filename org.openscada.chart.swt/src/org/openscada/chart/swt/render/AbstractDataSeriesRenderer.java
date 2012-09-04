@@ -58,7 +58,7 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
 
     protected void handleDataUpdate ( final long startTimestamp, final long endTimestamp )
     {
-        logger.debug ( "Data update - {} -> {}", startTimestamp, endTimestamp );
+        logger.trace ( "Data update - {} -> {}", startTimestamp, endTimestamp );
         if ( this.chartArea.isDisposed () )
         {
             return;

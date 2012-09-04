@@ -180,7 +180,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
         // draw line
 
-        g.drawLine ( this.rect.x, y + ( this.bottom ? 0 : -1 ), this.rect.width, y + ( this.bottom ? 0 : -1 ) );
+        g.drawLine ( this.rect.x, y + ( this.bottom ? 0 : -1 ), this.rect.x + this.rect.width, y + ( this.bottom ? 0 : -1 ) );
 
         // draw labels
 

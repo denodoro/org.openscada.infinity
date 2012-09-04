@@ -8,7 +8,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -28,30 +27,6 @@ import org.openscada.chart.swt.render.YAxisDynamicRenderer;
 
 public class ChartManager extends Composite
 {
-
-    public static class EmptyComposite extends Composite
-    {
-        public EmptyComposite ( final Composite parent, final int style )
-        {
-            super ( parent, style );
-            setVisible ( false );
-        }
-
-        @Override
-        public Point computeSize ( final int wHint, final int hHint, final boolean changed )
-        {
-            if ( !isVisible () )
-            {
-                return new Point ( 0, 0 );
-            }
-            else
-            {
-                return super.computeSize ( wHint, hHint, changed );
-            }
-        }
-
-    }
-
     private final ChartArea chartArea;
 
     private final Label title;
