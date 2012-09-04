@@ -66,9 +66,9 @@ public class ChartArea extends Canvas
             this.bounds = bounds;
         }
 
-        public void render ( final PaintEvent e )
+        public void render ( final Graphics g )
         {
-            this.renderer.render ( e, this.bounds );
+            this.renderer.render ( g, this.bounds );
         }
     }
 
@@ -124,9 +124,10 @@ public class ChartArea extends Canvas
 
         e.gc.setAntialias ( SWT.ON );
 
+        final Graphics g = new SWTGraphics ( e.gc );
         for ( final RendererEntry renderer : this.renderers )
         {
-            renderer.render ( e );
+            renderer.render ( g );
         }
     }
 

@@ -22,8 +22,6 @@ package org.openscada.chart.swt.render;
 import java.util.NavigableSet;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
@@ -32,6 +30,7 @@ import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DataPoint;
+import org.openscada.chart.swt.Graphics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,10 +45,8 @@ public class StepRenderer extends AbstractLineRender implements Renderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRect )
+    public void render ( final Graphics g, final Rectangle clientRect )
     {
-        final GC gc = e.gc;
-
         final XAxis xAxis = this.seriesData.getXAxis ();
         final YAxis yAxis = this.seriesData.getYAxis ();
 
@@ -59,7 +56,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
             return;
         }
 
-        final Path path = new Path ( gc.getDevice () );
+        final Path path = g.createPath ();
         try
         {
 
@@ -101,13 +98,13 @@ public class StepRenderer extends AbstractLineRender implements Renderer
                 }
             }
 
-            gc.setAlpha ( 255 );
-            gc.setLineAttributes ( this.lineAttributes );
-            gc.setForeground ( this.lineColor != null ? this.lineColor : gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
+            g.setAlpha ( 255 );
+            g.setLineAttributes ( this.lineAttributes );
+            g.setForeground ( this.lineColor != null ? this.lineColor : g.getSystemColor ( SWT.COLOR_BLACK ) );
 
-            gc.setClipping ( clientRect );
-            gc.drawPath ( path );
-            gc.setClipping ( (Rectangle)null );
+            g.setClipping ( clientRect );
+            g.drawPath ( path );
+            g.setClipping ( (Rectangle)null );
         }
         finally
         {

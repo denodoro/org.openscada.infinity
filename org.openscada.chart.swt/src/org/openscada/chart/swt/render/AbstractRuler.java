@@ -1,10 +1,10 @@
 package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Rectangle;
+import org.openscada.chart.swt.Graphics;
 
 public abstract class AbstractRuler implements Renderer
 {
@@ -40,7 +40,7 @@ public abstract class AbstractRuler implements Renderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRectangle )
+    public void render ( final Graphics g, final Rectangle clientRectangle )
     {
         if ( !this.visible )
         {
@@ -49,23 +49,23 @@ public abstract class AbstractRuler implements Renderer
 
         if ( this.color == null )
         {
-            e.gc.setForeground ( e.gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
-            e.gc.setBackground ( e.gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
+            g.setForeground ( g.getSystemColor ( SWT.COLOR_BLACK ) );
+            g.setBackground ( g.getSystemColor ( SWT.COLOR_BLACK ) );
         }
         else
         {
-            e.gc.setForeground ( this.color );
-            e.gc.setBackground ( this.color );
+            g.setForeground ( this.color );
+            g.setBackground ( this.color );
         }
 
-        e.gc.setAlpha ( this.alpha );
+        g.setAlpha ( this.alpha );
 
-        e.gc.setLineAttributes ( this.lineAttributes != null ? this.lineAttributes : DEFAULT_LINE_ATTRIBUTES );
+        g.setLineAttributes ( this.lineAttributes != null ? this.lineAttributes : DEFAULT_LINE_ATTRIBUTES );
 
-        doRender ( e, clientRectangle );
+        doRender ( g, clientRectangle );
     }
 
-    protected abstract void doRender ( PaintEvent e, Rectangle clientRectangle );
+    protected abstract void doRender ( Graphics g, Rectangle clientRectangle );
 
     @Override
     public Rectangle resize ( final Rectangle clientRectangle )

@@ -24,7 +24,6 @@ import java.beans.PropertyChangeListener;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
@@ -32,6 +31,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.Graphics;
 
 public class XAxisDynamicRenderer extends AbstractRenderer
 {
@@ -155,14 +155,14 @@ public class XAxisDynamicRenderer extends AbstractRenderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRectangle )
+    public void render ( final Graphics g, final Rectangle clientRectangle )
     {
         if ( this.rect.width == 0 || this.rect.height == 0 )
         {
             return;
         }
 
-        e.gc.setLineAttributes ( this.lineAttributes );
+        g.setLineAttributes ( this.lineAttributes );
 
         final int y = this.bottom ? this.rect.y : this.rect.y + this.rect.height;
 
@@ -172,19 +172,19 @@ public class XAxisDynamicRenderer extends AbstractRenderer
             final String label = this.axis.getLabel ();
             if ( label != null )
             {
-                final Point size = e.gc.textExtent ( label );
+                final Point size = g.textExtent ( label );
                 final int labelX = this.rect.x + this.rect.width / 2 - size.x / 2;
-                e.gc.drawText ( label, labelX, this.bottom ? this.rect.y + this.rect.height - ( size.y + this.textPadding ) : this.rect.y + this.textPadding );
+                g.drawText ( label, labelX, this.bottom ? this.rect.y + this.rect.height - ( size.y + this.textPadding ) : this.rect.y + this.textPadding, null );
             }
         }
 
         // draw line
 
-        e.gc.drawLine ( this.rect.x, y + ( this.bottom ? 0 : -1 ), this.rect.width, y + ( this.bottom ? 0 : -1 ) );
+        g.drawLine ( this.rect.x, y + ( this.bottom ? 0 : -1 ), this.rect.width, y + ( this.bottom ? 0 : -1 ) );
 
         // draw labels
 
-        final Point sampleLabelSize = e.gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
+        final Point sampleLabelSize = g.textExtent ( String.format ( this.format, this.axis.getMin () ) );
         final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, this.rect.width, this.axis.getMax () - this.axis.getMin () );
 
         if ( step <= 0 )
@@ -200,10 +200,10 @@ public class XAxisDynamicRenderer extends AbstractRenderer
             final int x = this.rect.x + (int)this.axis.translateToClient ( this.rect.width, value );
 
             final String label = String.format ( this.format, value );
-            final Point labelSize = e.gc.textExtent ( label );
+            final Point labelSize = g.textExtent ( label );
 
-            e.gc.drawText ( label, x, this.bottom ? this.rect.y + this.textPadding : this.rect.y + this.rect.height - ( labelSize.y + this.textPadding ) );
-            e.gc.drawLine ( x, y, x, this.bottom ? y + this.markerSize : y - this.markerSize );
+            g.drawText ( label, x, this.bottom ? this.rect.y + this.textPadding : this.rect.y + this.rect.height - ( labelSize.y + this.textPadding ), null );
+            g.drawLine ( x, y, x, this.bottom ? y + this.markerSize : y - this.markerSize );
         }
 
     }

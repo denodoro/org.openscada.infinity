@@ -23,14 +23,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.graphics.Transform;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.Graphics;
 
 public class YAxisDynamicRenderer extends AbstractRenderer
 {
@@ -41,8 +39,6 @@ public class YAxisDynamicRenderer extends AbstractRenderer
     private boolean left;
 
     private Double step;
-
-    private final Transform rotate;
 
     private final PropertyChangeListener propertyChangeListener;
 
@@ -57,8 +53,6 @@ public class YAxisDynamicRenderer extends AbstractRenderer
     public YAxisDynamicRenderer ( final ChartArea chartArea )
     {
         super ( chartArea );
-
-        this.rotate = createTransform ( chartArea.getDisplay () );
 
         this.lineAttributes = new LineAttributes ( 1.0f, SWT.CAP_FLAT, SWT.JOIN_BEVEL, SWT.LINE_SOLID, new float[0], 0.0f, 0.0f );
         this.labelSpacing = 20;
@@ -105,13 +99,6 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         return this.format;
     }
 
-    @Override
-    public void dispose ()
-    {
-        super.dispose ();
-        this.rotate.dispose ();
-    }
-
     public void setAxis ( final YAxis axis )
     {
         checkWidget ();
@@ -146,30 +133,23 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         this.step = step;
     }
 
-    private Transform createTransform ( final Device device )
-    {
-        final Transform rotate = new Transform ( device );
-        rotate.rotate ( -90 );
-        return rotate;
-    }
-
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRectangle )
+    public void render ( final Graphics g, final Rectangle clientRectangle )
     {
         if ( this.rect.width == 0 || this.rect.height == 0 )
         {
             return;
         }
 
-        e.gc.setClipping ( this.rect );
+        g.setClipping ( this.rect );
 
-        e.gc.setLineAttributes ( this.lineAttributes );
+        g.setLineAttributes ( this.lineAttributes );
 
         final int x = ( this.left ? this.rect.width - 1 : 0 ) + this.rect.x;
 
-        e.gc.drawLine ( x, this.rect.y, x, this.rect.y + this.rect.height );
+        g.drawLine ( x, this.rect.y, x, this.rect.y + this.rect.height );
 
-        final Point sampleLabelSize = e.gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
+        final Point sampleLabelSize = g.textExtent ( String.format ( this.format, this.axis.getMin () ) );
         final double step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.y + this.labelSpacing, this.rect.height, this.axis.getMax () - this.axis.getMin () );
         double value = stepValue ( this.axis.getMin (), step );
 
@@ -179,26 +159,18 @@ public class YAxisDynamicRenderer extends AbstractRenderer
             final int y = (int)this.axis.translateToClient ( this.rect.height, value ) + this.rect.y;
 
             final String label = String.format ( this.format, value );
-            final Point labelSize = e.gc.textExtent ( label );
-            e.gc.drawText ( label, this.left ? x - ( labelSize.x + 10 ) : x + 10, y - labelSize.y / 2 );
-            e.gc.drawLine ( x, y, x + ( this.left ? -1 : 1 ) * 8, y );
+            final Point labelSize = g.textExtent ( label );
+            g.drawText ( label, this.left ? x - ( labelSize.x + 10 ) : x + 10, y - labelSize.y / 2, null );
+            g.drawLine ( x, y, x + ( this.left ? -1 : 1 ) * 8, y );
         }
 
         final String label = this.axis.getLabel ();
         if ( label != null )
         {
-            try
-            {
-                e.gc.setTransform ( this.rotate );
-                final Point size = e.gc.textExtent ( label );
-                e.gc.drawText ( label, -this.rect.height + this.rect.height / 2 - size.x / 2, !this.left ? this.rect.width - size.y : 0 );
-            }
-            finally
-            {
-                e.gc.setTransform ( null );
-            }
+            final Point size = g.textExtent ( label );
+            g.drawText ( label, -this.rect.height + this.rect.height / 2 - size.x / 2, !this.left ? this.rect.width - size.y : 0, -90.0f );
         }
-        e.gc.setClipping ( (Rectangle)null );
+        g.setClipping ( (Rectangle)null );
     }
 
     @Override

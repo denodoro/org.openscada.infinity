@@ -25,13 +25,13 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.Graphics;
 import org.openscada.chart.swt.render.Renderer;
 
 public class MouseDragZoomer implements Renderer
@@ -131,14 +131,14 @@ public class MouseDragZoomer implements Renderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRectangle )
+    public void render ( final Graphics g, final Rectangle clientRectangle )
     {
         if ( this.selection != null )
         {
-            e.gc.setLineAttributes ( new LineAttributes ( 1.0f ) );
-            e.gc.setForeground ( e.gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
+            g.setLineAttributes ( new LineAttributes ( 1.0f ) );
+            g.setForeground ( g.getSystemColor ( SWT.COLOR_BLACK ) );
 
-            e.gc.drawRectangle ( this.selection );
+            g.drawRectangle ( this.selection );
         }
     }
 

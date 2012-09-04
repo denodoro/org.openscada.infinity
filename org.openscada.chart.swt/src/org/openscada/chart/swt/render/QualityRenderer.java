@@ -22,8 +22,6 @@ package org.openscada.chart.swt.render;
 import java.util.SortedSet;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.DataEntry;
 import org.openscada.chart.SeriesData;
@@ -31,6 +29,7 @@ import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.DataPoint;
+import org.openscada.chart.swt.Graphics;
 
 public class QualityRenderer extends AbstractDataSeriesRenderer
 {
@@ -41,24 +40,22 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
     }
 
     @Override
-    public void render ( final PaintEvent e, final Rectangle clientRect )
+    public void render ( final Graphics g, final Rectangle clientRect )
     {
-        final GC gc = e.gc;
-
         final XAxis xAxis = this.seriesData.getXAxis ();
         final YAxis yAxis = this.seriesData.getYAxis ();
 
-        gc.setBackground ( gc.getDevice ().getSystemColor ( SWT.COLOR_RED ) );
-        gc.setAlpha ( 128 );
+        g.setBackground ( g.getSystemColor ( SWT.COLOR_RED ) );
+        g.setAlpha ( 128 );
 
         final SortedSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
         if ( entries.isEmpty () )
         {
-            e.gc.fillRectangle ( clientRect );
+            g.fillRectangle ( clientRect );
             return;
         }
 
-        e.gc.setClipping ( clientRect );
+        g.setClipping ( clientRect );
 
         final DataPoint point = new DataPoint ();
 
@@ -69,18 +66,18 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
         translateToPoint ( clientRect, xAxis, yAxis, point, first );
         if ( point.x > 0 )
         {
-            e.gc.fillRectangle ( clientRect.x, clientRect.y, (int)point.x - clientRect.x, clientRect.height );
+            g.fillRectangle ( clientRect.x, clientRect.y, (int)point.x - clientRect.x, clientRect.height );
         }
 
         final DataEntry last = entries.last ();
         translateToPoint ( clientRect, xAxis, yAxis, point, last );
         if ( point.x >= 0 && point.x < clientRect.width )
         {
-            e.gc.fillRectangle ( (int)point.x, clientRect.y, (int) ( clientRect.width - ( point.x - 1 - clientRect.x ) ), clientRect.height );
+            g.fillRectangle ( (int)point.x, clientRect.y, (int) ( clientRect.width - ( point.x - 1 - clientRect.x ) ), clientRect.height );
         }
         else if ( point.x < 0 )
         {
-            e.gc.fillRectangle ( clientRect );
+            g.fillRectangle ( clientRect );
         }
 
         for ( final DataEntry entry : entries )
@@ -89,14 +86,14 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
 
             if ( lastPosition != null )
             {
-                e.gc.fillRectangle ( lastPosition, clientRect.y, (int)point.x - lastPosition, clientRect.height );
+                g.fillRectangle ( lastPosition, clientRect.y, (int)point.x - lastPosition, clientRect.height );
             }
 
             if ( !hasData )
             {
                 if ( lastValidPosition != null && lastPosition == null )
                 {
-                    e.gc.fillRectangle ( lastValidPosition, clientRect.y, (int)point.x - lastValidPosition, clientRect.height );
+                    g.fillRectangle ( lastValidPosition, clientRect.y, (int)point.x - lastValidPosition, clientRect.height );
                 }
                 lastPosition = (int)point.x;
             }
@@ -107,6 +104,6 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
             }
         }
 
-        e.gc.setClipping ( (Rectangle)null );
+        g.setClipping ( (Rectangle)null );
     }
 }

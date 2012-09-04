@@ -19,12 +19,12 @@
 
 package org.openscada.chart.swt.render;
 
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Rectangle;
+import org.openscada.chart.swt.Graphics;
 
 public interface Renderer
 {
-    public void render ( PaintEvent e, Rectangle clientRectangle );
+    public void render ( Graphics g, Rectangle clientRectangle );
 
     public Rectangle resize ( Rectangle clientRectangle );
 }

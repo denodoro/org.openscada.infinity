@@ -20,9 +20,9 @@
 package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.YAxis;
+import org.openscada.chart.swt.Graphics;
 
 public abstract class AbstractPositionYRuler extends AbstractRuler
 {
@@ -50,7 +50,7 @@ public abstract class AbstractPositionYRuler extends AbstractRuler
     public abstract Double getPosition ();
 
     @Override
-    protected void doRender ( final PaintEvent e, final Rectangle clientRectangle )
+    protected void doRender ( final Graphics g, final Rectangle clientRectangle )
     {
         if ( this.axis == null )
         {
@@ -67,11 +67,11 @@ public abstract class AbstractPositionYRuler extends AbstractRuler
 
         if ( ( this.style & SWT.TOP ) > 0 )
         {
-            e.gc.fillRectangle ( clientRectangle.x, clientRectangle.y, clientRectangle.width, y );
+            g.fillRectangle ( clientRectangle.x, clientRectangle.y, clientRectangle.width, y );
         }
         else if ( ( this.style & SWT.BOTTOM ) > 0 )
         {
-            e.gc.fillRectangle ( clientRectangle.x, y, clientRectangle.width, clientRectangle.height - y );
+            g.fillRectangle ( clientRectangle.x, y, clientRectangle.width, clientRectangle.height - y );
         }
         else
         {
@@ -79,7 +79,7 @@ public abstract class AbstractPositionYRuler extends AbstractRuler
             {
                 return;
             }
-            e.gc.drawLine ( clientRectangle.x, clientRectangle.y + y, clientRectangle.width, clientRectangle.y + y );
+            g.drawLine ( clientRectangle.x, clientRectangle.y + y, clientRectangle.width, clientRectangle.y + y );
         }
     }
 

@@ -19,9 +19,9 @@
 
 package org.openscada.chart.swt.render;
 
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
+import org.openscada.chart.swt.Graphics;
 
 public abstract class AbstractPositionXRuler extends AbstractRuler
 {
@@ -41,7 +41,7 @@ public abstract class AbstractPositionXRuler extends AbstractRuler
     }
 
     @Override
-    protected void doRender ( final PaintEvent e, final Rectangle clientRectangle )
+    protected void doRender ( final Graphics g, final Rectangle clientRectangle )
     {
         if ( this.axis == null )
         {
@@ -62,7 +62,7 @@ public abstract class AbstractPositionXRuler extends AbstractRuler
             return;
         }
 
-        e.gc.drawLine ( clientRectangle.x + x, clientRectangle.y, clientRectangle.x + x, clientRectangle.y + clientRectangle.height );
+        g.drawLine ( clientRectangle.x + x, clientRectangle.y, clientRectangle.x + x, clientRectangle.y + clientRectangle.height );
     }
 
 }
