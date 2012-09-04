@@ -19,68 +19,104 @@
 
 package org.openscada.chart.swt;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.openscada.chart.swt.render.Renderer;
 
 public class ChartArea extends Canvas
 {
-    private static class RendererEntry
+
+    public static class ChartAreaRenderer extends ChartRenderer
     {
-        private final Integer order;
 
-        private final Renderer renderer;
+        private final Composite control;
 
-        private Rectangle bounds;
-
-        public RendererEntry ( final Renderer renderer, final int order )
+        public ChartAreaRenderer ( final Composite control )
         {
-            this.renderer = renderer;
-            this.order = order;
+            this.control = control;
         }
 
-        public Integer getOrder ()
+        @Override
+        public Display getDisplay ()
         {
-            return this.order;
+            return this.control.getDisplay ();
         }
 
-        public Renderer getRenderer ()
+        @Override
+        public void redraw ()
         {
-            return this.renderer;
+            this.control.redraw ();
         }
 
-        public void setBounds ( final Rectangle bounds )
+        @Override
+        public Rectangle getClientArea ()
         {
-            this.bounds = bounds;
+            return this.control.getClientArea ();
         }
 
-        public void render ( final Graphics g )
+        @Override
+        public void addMouseListener ( final MouseListener listener )
         {
-            this.renderer.render ( g, this.bounds );
+            this.control.addMouseListener ( listener );
+        }
+
+        @Override
+        public void addMouseMoveListener ( final MouseMoveListener listener )
+        {
+            this.control.addMouseMoveListener ( listener );
+        }
+
+        @Override
+        public void addMouseWheelListener ( final MouseWheelListener listener )
+        {
+            this.control.addMouseWheelListener ( listener );
+        }
+
+        @Override
+        public void removeMouseListener ( final MouseListener listener )
+        {
+            this.control.removeMouseListener ( listener );
+        }
+
+        @Override
+        public void removeMouseMoveListener ( final MouseMoveListener listener )
+        {
+            this.control.removeMouseMoveListener ( listener );
+        }
+
+        @Override
+        public void removeMouseWheelListener ( final MouseWheelListener listener )
+        {
+            this.control.removeMouseWheelListener ( listener );
         }
     }
 
-    private final List<RendererEntry> renderers = new LinkedList<RendererEntry> ();
-
-    private boolean stale;
-
-    private boolean updatePending;
+    private final ChartRenderer chartRenderer;
 
     public ChartArea ( final Composite parent, final int style )
     {
         super ( parent, SWT.DOUBLE_BUFFERED );
+        this.chartRenderer = new ChartAreaRenderer ( this );
+
+        addDisposeListener ( new DisposeListener () {
+
+            @Override
+            public void widgetDisposed ( final DisposeEvent e )
+            {
+                onDispose ();
+            }
+        } );
 
         addPaintListener ( new PaintListener () {
 
@@ -101,100 +137,23 @@ public class ChartArea extends Canvas
         } );
     }
 
-    protected void resizeAll ( Rectangle clientRectangle )
+    public ChartRenderer getChartRenderer ()
     {
-        for ( final RendererEntry renderer : this.renderers )
-        {
-            final Rectangle newBounds = renderer.getRenderer ().resize ( clientRectangle );
-            if ( newBounds != null )
-            {
-                clientRectangle = newBounds;
-            }
-            renderer.setBounds ( clientRectangle );
-        }
+        return this.chartRenderer;
+    }
+
+    protected void resizeAll ( final Rectangle clientArea )
+    {
+        this.chartRenderer.resizeAll ( clientArea );
+    }
+
+    protected void onDispose ()
+    {
+        this.chartRenderer.dispose ();
     }
 
     protected void onPaint ( final PaintEvent e )
     {
-        final Rectangle rect = getClientArea ();
-        if ( rect.width == 0 || rect.height == 0 )
-        {
-            return;
-        }
-
-        e.gc.setAntialias ( SWT.ON );
-
-        final Graphics g = new SWTGraphics ( e.gc );
-        for ( final RendererEntry renderer : this.renderers )
-        {
-            renderer.render ( g );
-        }
-    }
-
-    public void addRenderer ( final Renderer renderer )
-    {
-        addRenderer ( renderer, 0 );
-    }
-
-    public void addRenderer ( final Renderer renderer, final int order )
-    {
-        checkWidget ();
-
-        this.renderers.add ( new RendererEntry ( renderer, order ) );
-
-        Collections.sort ( this.renderers, new Comparator<RendererEntry> () {
-
-            @Override
-            public int compare ( final RendererEntry o1, final RendererEntry o2 )
-            {
-                return o1.getOrder ().compareTo ( o2.getOrder () );
-            }
-        } );
-
-        resizeAll ( getClientArea () );
-    }
-
-    public void removeRenderer ( final Renderer renderer )
-    {
-        checkWidget ();
-
-        final Iterator<RendererEntry> i = this.renderers.iterator ();
-        while ( i.hasNext () )
-        {
-            final RendererEntry entry = i.next ();
-            if ( entry.getRenderer ().equals ( renderer ) )
-            {
-                i.remove ();
-            }
-        }
-    }
-
-    public void refreshData ()
-    {
-        checkWidget ();
-        if ( this.stale )
-        {
-            this.updatePending = true;
-        }
-        else
-        {
-            redraw ();
-        }
-    }
-
-    public void setStale ( final boolean stale )
-    {
-        setStale ( stale, false );
-    }
-
-    public void setStale ( final boolean stale, final boolean forceUpdate )
-    {
-        checkWidget ();
-        this.stale = stale;
-        if ( !stale && ( this.updatePending || forceUpdate ) )
-        {
-            this.updatePending = false;
-            redraw ();
-        }
+        this.chartRenderer.paint ( new SWTGraphics ( e.gc ) );
     }
 }

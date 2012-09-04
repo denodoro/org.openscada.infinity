@@ -30,7 +30,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.openscada.chart.XAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.Graphics;
 
 public class XAxisDynamicRenderer extends AbstractRenderer
@@ -58,7 +58,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
     private final int textPadding = 5;
 
-    public XAxisDynamicRenderer ( final ChartArea chartArea )
+    public XAxisDynamicRenderer ( final ChartRenderer chartArea )
     {
         super ( chartArea );
 

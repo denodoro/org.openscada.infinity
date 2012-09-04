@@ -20,15 +20,14 @@
 package org.openscada.chart.swt.controller;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
+import org.openscada.chart.swt.DisposeListener;
 
 public class MouseTransformer implements MouseListener, MouseMoveListener
 {
@@ -38,13 +37,13 @@ public class MouseTransformer implements MouseListener, MouseMoveListener
 
     private int startY;
 
-    private final ChartArea chartArea;
+    private final ChartRenderer chartArea;
 
     private final XAxis xAxis;
 
     private final YAxis yAxis;
 
-    public MouseTransformer ( final ChartArea chartArea, final XAxis xAxis, final YAxis yAxis )
+    public MouseTransformer ( final ChartRenderer chartArea, final XAxis xAxis, final YAxis yAxis )
     {
         this.chartArea = chartArea;
         this.xAxis = xAxis;
@@ -53,7 +52,7 @@ public class MouseTransformer implements MouseListener, MouseMoveListener
         chartArea.addDisposeListener ( new DisposeListener () {
 
             @Override
-            public void widgetDisposed ( final DisposeEvent e )
+            public void onDispose ()
             {
                 dispose ();
             }

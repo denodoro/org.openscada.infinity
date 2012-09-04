@@ -17,6 +17,7 @@ import org.openscada.chart.SeriesData;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.controller.MouseDragZoomer;
 import org.openscada.chart.swt.controller.MouseTransformer;
 import org.openscada.chart.swt.controller.MouseWheelZoomer;
@@ -103,6 +104,11 @@ public class ChartManager extends Composite
         return this.chartArea;
     }
 
+    public ChartRenderer getChartRenderer ()
+    {
+        return this.chartArea.getChartRenderer ();
+    }
+
     public void setChartBackground ( final Color color )
     {
         checkWidget ();
@@ -114,16 +120,16 @@ public class ChartManager extends Composite
     {
         checkWidget ();
 
-        new MouseTransformer ( this.chartArea, x, y );
-        new MouseDragZoomer ( this.chartArea, x, y );
-        new MouseWheelZoomer ( this.chartArea, x, y );
+        new MouseTransformer ( this.chartArea.getChartRenderer (), x, y );
+        new MouseDragZoomer ( this.chartArea.getChartRenderer (), x, y );
+        new MouseWheelZoomer ( this.chartArea.getChartRenderer (), x, y );
     }
 
     public XAxisDynamicRenderer addDynamicXAxis ( final XAxis x, final boolean top )
     {
         checkWidget ();
 
-        final XAxisDynamicRenderer renderer = new XAxisDynamicRenderer ( this.chartArea );
+        final XAxisDynamicRenderer renderer = new XAxisDynamicRenderer ( this.chartArea.getChartRenderer () );
         renderer.setAxis ( x );
         renderer.setAlign ( top ? SWT.TOP : SWT.BOTTOM );
         addRenderer ( renderer, -2 );
@@ -134,7 +140,7 @@ public class ChartManager extends Composite
     {
         checkWidget ();
 
-        final YAxisDynamicRenderer renderer = new YAxisDynamicRenderer ( this.chartArea );
+        final YAxisDynamicRenderer renderer = new YAxisDynamicRenderer ( this.chartArea.getChartRenderer () );
         renderer.setAxis ( y );
         renderer.setAlign ( left ? SWT.LEFT : SWT.RIGHT );
         addRenderer ( renderer, -1 );
@@ -145,8 +151,8 @@ public class ChartManager extends Composite
     {
         checkWidget ();
 
-        final StepRenderer renderer = new StepRenderer ( this.chartArea, abstractSeriesData );
-        this.chartArea.addRenderer ( renderer );
+        final StepRenderer renderer = new StepRenderer ( this.chartArea.getChartRenderer (), abstractSeriesData );
+        addRenderer ( renderer, 0 );
         return renderer;
     }
 
@@ -180,14 +186,14 @@ public class ChartManager extends Composite
     {
         checkWidget ();
 
-        this.chartArea.addRenderer ( renderer, order );
+        this.chartArea.getChartRenderer ().addRenderer ( renderer, order );
     }
 
     public void removeRenderer ( final Renderer renderer )
     {
         checkWidget ();
 
-        this.chartArea.removeRenderer ( renderer );
+        this.chartArea.getChartRenderer ().removeRenderer ( renderer );
     }
 
 }

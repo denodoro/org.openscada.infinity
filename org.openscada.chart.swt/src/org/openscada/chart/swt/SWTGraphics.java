@@ -19,6 +19,7 @@
 
 package org.openscada.chart.swt;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
@@ -147,4 +148,9 @@ public class SWTGraphics implements Graphics
         return this.gc.textExtent ( string );
     }
 
+    @Override
+    public void setAntialias ( final boolean state )
+    {
+        this.gc.setAntialias ( state ? SWT.ON : SWT.OFF );
+    }
 }

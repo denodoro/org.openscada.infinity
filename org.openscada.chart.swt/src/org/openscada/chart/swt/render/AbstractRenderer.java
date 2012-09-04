@@ -21,20 +21,20 @@ package org.openscada.chart.swt.render;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 
 public abstract class AbstractRenderer implements Renderer
 {
-    private final ChartArea chartArea;
-
     private final Display display;
 
     private boolean disposed = false;
 
-    public AbstractRenderer ( final ChartArea chartArea )
+    private final ChartRenderer chart;
+
+    public AbstractRenderer ( final ChartRenderer chart )
     {
-        this.chartArea = chartArea;
-        this.display = chartArea.getDisplay ();
+        this.chart = chart;
+        this.display = chart.getDisplay ();
     }
 
     public void dispose ()
@@ -42,14 +42,14 @@ public abstract class AbstractRenderer implements Renderer
         if ( !this.disposed )
         {
             this.disposed = true;
-            this.chartArea.removeRenderer ( this );
+            this.chart.removeRenderer ( this );
         }
     }
 
     protected void redraw ()
     {
         checkWidget ();
-        this.chartArea.redraw ();
+        this.chart.redraw ();
     }
 
     protected void checkWidget ()

@@ -28,7 +28,7 @@ import org.openscada.chart.DataEntry;
 import org.openscada.chart.SeriesData;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.DataPoint;
 import org.openscada.chart.swt.Graphics;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
 
     private final static Logger logger = LoggerFactory.getLogger ( StepRenderer.class );
 
-    public StepRenderer ( final ChartArea chartArea, final SeriesData abstractSeriesData )
+    public StepRenderer ( final ChartRenderer chartArea, final SeriesData abstractSeriesData )
     {
         super ( chartArea, abstractSeriesData );
     }

@@ -27,14 +27,14 @@ import org.openscada.chart.DataEntry;
 import org.openscada.chart.SeriesData;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.DataPoint;
 import org.openscada.chart.swt.Graphics;
 
 public class QualityRenderer extends AbstractDataSeriesRenderer
 {
 
-    public QualityRenderer ( final ChartArea chartArea, final SeriesData abstractSeriesData )
+    public QualityRenderer ( final ChartRenderer chartArea, final SeriesData abstractSeriesData )
     {
         super ( chartArea, abstractSeriesData );
     }

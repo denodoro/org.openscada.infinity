@@ -22,7 +22,7 @@ package org.openscada.chart.swt.render;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.openscada.chart.SeriesData;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 
 public abstract class AbstractLineRender extends AbstractDataSeriesRenderer
 {
@@ -30,9 +30,9 @@ public abstract class AbstractLineRender extends AbstractDataSeriesRenderer
 
     protected LineAttributes lineAttributes;
 
-    public AbstractLineRender ( final ChartArea chartArea, final SeriesData abstractSeriesData )
+    public AbstractLineRender ( final ChartRenderer chart, final SeriesData abstractSeriesData )
     {
-        super ( chartArea, abstractSeriesData );
+        super ( chart, abstractSeriesData );
         this.lineAttributes = new LineAttributes ( 1.0f );
     }
 

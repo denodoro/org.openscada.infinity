@@ -112,13 +112,13 @@ public class Application implements IApplication
             }
         };
 
-        final LinearRenderer series1Renderer = new LinearRenderer ( chart, series1 );
+        final LinearRenderer series1Renderer = new LinearRenderer ( chart.getChartRenderer (), series1 );
         series1Renderer.setLineColor ( resourceManager.createColor ( new RGB ( 255, 0, 0 ) ) );
-        chart.addRenderer ( series1Renderer );
+        chart.getChartRenderer ().addRenderer ( series1Renderer );
 
-        chart.addRenderer ( new LinearRenderer ( chart, series4 ) );
-        chart.addRenderer ( new StepRenderer ( chart, series3 ) );
-        chart.addRenderer ( new QualityRenderer ( chart, series4 ) );
+        chart.getChartRenderer ().addRenderer ( new LinearRenderer ( chart.getChartRenderer (), series4 ) );
+        chart.getChartRenderer ().addRenderer ( new StepRenderer ( chart.getChartRenderer (), series3 ) );
+        chart.getChartRenderer ().addRenderer ( new QualityRenderer ( chart.getChartRenderer (), series4 ) );
 
         createSine ( series1, -10, +10, 0.05, 100.0, 100 );
         createSine ( series2, -20, +20, 0.1, 50.0, 200 );
@@ -127,33 +127,33 @@ public class Application implements IApplication
         x.setMinMax ( series1.getData ().getMinTimestamp (), series1.getData ().getMaxTimestamp () );
         y.setMinMax ( series1.getData ().getMinValue (), series1.getData ().getMaxValue () );
 
-        new MouseWheelZoomer ( chart, x, y );
-        new MouseTransformer ( chart, x, y );
-        new MouseDragZoomer ( chart, x, y );
+        new MouseWheelZoomer ( chart.getChartRenderer (), x, y );
+        new MouseTransformer ( chart.getChartRenderer (), x, y );
+        new MouseDragZoomer ( chart.getChartRenderer (), x, y );
 
         // add new renderers
 
-        final XAxisDynamicRenderer xAxisRender1 = new XAxisDynamicRenderer ( chart );
+        final XAxisDynamicRenderer xAxisRender1 = new XAxisDynamicRenderer ( chart.getChartRenderer () );
         xAxisRender1.setAxis ( x );
-        chart.addRenderer ( xAxisRender1, -1 );
+        chart.getChartRenderer ().addRenderer ( xAxisRender1, -1 );
 
-        final XAxisDynamicRenderer xAxisRender2 = new XAxisDynamicRenderer ( chart );
+        final XAxisDynamicRenderer xAxisRender2 = new XAxisDynamicRenderer ( chart.getChartRenderer () );
         xAxisRender2.setAlign ( SWT.TOP );
         xAxisRender2.setAxis ( x );
         xAxisRender2.setFormat ( "%1$tc\n%1$tc" );
-        chart.addRenderer ( xAxisRender2, -1 );
+        chart.getChartRenderer ().addRenderer ( xAxisRender2, -1 );
 
-        final YAxisDynamicRenderer yAxisRender1 = new YAxisDynamicRenderer ( chart );
+        final YAxisDynamicRenderer yAxisRender1 = new YAxisDynamicRenderer ( chart.getChartRenderer () );
         yAxisRender1.setAlign ( SWT.LEFT );
         yAxisRender1.setAxis ( y );
         yAxisRender1.setFormat ( "%.2f" );
-        chart.addRenderer ( yAxisRender1, -1 );
+        chart.getChartRenderer ().addRenderer ( yAxisRender1, -1 );
 
-        final YAxisDynamicRenderer yAxisRender2 = new YAxisDynamicRenderer ( chart );
+        final YAxisDynamicRenderer yAxisRender2 = new YAxisDynamicRenderer ( chart.getChartRenderer () );
         yAxisRender2.setAlign ( SWT.RIGHT );
         yAxisRender2.setAxis ( y );
         yAxisRender2.setFormat ( "%.2f" );
-        chart.addRenderer ( yAxisRender2, -1 );
+        chart.getChartRenderer ().addRenderer ( yAxisRender2, -1 );
 
         // start
 

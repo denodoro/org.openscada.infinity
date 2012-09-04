@@ -27,7 +27,7 @@ import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.YAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.Graphics;
 
 public class YAxisDynamicRenderer extends AbstractRenderer
@@ -50,7 +50,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
     private final int labelSpacing;
 
-    public YAxisDynamicRenderer ( final ChartArea chartArea )
+    public YAxisDynamicRenderer ( final ChartRenderer chartArea )
     {
         super ( chartArea );
 

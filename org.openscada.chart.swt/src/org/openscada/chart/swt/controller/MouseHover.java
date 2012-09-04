@@ -19,13 +19,12 @@
 
 package org.openscada.chart.swt.controller;
 
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
+import org.openscada.chart.swt.DisposeListener;
 import org.openscada.chart.swt.render.AbstractPositionXRuler;
 
 public class MouseHover extends AbstractPositionXRuler implements MouseMoveListener
@@ -35,7 +34,7 @@ public class MouseHover extends AbstractPositionXRuler implements MouseMoveListe
         public void mouseMove ( MouseEvent e, long timestamp );
     }
 
-    private final ChartArea chart;
+    private final ChartRenderer chart;
 
     private final XAxis xAxis;
 
@@ -45,7 +44,7 @@ public class MouseHover extends AbstractPositionXRuler implements MouseMoveListe
 
     private Rectangle clientRect;
 
-    public MouseHover ( final ChartArea chart, final XAxis xAxis, final Listener listener )
+    public MouseHover ( final ChartRenderer chart, final XAxis xAxis, final Listener listener )
     {
         super ( xAxis );
 
@@ -57,7 +56,7 @@ public class MouseHover extends AbstractPositionXRuler implements MouseMoveListe
         chart.addDisposeListener ( new DisposeListener () {
 
             @Override
-            public void widgetDisposed ( final DisposeEvent e )
+            public void onDispose ()
             {
                 dispose ();
             }

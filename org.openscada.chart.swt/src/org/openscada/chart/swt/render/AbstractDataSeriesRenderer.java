@@ -25,7 +25,7 @@ import org.openscada.chart.SeriesData;
 import org.openscada.chart.SeriesDataListener;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.DataPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +39,9 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
 
     private SeriesDataListener listener;
 
-    private final ChartArea chartArea;
+    private final ChartRenderer chartArea;
 
-    public AbstractDataSeriesRenderer ( final ChartArea chartArea, final SeriesData seriesData )
+    public AbstractDataSeriesRenderer ( final ChartRenderer chartArea, final SeriesData seriesData )
     {
         this.chartArea = chartArea;
         this.seriesData = seriesData;

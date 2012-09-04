@@ -62,4 +62,6 @@ public interface Graphics
 
     public Point textExtent ( String string );
 
+    public void setAntialias ( boolean state );
+
 }

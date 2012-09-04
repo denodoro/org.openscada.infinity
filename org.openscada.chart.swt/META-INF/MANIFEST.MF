@@ -7,7 +7,8 @@ Bundle-Vendor: TH4 SYSTEMS GmbH
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.swt;bundle-version="3.7.0",
  org.openscada.chart;bundle-version="1.0.0",
- org.eclipse.jface;bundle-version="3.7.0"
+ org.eclipse.jface;bundle-version="3.7.0",
+ org.eclipse.core.runtime;bundle-version="3.7.0"
 Export-Package: org.openscada.chart.swt;version="1.0.0";
   uses:="org.openscada.chart,
    org.eclipse.swt.events,

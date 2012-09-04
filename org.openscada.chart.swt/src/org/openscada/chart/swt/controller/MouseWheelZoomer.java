@@ -20,13 +20,12 @@
 package org.openscada.chart.swt.controller;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
-import org.openscada.chart.swt.ChartArea;
+import org.openscada.chart.swt.ChartRenderer;
+import org.openscada.chart.swt.DisposeListener;
 
 public class MouseWheelZoomer implements MouseWheelListener
 {
@@ -34,9 +33,9 @@ public class MouseWheelZoomer implements MouseWheelListener
 
     private final YAxis y;
 
-    private final ChartArea chart;
+    private final ChartRenderer chart;
 
-    public MouseWheelZoomer ( final ChartArea chart, final XAxis x, final YAxis y )
+    public MouseWheelZoomer ( final ChartRenderer chart, final XAxis x, final YAxis y )
     {
         this.x = x;
         this.y = y;
@@ -45,7 +44,7 @@ public class MouseWheelZoomer implements MouseWheelListener
         this.chart.addDisposeListener ( new DisposeListener () {
 
             @Override
-            public void widgetDisposed ( final DisposeEvent e )
+            public void onDispose ()
             {
                 dispose ();
             }
