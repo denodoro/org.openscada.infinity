@@ -28,7 +28,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.openscada.chart.AsyncFunctionSeriesData;
@@ -46,10 +45,8 @@ import org.openscada.chart.swt.controller.MouseWheelZoomer;
 import org.openscada.chart.swt.render.LinearRenderer;
 import org.openscada.chart.swt.render.QualityRenderer;
 import org.openscada.chart.swt.render.StepRenderer;
-import org.openscada.chart.swt.render.XAxisDynamicWidget;
-import org.openscada.chart.swt.render.XAxisStaticWidget;
-import org.openscada.chart.swt.render.YAxisDynamicWidget;
-import org.openscada.chart.swt.render.YAxisStaticWidget;
+import org.openscada.chart.swt.render.XAxisDynamicRenderer;
+import org.openscada.chart.swt.render.YAxisDynamicRenderer;
 
 public class Application implements IApplication
 {
@@ -68,15 +65,8 @@ public class Application implements IApplication
 
         shell.setLayout ( layout );
 
-        new Composite ( shell, SWT.NONE ); // dummy 
-
-        final XAxisDynamicWidget xRenderer = new XAxisDynamicWidget ( shell, SWT.TOP );
-        xRenderer.setLayoutData ( new GridData ( SWT.FILL, SWT.BOTTOM, true, false ) );
-
-        new Composite ( shell, SWT.NONE ); // dummy 
-
-        final YAxisDynamicWidget yRenderer = new YAxisDynamicWidget ( shell, SWT.NONE );
-        yRenderer.setLayoutData ( new GridData ( SWT.END, SWT.FILL, false, true ) );
+        // final YAxisDynamicWidget yRenderer = new YAxisDynamicWidget ( shell, SWT.NONE );
+        // yRenderer.setLayoutData ( new GridData ( SWT.END, SWT.FILL, false, true ) );
         // yRenderer.setStep ( 15.0 );
         // yRenderer.setQuantizer ( new Quantizer1 ( 100 ) );
 
@@ -84,26 +74,21 @@ public class Application implements IApplication
         chart.setLayoutData ( makeCenterData () );
         chart.setBackground ( Display.getCurrent ().getSystemColor ( SWT.COLOR_WHITE ) );
 
-        final YAxisStaticWidget yRendererRight = new YAxisStaticWidget ( shell, SWT.RIGHT );
-        yRendererRight.setLayoutData ( new GridData ( SWT.END, SWT.FILL, false, true ) );
+        // final YAxisStaticWidget yRendererRight = new YAxisStaticWidget ( shell, SWT.RIGHT );
+        // yRendererRight.setLayoutData ( new GridData ( SWT.END, SWT.FILL, false, true ) );
 
         // new row
 
-        new Composite ( shell, SWT.NONE ); // dummy 
-
-        final XAxisStaticWidget xRendererButtom = new XAxisStaticWidget ( shell, SWT.BOTTOM );
-        xRendererButtom.setLayoutData ( new GridData ( SWT.FILL, SWT.TOP, true, false ) );
-
         final XAxis x = new XAxis ();
-        xRendererButtom.setAxis ( x );
-        xRenderer.setAxis ( x );
         x.setLabel ( "Time" );
 
         final YAxis y = new YAxis ();
+        /*
         yRenderer.setAxis ( y );
         yRenderer.setFormat ( "%.02f" );
         yRendererRight.setAxis ( y );
         yRendererRight.setFormat ( "%.02f" );
+        */
         y.setLabel ( "Value" );
 
         final ResourceManager resourceManager = new LocalResourceManager ( JFaceResources.getResources () );
@@ -145,6 +130,30 @@ public class Application implements IApplication
         new MouseWheelZoomer ( chart, x, y );
         new MouseTransformer ( chart, x, y );
         new MouseDragZoomer ( chart, x, y );
+
+        // add new renderers
+
+        final XAxisDynamicRenderer xAxisRender1 = new XAxisDynamicRenderer ( chart );
+        xAxisRender1.setAxis ( x );
+        chart.addRenderer ( xAxisRender1, -1 );
+
+        final XAxisDynamicRenderer xAxisRender2 = new XAxisDynamicRenderer ( chart );
+        xAxisRender2.setAlign ( SWT.TOP );
+        xAxisRender2.setAxis ( x );
+        xAxisRender2.setFormat ( "%1$tc\n%1$tc" );
+        chart.addRenderer ( xAxisRender2, -1 );
+
+        final YAxisDynamicRenderer yAxisRender1 = new YAxisDynamicRenderer ( chart );
+        yAxisRender1.setAlign ( SWT.LEFT );
+        yAxisRender1.setAxis ( y );
+        yAxisRender1.setFormat ( "%.2f" );
+        chart.addRenderer ( yAxisRender1, -1 );
+
+        final YAxisDynamicRenderer yAxisRender2 = new YAxisDynamicRenderer ( chart );
+        yAxisRender2.setAlign ( SWT.RIGHT );
+        yAxisRender2.setAxis ( y );
+        yAxisRender2.setFormat ( "%.2f" );
+        chart.addRenderer ( yAxisRender2, -1 );
 
         // start
 

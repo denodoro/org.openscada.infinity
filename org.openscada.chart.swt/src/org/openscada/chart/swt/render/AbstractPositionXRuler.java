@@ -62,7 +62,7 @@ public abstract class AbstractPositionXRuler extends AbstractRuler
             return;
         }
 
-        e.gc.drawLine ( x, 0, x, clientRectangle.height );
+        e.gc.drawLine ( clientRectangle.x + x, clientRectangle.y, clientRectangle.x + x, clientRectangle.y + clientRectangle.height );
     }
 
 }

@@ -67,11 +67,11 @@ public abstract class AbstractPositionYRuler extends AbstractRuler
 
         if ( ( this.style & SWT.TOP ) > 0 )
         {
-            e.gc.fillRectangle ( 0, 0, clientRectangle.width, y );
+            e.gc.fillRectangle ( clientRectangle.x, clientRectangle.y, clientRectangle.width, y );
         }
         else if ( ( this.style & SWT.BOTTOM ) > 0 )
         {
-            e.gc.fillRectangle ( 0, y, clientRectangle.width, clientRectangle.height - y );
+            e.gc.fillRectangle ( clientRectangle.x, y, clientRectangle.width, clientRectangle.height - y );
         }
         else
         {
@@ -79,7 +79,7 @@ public abstract class AbstractPositionYRuler extends AbstractRuler
             {
                 return;
             }
-            e.gc.drawLine ( 0, y, clientRectangle.width, y );
+            e.gc.drawLine ( clientRectangle.x, clientRectangle.y + y, clientRectangle.width, clientRectangle.y + y );
         }
     }
 

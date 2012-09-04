@@ -131,7 +131,7 @@ public class MouseDragZoomer implements Renderer
     }
 
     @Override
-    public Rectangle render ( final PaintEvent e, final Rectangle clientRectangle )
+    public void render ( final PaintEvent e, final Rectangle clientRectangle )
     {
         if ( this.selection != null )
         {
@@ -140,7 +140,6 @@ public class MouseDragZoomer implements Renderer
 
             e.gc.drawRectangle ( this.selection );
         }
-        return null;
     }
 
     @Override

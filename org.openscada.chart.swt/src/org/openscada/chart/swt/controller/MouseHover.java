@@ -23,6 +23,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.swt.ChartArea;
 import org.openscada.chart.swt.render.AbstractPositionXRuler;
@@ -41,6 +42,8 @@ public class MouseHover extends AbstractPositionXRuler implements MouseMoveListe
     private final Listener listener;
 
     private long position;
+
+    private Rectangle clientRect;
 
     public MouseHover ( final ChartArea chart, final XAxis xAxis, final Listener listener )
     {
@@ -75,7 +78,7 @@ public class MouseHover extends AbstractPositionXRuler implements MouseMoveListe
     {
         if ( this.listener != null )
         {
-            this.position = this.xAxis.translateToValue ( this.chart.getClientArea ().width, e.x );
+            this.position = this.xAxis.translateToValue ( this.clientRect.width, e.x - this.clientRect.x );
             this.listener.mouseMove ( e, this.position );
             if ( this.visible )
             {
@@ -88,6 +91,13 @@ public class MouseHover extends AbstractPositionXRuler implements MouseMoveListe
     public Long getPosition ()
     {
         return this.position;
+    }
+
+    @Override
+    public Rectangle resize ( final Rectangle clientRectangle )
+    {
+        this.clientRect = clientRectangle;
+        return super.resize ( clientRectangle );
     }
 
 }

@@ -40,11 +40,11 @@ public abstract class AbstractRuler implements Renderer
     }
 
     @Override
-    public Rectangle render ( final PaintEvent e, final Rectangle clientRectangle )
+    public void render ( final PaintEvent e, final Rectangle clientRectangle )
     {
         if ( !this.visible )
         {
-            return null;
+            return;
         }
 
         if ( this.color == null )
@@ -63,8 +63,6 @@ public abstract class AbstractRuler implements Renderer
         e.gc.setLineAttributes ( this.lineAttributes != null ? this.lineAttributes : DEFAULT_LINE_ATTRIBUTES );
 
         doRender ( e, clientRectangle );
-
-        return null;
     }
 
     protected abstract void doRender ( PaintEvent e, Rectangle clientRectangle );

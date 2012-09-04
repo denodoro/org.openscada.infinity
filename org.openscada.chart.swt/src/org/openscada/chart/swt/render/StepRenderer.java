@@ -46,7 +46,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
     }
 
     @Override
-    public Rectangle render ( final PaintEvent e, final Rectangle clientRect )
+    public void render ( final PaintEvent e, final Rectangle clientRect )
     {
         final GC gc = e.gc;
 
@@ -56,7 +56,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
         final NavigableSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
         if ( entries.isEmpty () )
         {
-            return null;
+            return;
         }
 
         final Path path = new Path ( gc.getDevice () );
@@ -104,13 +104,14 @@ public class StepRenderer extends AbstractLineRender implements Renderer
             gc.setAlpha ( 255 );
             gc.setLineAttributes ( this.lineAttributes );
             gc.setForeground ( this.lineColor != null ? this.lineColor : gc.getDevice ().getSystemColor ( SWT.COLOR_BLACK ) );
+
+            gc.setClipping ( clientRect );
             gc.drawPath ( path );
+            gc.setClipping ( (Rectangle)null );
         }
         finally
         {
             path.dispose ();
         }
-
-        return null;
     }
 }

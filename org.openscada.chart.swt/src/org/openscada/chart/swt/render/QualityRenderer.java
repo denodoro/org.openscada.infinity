@@ -41,7 +41,7 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
     }
 
     @Override
-    public Rectangle render ( final PaintEvent e, final Rectangle clientRect )
+    public void render ( final PaintEvent e, final Rectangle clientRect )
     {
         final GC gc = e.gc;
 
@@ -55,8 +55,10 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
         if ( entries.isEmpty () )
         {
             e.gc.fillRectangle ( clientRect );
-            return null;
+            return;
         }
+
+        e.gc.setClipping ( clientRect );
 
         final DataPoint point = new DataPoint ();
 
@@ -67,14 +69,14 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
         translateToPoint ( clientRect, xAxis, yAxis, point, first );
         if ( point.x > 0 )
         {
-            e.gc.fillRectangle ( 0, 0, (int)point.x, clientRect.height );
+            e.gc.fillRectangle ( clientRect.x, clientRect.y, (int)point.x - clientRect.x, clientRect.height );
         }
 
         final DataEntry last = entries.last ();
         translateToPoint ( clientRect, xAxis, yAxis, point, last );
         if ( point.x >= 0 && point.x < clientRect.width )
         {
-            e.gc.fillRectangle ( (int)point.x, 0, (int) ( clientRect.width - 1 - point.x ), clientRect.height );
+            e.gc.fillRectangle ( (int)point.x, clientRect.y, (int) ( clientRect.width - ( point.x - 1 - clientRect.x ) ), clientRect.height );
         }
         else if ( point.x < 0 )
         {
@@ -87,14 +89,14 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
 
             if ( lastPosition != null )
             {
-                e.gc.fillRectangle ( lastPosition, 0, (int)point.x - lastPosition, clientRect.height );
+                e.gc.fillRectangle ( lastPosition, clientRect.y, (int)point.x - lastPosition, clientRect.height );
             }
 
             if ( !hasData )
             {
                 if ( lastValidPosition != null && lastPosition == null )
                 {
-                    e.gc.fillRectangle ( lastValidPosition, 0, (int)point.x - lastValidPosition, clientRect.height );
+                    e.gc.fillRectangle ( lastValidPosition, clientRect.y, (int)point.x - lastValidPosition, clientRect.height );
                 }
                 lastPosition = (int)point.x;
             }
@@ -105,6 +107,6 @@ public class QualityRenderer extends AbstractDataSeriesRenderer
             }
         }
 
-        return null;
+        e.gc.setClipping ( (Rectangle)null );
     }
 }

@@ -9,7 +9,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -23,8 +22,8 @@ import org.openscada.chart.swt.controller.MouseTransformer;
 import org.openscada.chart.swt.controller.MouseWheelZoomer;
 import org.openscada.chart.swt.render.Renderer;
 import org.openscada.chart.swt.render.StepRenderer;
-import org.openscada.chart.swt.render.XAxisDynamicWidget;
-import org.openscada.chart.swt.render.YAxisDynamicWidget;
+import org.openscada.chart.swt.render.XAxisDynamicRenderer;
+import org.openscada.chart.swt.render.YAxisDynamicRenderer;
 
 public class ChartManager extends Composite
 {
@@ -54,15 +53,7 @@ public class ChartManager extends Composite
 
     private final ChartArea chartArea;
 
-    private final Composite cell21;
-
-    private final Composite cell23;
-
-    private final Composite cell32;
-
     private final Label title;
-
-    private final Composite cell12;
 
     public ChartManager ( final Composite parent, final int style )
     {
@@ -73,26 +64,12 @@ public class ChartManager extends Composite
         // title row
 
         this.title = new Label ( this, SWT.NONE );
-        this.title.setLayoutData ( new GridData ( GridData.CENTER, GridData.FILL, true, false, 3, 1 ) );
-
-        // row 1
-
-        new EmptyComposite ( this, SWT.NONE );
-        this.cell12 = makeCell ( SWT.VERTICAL );
-        new EmptyComposite ( this, SWT.NONE );
+        this.title.setLayoutData ( new GridData ( GridData.CENTER, GridData.FILL, true, false, 1, 1 ) );
 
         // row 2
 
-        this.cell21 = makeCell ( SWT.HORIZONTAL );
         this.chartArea = new ChartArea ( this, SWT.NONE );
         this.chartArea.setLayoutData ( makeMainLayoutData () );
-        this.cell23 = makeCell ( SWT.HORIZONTAL );
-
-        // row 3
-
-        new EmptyComposite ( this, SWT.NONE );
-        this.cell32 = makeCell ( SWT.VERTICAL );
-        new EmptyComposite ( this, SWT.NONE );
 
         addDisposeListener ( new DisposeListener () {
 
@@ -104,27 +81,9 @@ public class ChartManager extends Composite
         } );
     }
 
-    private Composite makeCell ( final int fillLayoutType )
+    private static GridLayout makeLayout ()
     {
-        final Composite cell = new Composite ( this, SWT.NONE );
-        cell.setVisible ( false );
-        cell.setLayout ( new FillLayout ( fillLayoutType ) );
-
-        if ( fillLayoutType == SWT.HORIZONTAL )
-        {
-            cell.setLayoutData ( new GridData ( GridData.END, GridData.FILL, false, true ) );
-        }
-        else
-        {
-            cell.setLayoutData ( new GridData ( GridData.FILL, GridData.BEGINNING, true, false ) );
-        }
-
-        return cell;
-    }
-
-    private GridLayout makeLayout ()
-    {
-        final GridLayout layout = new GridLayout ( 3, false );
+        final GridLayout layout = new GridLayout ( 1, false );
         layout.marginHeight = layout.marginWidth = 0;
         layout.horizontalSpacing = layout.verticalSpacing = 0;
         return layout;
@@ -160,33 +119,25 @@ public class ChartManager extends Composite
         new MouseWheelZoomer ( this.chartArea, x, y );
     }
 
-    public XAxisDynamicWidget addDynamicXAxis ( final XAxis x, final boolean top )
+    public XAxisDynamicRenderer addDynamicXAxis ( final XAxis x, final boolean top )
     {
         checkWidget ();
 
-        final Composite cell = top ? this.cell12 : this.cell32;
-
-        cell.setVisible ( true );
-
-        final XAxisDynamicWidget renderer = new XAxisDynamicWidget ( cell, top ? SWT.TOP : SWT.BOTTOM );
+        final XAxisDynamicRenderer renderer = new XAxisDynamicRenderer ( this.chartArea );
         renderer.setAxis ( x );
-        cell.layout ();
-        layout ();
+        renderer.setAlign ( top ? SWT.TOP : SWT.BOTTOM );
+        addRenderer ( renderer, -2 );
         return renderer;
     }
 
-    public YAxisDynamicWidget addDynamicYAxis ( final YAxis y, final boolean left )
+    public YAxisDynamicRenderer addDynamicYAxis ( final YAxis y, final boolean left )
     {
         checkWidget ();
 
-        final Composite cell = left ? this.cell21 : this.cell23;
-
-        cell.setVisible ( true );
-
-        final YAxisDynamicWidget renderer = new YAxisDynamicWidget ( cell, left ? SWT.LEFT : SWT.RIGHT );
+        final YAxisDynamicRenderer renderer = new YAxisDynamicRenderer ( this.chartArea );
         renderer.setAxis ( y );
-        cell.layout ();
-        layout ();
+        renderer.setAlign ( left ? SWT.LEFT : SWT.RIGHT );
+        addRenderer ( renderer, -1 );
         return renderer;
     }
 
@@ -225,11 +176,11 @@ public class ChartManager extends Composite
         return target;
     }
 
-    public void addRenderer ( final Renderer renderer )
+    public void addRenderer ( final Renderer renderer, final int order )
     {
         checkWidget ();
 
-        this.chartArea.addRenderer ( renderer );
+        this.chartArea.addRenderer ( renderer, order );
     }
 
     public void removeRenderer ( final Renderer renderer )

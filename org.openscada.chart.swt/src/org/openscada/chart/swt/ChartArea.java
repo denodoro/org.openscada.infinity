@@ -43,6 +43,8 @@ public class ChartArea extends Canvas
 
         private final Renderer renderer;
 
+        private Rectangle bounds;
+
         public RendererEntry ( final Renderer renderer, final int order )
         {
             this.renderer = renderer;
@@ -57,6 +59,16 @@ public class ChartArea extends Canvas
         public Renderer getRenderer ()
         {
             return this.renderer;
+        }
+
+        public void setBounds ( final Rectangle bounds )
+        {
+            this.bounds = bounds;
+        }
+
+        public void render ( final PaintEvent e )
+        {
+            this.renderer.render ( e, this.bounds );
         }
     }
 
@@ -84,16 +96,21 @@ public class ChartArea extends Canvas
             @Override
             public void handleEvent ( final Event event )
             {
-                onResize ( getClientArea () );
+                resizeAll ( getClientArea () );
             }
         } );
     }
 
-    protected void onResize ( final Rectangle clientRectangle )
+    protected void resizeAll ( Rectangle clientRectangle )
     {
         for ( final RendererEntry renderer : this.renderers )
         {
-            renderer.getRenderer ().resize ( clientRectangle );
+            final Rectangle newBounds = renderer.getRenderer ().resize ( clientRectangle );
+            if ( newBounds != null )
+            {
+                clientRectangle = newBounds;
+            }
+            renderer.setBounds ( clientRectangle );
         }
     }
 
@@ -109,7 +126,7 @@ public class ChartArea extends Canvas
 
         for ( final RendererEntry renderer : this.renderers )
         {
-            renderer.getRenderer ().render ( e, rect );
+            renderer.render ( e );
         }
     }
 
@@ -120,6 +137,8 @@ public class ChartArea extends Canvas
 
     public void addRenderer ( final Renderer renderer, final int order )
     {
+        checkWidget ();
+
         this.renderers.add ( new RendererEntry ( renderer, order ) );
 
         Collections.sort ( this.renderers, new Comparator<RendererEntry> () {
@@ -130,12 +149,14 @@ public class ChartArea extends Canvas
                 return o1.getOrder ().compareTo ( o2.getOrder () );
             }
         } );
-        renderer.resize ( getClientArea () );
 
+        resizeAll ( getClientArea () );
     }
 
     public void removeRenderer ( final Renderer renderer )
     {
+        checkWidget ();
+
         final Iterator<RendererEntry> i = this.renderers.iterator ();
         while ( i.hasNext () )
         {
