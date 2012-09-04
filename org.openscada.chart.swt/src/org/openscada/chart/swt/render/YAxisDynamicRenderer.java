@@ -23,9 +23,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.Graphics;
@@ -50,9 +52,16 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
     private final int labelSpacing;
 
-    public YAxisDynamicRenderer ( final ChartRenderer chartArea )
+    private final int markerSize = 8;
+
+    private final int textPadding = 10;
+
+    private final ChartRenderer chart;
+
+    public YAxisDynamicRenderer ( final ChartRenderer chart )
     {
-        super ( chartArea );
+        super ( chart );
+        this.chart = chart;
 
         this.lineAttributes = new LineAttributes ( 1.0f, SWT.CAP_FLAT, SWT.JOIN_BEVEL, SWT.LINE_SOLID, new float[0], 0.0f, 0.0f );
         this.labelSpacing = 20;
@@ -141,6 +150,8 @@ public class YAxisDynamicRenderer extends AbstractRenderer
             return;
         }
 
+        final Rectangle chartRect = this.chart.getClientAreaProxy ().getClientRectangle ();
+
         g.setClipping ( this.rect );
 
         g.setLineAttributes ( this.lineAttributes );
@@ -150,18 +161,18 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         g.drawLine ( x, this.rect.y, x, this.rect.y + this.rect.height );
 
         final Point sampleLabelSize = g.textExtent ( String.format ( this.format, this.axis.getMin () ) );
-        final double step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.y + this.labelSpacing, this.rect.height, this.axis.getMax () - this.axis.getMin () );
+        final double step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.y + this.labelSpacing, chartRect.height, this.axis.getMax () - this.axis.getMin () );
         double value = stepValue ( this.axis.getMin (), step );
 
         while ( value < this.axis.getMax () )
         {
             value = value + step;
-            final int y = (int)this.axis.translateToClient ( this.rect.height, value ) + this.rect.y;
+            final int y = (int)this.axis.translateToClient ( chartRect.height, value ) + this.rect.y;
 
             final String label = String.format ( this.format, value );
             final Point labelSize = g.textExtent ( label );
-            g.drawText ( label, this.left ? x - ( labelSize.x + 10 ) : x + 10, y - labelSize.y / 2, null );
-            g.drawLine ( x, y, x + ( this.left ? -1 : 1 ) * 8, y );
+            g.drawText ( label, this.left ? x - ( labelSize.x + this.textPadding ) : x + this.textPadding, y - labelSize.y / 2, null );
+            g.drawLine ( x, y, x + ( this.left ? -1 : 1 ) * this.markerSize, y );
         }
 
         final String label = this.axis.getLabel ();
@@ -176,7 +187,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
     @Override
     public Rectangle resize ( final Rectangle clientRectangle )
     {
-        final int width = this.width >= 0 ? this.width : calcWidth ();
+        final int width = this.width >= 0 ? this.width : calcWidth ( clientRectangle.height );
 
         if ( this.left )
         {
@@ -190,9 +201,46 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         }
     }
 
-    private int calcWidth ()
+    private int calcWidth ( final int height )
     {
-        return 100;
+        int maxTextWidth = 0;
+
+        if ( this.axis == null || this.axis.getMax () - this.axis.getMin () <= 0 )
+        {
+            return 0;
+        }
+
+        final GC gc = new GC ( Display.getCurrent () );
+
+        final Point axisLabelSize;
+        try
+        {
+            axisLabelSize = gc.textExtent ( this.axis.getLabel () );
+
+            final Point sampleLabelSize = gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
+            final double step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.y + this.labelSpacing, height, this.axis.getMax () - this.axis.getMin () );
+            if ( Double.isInfinite ( step ) || step <= 0.0f )
+            {
+                return 0;
+            }
+
+            double value = stepValue ( this.axis.getMin (), step );
+
+            while ( value < this.axis.getMax () )
+            {
+                value = value + step;
+
+                final String label = String.format ( this.format, value );
+                final Point labelSize = gc.textExtent ( label );
+                maxTextWidth = Math.max ( maxTextWidth, labelSize.x );
+            }
+        }
+        finally
+        {
+            gc.dispose ();
+        }
+
+        return maxTextWidth + this.textPadding + this.markerSize + axisLabelSize.y;
     }
 
 }

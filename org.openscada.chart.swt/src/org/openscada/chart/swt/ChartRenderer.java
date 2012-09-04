@@ -75,6 +75,29 @@ public abstract class ChartRenderer
         }
     }
 
+    public static class SizeRenderProxy implements Renderer
+    {
+
+        private Rectangle clientRectangle;
+
+        @Override
+        public void render ( final Graphics g, final Rectangle clientRectangle )
+        {
+        }
+
+        @Override
+        public Rectangle resize ( final Rectangle clientRectangle )
+        {
+            this.clientRectangle = clientRectangle;
+            return null;
+        }
+
+        public Rectangle getClientRectangle ()
+        {
+            return this.clientRectangle;
+        }
+    }
+
     private final List<RendererEntry> renderers = new LinkedList<RendererEntry> ();
 
     private boolean stale;
@@ -82,6 +105,14 @@ public abstract class ChartRenderer
     private boolean updatePending;
 
     private boolean disposed;
+
+    private final SizeRenderProxy clientAreaProxy;
+
+    public ChartRenderer ()
+    {
+        this.clientAreaProxy = new SizeRenderProxy ();
+        this.renderers.add ( new RendererEntry ( this.clientAreaProxy, 0 ) );
+    }
 
     public void resizeAll ( Rectangle clientRectangle )
     {
@@ -103,6 +134,11 @@ public abstract class ChartRenderer
     public abstract void redraw ();
 
     public abstract Rectangle getClientArea ();
+
+    public SizeRenderProxy getClientAreaProxy ()
+    {
+        return this.clientAreaProxy;
+    }
 
     public void paint ( final Graphics g )
     {

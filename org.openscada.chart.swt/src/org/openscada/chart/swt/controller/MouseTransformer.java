@@ -81,6 +81,7 @@ public class MouseTransformer implements ChartMouseListener, ChartMouseMoveListe
         }
 
         this.active = true;
+
         this.startX = e.x;
         this.startY = e.y;
     }
@@ -105,7 +106,7 @@ public class MouseTransformer implements ChartMouseListener, ChartMouseMoveListe
         final int diffY = this.startY - state.y;
         this.startY = state.y;
 
-        final Rectangle rect = this.chartArea.getClientArea ();
+        final Rectangle rect = this.chartArea.getClientAreaProxy ().getClientRectangle ();
         boolean update = false;
         if ( rect.width > 0 )
         {

@@ -58,9 +58,12 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
     private final int textPadding = 5;
 
-    public XAxisDynamicRenderer ( final ChartRenderer chartArea )
+    private final ChartRenderer chart;
+
+    public XAxisDynamicRenderer ( final ChartRenderer chart )
     {
-        super ( chartArea );
+        super ( chart );
+        this.chart = chart;
 
         this.lineAttributes = new LineAttributes ( 1.0f, SWT.CAP_FLAT, SWT.JOIN_BEVEL, SWT.LINE_SOLID, new float[0], 0.0f, 0.0f );
         this.labelSpacing = 20;
@@ -166,6 +169,8 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
         final int y = this.bottom ? this.rect.y : this.rect.y + this.rect.height;
 
+        final Rectangle chartRect = this.chart.getClientAreaProxy ().getClientRectangle ();
+
         // drawLabel
 
         {
@@ -180,12 +185,12 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
         // draw line
 
-        g.drawLine ( this.rect.x, y + ( this.bottom ? 0 : -1 ), this.rect.x + this.rect.width, y + ( this.bottom ? 0 : -1 ) );
+        g.drawLine ( chartRect.x, y + ( this.bottom ? 0 : -1 ), chartRect.x + chartRect.width, y + ( this.bottom ? 0 : -1 ) );
 
         // draw labels
 
         final Point sampleLabelSize = g.textExtent ( String.format ( this.format, this.axis.getMin () ) );
-        final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, this.rect.width, this.axis.getMax () - this.axis.getMin () );
+        final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, chartRect.width, this.axis.getMax () - this.axis.getMin () );
 
         if ( step <= 0 )
         {
@@ -197,7 +202,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
         while ( value < this.axis.getMax () )
         {
             value = value + step;
-            final int x = this.rect.x + (int)this.axis.translateToClient ( this.rect.width, value );
+            final int x = this.rect.x + (int)this.axis.translateToClient ( chartRect.width, value );
 
             final String label = String.format ( this.format, value );
             final Point labelSize = g.textExtent ( label );
