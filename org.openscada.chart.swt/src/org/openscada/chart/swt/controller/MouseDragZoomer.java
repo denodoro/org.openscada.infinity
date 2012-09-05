@@ -120,7 +120,10 @@ public class MouseDragZoomer implements Renderer
     protected void startZoom ( final MouseState state )
     {
         this.chart.addMouseMoveListener ( this.mouseMoveListener );
-        this.start = new Point ( state.x, state.y );
+
+        final Rectangle chartRect = this.chart.getClientAreaProxy ().getClientRectangle ();
+
+        this.start = new Point ( state.x - chartRect.x, state.y - chartRect.y );
     }
 
     protected void handleMouseMove ( final MouseState state )
@@ -131,7 +134,9 @@ public class MouseDragZoomer implements Renderer
 
     private Rectangle makeSelection ( final Point point )
     {
-        return new Rectangle ( this.start.x, this.start.y, point.x - this.start.x, point.y - this.start.y );
+        final Rectangle chartRect = this.chart.getClientAreaProxy ().getClientRectangle ();
+
+        return new Rectangle ( this.start.x, this.start.y, point.x - chartRect.x - this.start.x, point.y - chartRect.y - this.start.y );
     }
 
     @Override
@@ -139,10 +144,12 @@ public class MouseDragZoomer implements Renderer
     {
         if ( this.selection != null )
         {
+            final Rectangle chartRect = this.chart.getClientAreaProxy ().getClientRectangle ();
+
             g.setLineAttributes ( new LineAttributes ( 1.0f ) );
             g.setForeground ( g.getSystemColor ( SWT.COLOR_BLACK ) );
 
-            g.drawRectangle ( this.selection );
+            g.drawRectangle ( this.selection.x + chartRect.x, this.selection.y + chartRect.y, this.selection.width, this.selection.height );
         }
     }
 
@@ -160,7 +167,7 @@ public class MouseDragZoomer implements Renderer
             return;
         }
 
-        final Rectangle client = this.chart.getClientArea ();
+        final Rectangle client = this.chart.getClientAreaProxy ().getClientRectangle ();
 
         if ( selection.width > 0 && selection.height > 0 )
         {
