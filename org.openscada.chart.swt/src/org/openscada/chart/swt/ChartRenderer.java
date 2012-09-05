@@ -118,12 +118,13 @@ public abstract class ChartRenderer
     {
         for ( final RendererEntry renderer : this.renderers )
         {
+            renderer.setBounds ( clientRectangle );
             final Rectangle newBounds = renderer.getRenderer ().resize ( clientRectangle );
             if ( newBounds != null )
             {
                 clientRectangle = newBounds;
             }
-            renderer.setBounds ( clientRectangle );
+
         }
     }
 
