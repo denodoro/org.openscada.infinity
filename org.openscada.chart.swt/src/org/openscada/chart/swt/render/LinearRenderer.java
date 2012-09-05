@@ -45,46 +45,52 @@ public class LinearRenderer extends AbstractLineRender implements Renderer
     {
         final Path path = g.createPath ();
 
-        // eval min/max
-        final XAxis xAxis = this.seriesData.getXAxis ();
-        final YAxis yAxis = this.seriesData.getYAxis ();
-
-        final SortedSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
-        if ( entries.isEmpty () )
+        try
         {
-            return;
-        }
+            // eval min/max
+            final XAxis xAxis = this.seriesData.getXAxis ();
+            final YAxis yAxis = this.seriesData.getYAxis ();
 
-        boolean first = true;
-
-        final DataPoint point = new DataPoint ();
-
-        for ( final DataEntry entry : entries )
-        {
-            final boolean hasData = translateToPoint ( clientRect, xAxis, yAxis, point, entry );
-            if ( hasData )
+            final SortedSet<DataEntry> entries = this.seriesData.getViewData ().getEntries ();
+            if ( entries.isEmpty () )
             {
-                if ( first )
+                return;
+            }
+
+            boolean first = true;
+
+            final DataPoint point = new DataPoint ();
+
+            for ( final DataEntry entry : entries )
+            {
+                final boolean hasData = translateToPoint ( clientRect, xAxis, yAxis, point, entry );
+                if ( hasData )
                 {
-                    first = false;
-                    path.moveTo ( point.x, point.y );
+                    if ( first )
+                    {
+                        first = false;
+                        path.moveTo ( point.x, point.y );
+                    }
+                    else
+                    {
+                        path.lineTo ( point.x, point.y );
+                    }
                 }
                 else
                 {
-                    path.lineTo ( point.x, point.y );
+                    first = true;
                 }
             }
-            else
-            {
-                first = true;
-            }
-        }
-        g.setAlpha ( 255 );
-        g.setLineAttributes ( this.lineAttributes );
-        g.setForeground ( this.lineColor != null ? this.lineColor : g.getSystemColor ( SWT.COLOR_BLACK ) );
+            g.setAlpha ( 255 );
+            g.setLineAttributes ( this.lineAttributes );
+            g.setForeground ( this.lineColor != null ? this.lineColor : g.getSystemColor ( SWT.COLOR_BLACK ) );
 
-        g.setClipping ( clientRect );
-        g.drawPath ( path );
-        g.setClipping ( (Rectangle)null );
+            g.setClipping ( clientRect );
+            g.drawPath ( path );
+        }
+        finally
+        {
+            path.dispose ();
+        }
     }
 }
