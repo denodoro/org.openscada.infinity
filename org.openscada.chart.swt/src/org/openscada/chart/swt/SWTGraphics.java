@@ -125,19 +125,18 @@ public class SWTGraphics implements Graphics
         {
             t = new Transform ( this.gc.getDevice () );
             t.rotate ( rotate );
+            this.gc.setTransform ( t );
         }
         else
         {
             t = null;
         }
 
-        this.gc.setTransform ( t );
-        this.gc.drawText ( string, x, y );
-
-        this.gc.setTransform ( null );
+        this.gc.drawText ( string, x, y, SWT.DRAW_DELIMITER | SWT.DRAW_TAB | SWT.DRAW_TRANSPARENT );
 
         if ( t != null )
         {
+            this.gc.setTransform ( null );
             t.dispose ();
         }
     }
