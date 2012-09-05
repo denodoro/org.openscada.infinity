@@ -80,6 +80,7 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
 
     protected static boolean translateToPoint ( final Rectangle clientRect, final XAxis x, final YAxis y, final DataPoint point, final DataEntry entry )
     {
+        // we always need X
         point.x = clientRect.x + x.translateToClient ( clientRect.width, entry.getTimestamp () );
 
         final Double value = entry.getValue ();
@@ -87,6 +88,8 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
         {
             return false;
         }
+
+        // we only provide Y if we really have a value
 
         point.y = clientRect.y + y.translateToClient ( clientRect.height, value );
 
