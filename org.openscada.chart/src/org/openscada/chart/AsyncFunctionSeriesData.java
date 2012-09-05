@@ -36,9 +36,12 @@ public abstract class AsyncFunctionSeriesData extends AbstractFunctionSeriesData
 
     private Request nextRequest;
 
-    public AsyncFunctionSeriesData ( final Realm realm, final XAxis xAxis, final YAxis yAxis )
+    private final int sleep;
+
+    public AsyncFunctionSeriesData ( final Realm realm, final XAxis xAxis, final YAxis yAxis, final int sleep )
     {
         super ( realm, xAxis, yAxis );
+        this.sleep = sleep;
         this.executor = Executors.newSingleThreadExecutor ();
 
         this.data = new WritableSeriesData ();
@@ -94,12 +97,15 @@ public abstract class AsyncFunctionSeriesData extends AbstractFunctionSeriesData
 
     protected void setData ( final WritableSeriesData data )
     {
-        try
+        if ( this.sleep > 0 )
         {
-            Thread.sleep ( 1000 );
-        }
-        catch ( final InterruptedException e )
-        {
+            try
+            {
+                Thread.sleep ( this.sleep );
+            }
+            catch ( final InterruptedException e )
+            {
+            }
         }
         this.data = data;
         fireUpdateListener ( data.getMinTimestamp (), data.getMaxTimestamp () );
@@ -107,5 +113,10 @@ public abstract class AsyncFunctionSeriesData extends AbstractFunctionSeriesData
 
     @Override
     protected abstract Double eval ( long timestamp );
+
+    public void regenerate ()
+    {
+        setRequest ( this.request );
+    }
 
 }

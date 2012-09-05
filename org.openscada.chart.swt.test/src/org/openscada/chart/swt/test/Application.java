@@ -98,7 +98,7 @@ public class Application implements IApplication
         final WritableSeries series1 = new WritableSeries ( realm, x, y );
         final WritableSeries series2 = new WritableSeries ( realm, x, y );
         final WritableSeries series3 = new WritableSeries ( realm, x, y );
-        final SeriesData series4 = new AsyncFunctionSeriesData ( realm, x, y ) {
+        final SeriesData series4 = new AsyncFunctionSeriesData ( realm, x, y, 1000 ) {
 
             @Override
             protected Double eval ( final long timestamp )
