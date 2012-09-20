@@ -127,6 +127,11 @@ public class XAxisDynamicRenderer extends AbstractRenderer
         redraw ();
     }
 
+    public Long getStep ()
+    {
+        return this.step;
+    }
+
     @Override
     public void dispose ()
     {
@@ -197,7 +202,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
         g.drawLine ( chartRect.x, y + ( this.bottom ? 0 : -1 ), chartRect.x + chartRect.width, y + ( this.bottom ? 0 : -1 ) );
 
-        // draw labels
+        // draw markers
 
         final Point sampleLabelSize = g.textExtent ( String.format ( this.format, this.axis.getMin () ) );
         final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, chartRect.width, this.axis.getMax () - this.axis.getMin () );
@@ -212,7 +217,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
         while ( value < this.axis.getMax () )
         {
             value = value + step;
-            final int x = this.rect.x + (int)this.axis.translateToClient ( chartRect.width, value );
+            final int x = this.rect.x + (int)this.axis.translateToClient ( this.rect.width, value );
 
             final String label = String.format ( this.format, value );
             final Point labelSize = g.textExtent ( label );
