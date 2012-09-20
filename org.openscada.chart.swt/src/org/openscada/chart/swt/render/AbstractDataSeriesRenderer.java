@@ -27,6 +27,7 @@ import org.openscada.chart.XAxis;
 import org.openscada.chart.YAxis;
 import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.DataPoint;
+import org.openscada.chart.swt.Graphics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +41,8 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
     private SeriesDataListener listener;
 
     private final ChartRenderer chartArea;
+
+    private boolean visible = true;
 
     public AbstractDataSeriesRenderer ( final ChartRenderer chartArea, final SeriesData seriesData )
     {
@@ -56,6 +59,16 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
         } );
     }
 
+    public void setVisible ( final boolean visible )
+    {
+        this.visible = visible;
+    }
+
+    public boolean isVisible ()
+    {
+        return this.visible;
+    }
+
     protected void handleDataUpdate ( final long startTimestamp, final long endTimestamp )
     {
         logger.trace ( "Data update - {} -> {}", startTimestamp, endTimestamp );
@@ -65,6 +78,21 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
         }
         this.chartArea.refreshData ();
     }
+
+    @Override
+    public void render ( final Graphics g, final Rectangle clientRectangle )
+    {
+        if ( !this.visible )
+        {
+            return;
+        }
+        else
+        {
+            performRender ( g, clientRectangle );
+        }
+    }
+
+    protected abstract void performRender ( Graphics g, Rectangle clientRectangle );
 
     public void dispose ()
     {

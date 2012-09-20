@@ -45,7 +45,7 @@ public class StepRenderer extends AbstractLineRender implements Renderer
     }
 
     @Override
-    public void render ( final Graphics g, final Rectangle clientRect )
+    protected void performRender ( final Graphics g, final Rectangle clientRect )
     {
         final XAxis xAxis = this.seriesData.getXAxis ();
         final YAxis yAxis = this.seriesData.getYAxis ();

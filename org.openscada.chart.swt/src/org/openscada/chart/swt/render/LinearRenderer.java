@@ -41,8 +41,9 @@ public class LinearRenderer extends AbstractLineRender implements Renderer
     }
 
     @Override
-    public void render ( final Graphics g, final Rectangle clientRect )
+    protected void performRender ( final Graphics g, final Rectangle clientRect )
     {
+
         final Path path = g.createPath ();
 
         try
