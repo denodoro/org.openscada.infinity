@@ -54,7 +54,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
     private Rectangle rect;
 
-    private final int markerSize = 3;
+    private final int markerSize = 5;
 
     private int textPadding = 5;
 
@@ -217,7 +217,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
         while ( value < this.axis.getMax () )
         {
             value = value + step;
-            final int x = this.rect.x + (int)this.axis.translateToClient ( this.rect.width, value );
+            final int x = chartRect.x + (int)this.axis.translateToClient ( chartRect.width, value );
 
             final String label = String.format ( this.format, value );
             final Point labelSize = g.textExtent ( label );
