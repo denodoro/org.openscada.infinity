@@ -141,4 +141,16 @@ public class XAxis extends AbstractPropertyChange
         setMinMax ( now - diff / 2, now + diff / 2 );
     }
 
+    /**
+     * Set the start timestamp but don't change the period
+     * 
+     * @param milliseconds
+     *            the new start timestamp
+     */
+    public void setStartTimestamp ( final long milliseconds )
+    {
+        final long diff = this.max - this.min;
+        setMinMax ( milliseconds, milliseconds + diff );
+    }
+
 }
