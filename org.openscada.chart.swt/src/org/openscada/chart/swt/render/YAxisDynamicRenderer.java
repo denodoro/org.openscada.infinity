@@ -54,7 +54,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
     private final int markerSize = 8;
 
-    private final int textPadding = 10;
+    private int textPadding = 10;
 
     private final ChartRenderer chart;
 
@@ -84,6 +84,16 @@ public class YAxisDynamicRenderer extends AbstractRenderer
     public int getWidth ()
     {
         return this.width;
+    }
+
+    public void setTextPadding ( final int textPadding )
+    {
+        this.textPadding = textPadding;
+    }
+
+    public int getTextPadding ()
+    {
+        return this.textPadding;
     }
 
     protected void handlePropertyChange ( final PropertyChangeEvent evt )
@@ -171,7 +181,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
             final String label = String.format ( this.format, value );
             final Point labelSize = g.textExtent ( label );
-            g.drawText ( label, this.left ? x - ( labelSize.x + this.textPadding ) : x + this.textPadding, y - labelSize.y / 2, null );
+            g.drawText ( label, this.left ? x - ( labelSize.x + this.textPadding + this.markerSize ) : x + this.textPadding, y - labelSize.y / 2, null );
             g.drawLine ( x, y, x + ( this.left ? -1 : 1 ) * this.markerSize, y );
         }
 

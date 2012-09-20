@@ -56,7 +56,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
     private final int markerSize = 3;
 
-    private final int textPadding = 5;
+    private int textPadding = 5;
 
     private final ChartRenderer chart;
 
@@ -109,6 +109,16 @@ public class XAxisDynamicRenderer extends AbstractRenderer
     public int getHeight ()
     {
         return this.height;
+    }
+
+    public void setTextPadding ( final int textPadding )
+    {
+        this.textPadding = textPadding;
+    }
+
+    public int getTextPadding ()
+    {
+        return this.textPadding;
     }
 
     public void setStep ( final Long step )
@@ -207,7 +217,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
             final String label = String.format ( this.format, value );
             final Point labelSize = g.textExtent ( label );
 
-            g.drawText ( label, x, this.bottom ? this.rect.y + this.textPadding : this.rect.y + this.rect.height - ( labelSize.y + this.textPadding ), null );
+            g.drawText ( label, x, this.bottom ? this.rect.y + this.markerSize + this.textPadding : this.rect.y + this.rect.height - ( labelSize.y + this.textPadding ), null );
             g.drawLine ( x, y, x, this.bottom ? y + this.markerSize : y - this.markerSize );
         }
 
@@ -237,7 +247,15 @@ public class XAxisDynamicRenderer extends AbstractRenderer
         {
             final Point size = getExtent ( gc, String.format ( this.format, new Date () ) );
             final Point labelSize = getExtent ( gc, this.axis.getLabel () );
-            return size.y + labelSize.y + this.textPadding * 3 + this.markerSize;
+
+            int height = size.y + labelSize.y + this.textPadding * 2 + this.markerSize;
+
+            if ( labelSize.y > 0 )
+            {
+                height += this.textPadding;
+            }
+
+            return height;
         }
         finally
         {
