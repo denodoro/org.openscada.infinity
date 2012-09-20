@@ -247,7 +247,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
     private Point getExtent ( final GC gc, final String string )
     {
-        if ( string == null )
+        if ( string == null || string.isEmpty () )
         {
             return new Point ( 0, 0 );
         }

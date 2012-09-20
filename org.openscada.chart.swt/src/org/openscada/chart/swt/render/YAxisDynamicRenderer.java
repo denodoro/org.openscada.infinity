@@ -215,7 +215,14 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         final Point axisLabelSize;
         try
         {
-            axisLabelSize = gc.textExtent ( this.axis.getLabel () );
+            if ( this.axis.getLabel () != null && !this.axis.getLabel ().isEmpty () )
+            {
+                axisLabelSize = gc.textExtent ( this.axis.getLabel () );
+            }
+            else
+            {
+                axisLabelSize = new Point ( 0, 0 );
+            }
 
             final Point sampleLabelSize = gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
             final double step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.y + this.labelSpacing, height, this.axis.getMax () - this.axis.getMin () );
