@@ -144,7 +144,10 @@ public class ChartAreaRenderer extends ChartRenderer
         final MouseMoveListener proxyListener = this.mouseMoveListenerMap.remove ( listener );
         if ( proxyListener != null )
         {
-            this.control.removeMouseMoveListener ( proxyListener );
+            if ( !this.control.isDisposed () )
+            {
+                this.control.removeMouseMoveListener ( proxyListener );
+            }
         }
     }
 
