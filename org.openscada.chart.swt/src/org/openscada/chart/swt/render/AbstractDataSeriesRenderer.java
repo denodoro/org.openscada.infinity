@@ -112,7 +112,7 @@ public abstract class AbstractDataSeriesRenderer implements Renderer
         point.x = clientRect.x + x.translateToClient ( clientRect.width, entry.getTimestamp () );
 
         final Double value = entry.getValue ();
-        if ( value == null )
+        if ( value == null || Double.isNaN ( value ) || Double.isInfinite ( value ) )
         {
             return false;
         }
