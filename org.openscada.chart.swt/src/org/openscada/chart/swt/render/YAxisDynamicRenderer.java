@@ -22,10 +22,15 @@ package org.openscada.chart.swt.render;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.openscada.chart.YAxis;
@@ -37,6 +42,8 @@ public class YAxisDynamicRenderer extends AbstractRenderer
     private YAxis axis;
 
     private String format = "%s";
+
+    private Color color;
 
     private boolean left;
 
@@ -58,11 +65,15 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
     private final ChartRenderer chart;
 
+    protected final ResourceManager resourceManager;
+
     public YAxisDynamicRenderer ( final ChartRenderer chart )
     {
         super ( chart );
         this.chart = chart;
+        this.resourceManager = new LocalResourceManager ( JFaceResources.getResources ( chart.getDisplay () ) );
 
+        this.color = this.resourceManager.createColor ( new RGB ( 0, 0, 0 ) );
         this.lineAttributes = new LineAttributes ( 1.0f, SWT.CAP_FLAT, SWT.JOIN_BEVEL, SWT.LINE_SOLID, new float[0], 0.0f, 0.0f );
         this.labelSpacing = 20;
 
@@ -118,6 +129,16 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         return this.format;
     }
 
+    public void setColor ( final RGB color )
+    {
+        this.color = this.resourceManager.createColor ( color );
+    }
+
+    public RGB getColor ()
+    {
+        return this.color.getRGB ();
+    }
+
     public void setAxis ( final YAxis axis )
     {
         checkWidget ();
@@ -155,7 +176,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
     @Override
     public void render ( final Graphics g, final Rectangle clientRectangle )
     {
-        if ( this.rect.width == 0 || this.rect.height == 0 )
+        if ( ( this.rect.width == 0 ) || ( this.rect.height == 0 ) )
         {
             return;
         }
@@ -165,6 +186,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         g.setClipping ( this.rect );
 
         g.setLineAttributes ( this.lineAttributes );
+        g.setForeground ( this.color );
 
         final int x = ( this.left ? this.rect.width - 1 : 0 ) + this.rect.x;
 
@@ -181,15 +203,15 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
             final String label = String.format ( this.format, value );
             final Point labelSize = g.textExtent ( label );
-            g.drawText ( label, this.left ? x - ( labelSize.x + this.textPadding + this.markerSize ) : x + this.textPadding, y - labelSize.y / 2, null );
-            g.drawLine ( x, y, x + ( this.left ? -1 : 1 ) * this.markerSize, y );
+            g.drawText ( label, this.left ? x - ( labelSize.x + this.textPadding + this.markerSize ) : x + this.textPadding, y - ( labelSize.y / 2 ), null );
+            g.drawLine ( x, y, x + ( ( this.left ? -1 : 1 ) * this.markerSize ), y );
         }
 
         final String label = this.axis.getLabel ();
         if ( label != null )
         {
             final Point size = g.textExtent ( label );
-            g.drawText ( label, -this.rect.height + this.rect.height / 2 - size.x / 2, !this.left ? this.rect.width - size.y : 0, -90.0f );
+            g.drawText ( label, ( -this.rect.height + ( this.rect.height / 2 ) ) - ( size.x / 2 ), !this.left ? this.rect.width - size.y : 0, -90.0f );
         }
         g.setClipping ( clientRectangle );
     }
@@ -206,7 +228,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         }
         else
         {
-            this.rect = new Rectangle ( clientRectangle.x + clientRectangle.width - width, clientRectangle.y, width, clientRectangle.height );
+            this.rect = new Rectangle ( ( clientRectangle.x + clientRectangle.width ) - width, clientRectangle.y, width, clientRectangle.height );
             return new Rectangle ( clientRectangle.x, clientRectangle.y, clientRectangle.width - width, clientRectangle.height );
         }
     }
@@ -215,7 +237,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
     {
         int maxTextWidth = 0;
 
-        if ( this.axis == null || this.axis.getMax () - this.axis.getMin () <= 0 )
+        if ( ( this.axis == null ) || ( ( this.axis.getMax () - this.axis.getMin () ) <= 0 ) )
         {
             return 0;
         }
@@ -225,7 +247,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         final Point axisLabelSize;
         try
         {
-            if ( this.axis.getLabel () != null && !this.axis.getLabel ().isEmpty () )
+            if ( ( this.axis.getLabel () != null ) && !this.axis.getLabel ().isEmpty () )
             {
                 axisLabelSize = gc.textExtent ( this.axis.getLabel () );
             }
@@ -236,7 +258,7 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
             final Point sampleLabelSize = gc.textExtent ( String.format ( this.format, this.axis.getMin () ) );
             final double step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.y + this.labelSpacing, height, this.axis.getMax () - this.axis.getMin () );
-            if ( Double.isInfinite ( step ) || step <= 0.0f )
+            if ( Double.isInfinite ( step ) || ( step <= 0.0f ) )
             {
                 return 0;
             }
@@ -260,4 +282,10 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         return maxTextWidth + this.textPadding + this.markerSize + axisLabelSize.y;
     }
 
+    @Override
+    public void dispose ()
+    {
+        this.resourceManager.dispose ();
+        super.dispose ();
+    }
 }
