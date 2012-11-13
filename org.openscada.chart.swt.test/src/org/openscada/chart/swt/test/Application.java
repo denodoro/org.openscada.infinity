@@ -146,13 +146,11 @@ public class Application implements IApplication
         final YAxisDynamicRenderer yAxisRender1 = new YAxisDynamicRenderer ( chart.getChartRenderer () );
         yAxisRender1.setAlign ( SWT.LEFT );
         yAxisRender1.setAxis ( y );
-        yAxisRender1.setFormat ( "%.2f" );
         chart.getChartRenderer ().addRenderer ( yAxisRender1, -1 );
 
         final YAxisDynamicRenderer yAxisRender2 = new YAxisDynamicRenderer ( chart.getChartRenderer () );
         yAxisRender2.setAlign ( SWT.RIGHT );
         yAxisRender2.setAxis ( y );
-        yAxisRender2.setFormat ( "%.2f" );
         chart.getChartRenderer ().addRenderer ( yAxisRender2, -1 );
 
         // start

@@ -21,6 +21,7 @@ package org.openscada.chart.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
@@ -151,5 +152,11 @@ public class SWTGraphics implements Graphics
     public void setAntialias ( final boolean state )
     {
         this.gc.setAntialias ( state ? SWT.ON : SWT.OFF );
+    }
+
+    @Override
+    public FontMetrics getFontMetrics ()
+    {
+        return this.gc.getFontMetrics ();
     }
 }

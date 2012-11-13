@@ -20,6 +20,7 @@
 package org.openscada.chart.swt;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Point;
@@ -63,5 +64,7 @@ public interface Graphics
     public Point textExtent ( String string );
 
     public void setAntialias ( boolean state );
+
+    public FontMetrics getFontMetrics ();
 
 }
