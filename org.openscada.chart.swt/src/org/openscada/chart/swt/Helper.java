@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This is a helper class implementing the "nice axis number" according to Paul
@@ -145,6 +146,26 @@ public class Helper
         return result;
     }
 
+    public static long niceTimeRounded ( final long value )
+    {
+        if ( value > TimeUnit.DAYS.toMillis ( 1 ) )
+        {
+            final long v = value / TimeUnit.DAYS.toMillis ( 1 ) + 1;
+            return v * TimeUnit.DAYS.toMillis ( 1 );
+        }
+        if ( value > TimeUnit.HOURS.toMillis ( 1 ) )
+        {
+            final long v = value / TimeUnit.HOURS.toMillis ( 1 ) + 1;
+            return v * TimeUnit.HOURS.toMillis ( 1 );
+        }
+        if ( value > TimeUnit.MINUTES.toMillis ( 1 ) )
+        {
+            final long v = value / TimeUnit.MINUTES.toMillis ( 1 ) + 1;
+            return v * TimeUnit.MINUTES.toMillis ( 1 );
+        }
+        return (long)niceNum ( value, true );
+    }
+
     public static List<Entry<Long>> chartTimes ( final long min, final long max, final int pixels, final int labelWidth, final DateFormat format )
     {
         final int nticks = pixels / labelWidth;
@@ -155,7 +176,7 @@ public class Helper
         }
 
         final long range = (long)niceNum ( max - min, false );
-        final long step = (long)Helper.niceNum ( range / ( nticks - 1 ), true );
+        final long step = Helper.niceTimeRounded ( range / ( nticks - 1 ) );
 
         final long graphmin = (long) ( Math.floor ( min / step ) * step );
         final long graphmax = (long) ( Math.ceil ( max / step ) * step );
