@@ -75,15 +75,15 @@ public class Helper
         return nf * Math.pow ( 10.0, exp );
     }
 
-    public static class Entry
+    public static class Entry<T>
     {
         public String label;
 
-        public double value;
+        public T value;
 
         public int position;
 
-        public Entry ( final String label, final double value, final int position )
+        public Entry ( final String label, final T value, final int position )
         {
             this.label = label;
             this.value = value;
@@ -97,7 +97,7 @@ public class Helper
         }
     }
 
-    public static List<Entry> chartValues ( final double min, final double max, final int pixels, final int labelHeight )
+    public static List<Entry<Double>> chartValues ( final double min, final double max, final int pixels, final int labelHeight )
     {
         final int nticks = pixels / labelHeight;
 
@@ -109,18 +109,18 @@ public class Helper
 
         final int nfrac = Math.max ( -(int)Math.floor ( Math.log10 ( d ) ), 0 );
 
-        final List<Entry> result = new LinkedList<Entry> ();
+        final List<Entry<Double>> result = new LinkedList<Entry<Double>> ();
         for ( double x = graphmin; x <= graphmax + .5 * d; x += d )
         {
             final int position = (int) ( pixels - pixels / ( max - min ) * ( x - min ) );
             try
             {
-                result.add ( new Entry ( String.format ( "%." + nfrac + "f", x ), x, position ) );
+                result.add ( new Entry<Double> ( String.format ( "%." + nfrac + "f", x ), x, position ) );
             }
             catch ( final Exception e )
             {
                 // if anything goes wrong
-                result.add ( new Entry ( String.format ( "%f", x ), x, position ) );
+                result.add ( new Entry<Double> ( String.format ( "%f", x ), x, position ) );
             }
         }
 

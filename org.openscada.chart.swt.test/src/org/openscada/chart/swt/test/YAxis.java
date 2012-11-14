@@ -28,7 +28,7 @@ public class YAxis
 {
     public static void main ( final String[] args )
     {
-        final List<Entry> values = Helper.chartValues ( -10, 100, 1320, 30 );
+        final List<Entry<Double>> values = Helper.chartValues ( -10, 100, 1320, 30 );
         for ( int i = 0; i < values.size (); i++ )
         {
             System.out.println ( i + " -> " + values.get ( i ) );

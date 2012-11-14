@@ -185,8 +185,8 @@ public class YAxisDynamicRenderer extends AbstractRenderer
         if ( this.showLabels )
         {
             final int fontHeight = g.getFontMetrics ().getHeight ();
-            final List<Entry> markers = Helper.chartValues ( this.axis.getMin (), this.axis.getMax (), chartRect.height, fontHeight + this.labelSpacing );
-            for ( final Entry marker : markers )
+            final List<Entry<Double>> markers = Helper.chartValues ( this.axis.getMin (), this.axis.getMax (), chartRect.height, fontHeight + this.labelSpacing );
+            for ( final Entry<Double> marker : markers )
             {
                 final Point labelSize = g.textExtent ( marker.label );
                 final int y = marker.position;
@@ -247,9 +247,9 @@ public class YAxisDynamicRenderer extends AbstractRenderer
             if ( this.showLabels )
             {
                 final int fontHeight = gc.getFontMetrics ().getHeight ();
-                final List<Entry> markers = Helper.chartValues ( this.axis.getMin (), this.axis.getMax (), height, fontHeight + this.labelSpacing );
+                final List<Entry<Double>> markers = Helper.chartValues ( this.axis.getMin (), this.axis.getMax (), height, fontHeight + this.labelSpacing );
 
-                for ( final Entry marker : markers )
+                for ( final Entry<Double> marker : markers )
                 {
                     final Point sampleLabelSize = gc.textExtent ( marker.label );
                     maxTextWidth = Math.max ( maxTextWidth, sampleLabelSize.x );
