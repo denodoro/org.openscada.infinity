@@ -68,6 +68,8 @@ public class YAxisDynamicRenderer extends AbstractRenderer
 
     private boolean showLabels = true;
 
+    private String format;
+
     public YAxisDynamicRenderer ( final ChartRenderer chart )
     {
         super ( chart );
@@ -85,6 +87,17 @@ public class YAxisDynamicRenderer extends AbstractRenderer
                 handlePropertyChange ( evt );
             }
         };
+    }
+
+    public void setFormat ( final String format )
+    {
+        this.format = format;
+        redraw ();
+    }
+
+    public String getFormat ()
+    {
+        return this.format;
     }
 
     public void setShowLabels ( final boolean showLabels )

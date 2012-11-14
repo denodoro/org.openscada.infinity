@@ -21,7 +21,10 @@ package org.openscada.chart.swt.render;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -32,6 +35,8 @@ import org.eclipse.swt.widgets.Display;
 import org.openscada.chart.XAxis;
 import org.openscada.chart.swt.ChartRenderer;
 import org.openscada.chart.swt.Graphics;
+import org.openscada.chart.swt.Helper;
+import org.openscada.chart.swt.Helper.Entry;
 
 public class XAxisDynamicRenderer extends AbstractRenderer
 {
@@ -59,6 +64,8 @@ public class XAxisDynamicRenderer extends AbstractRenderer
     private int textPadding = 5;
 
     private final ChartRenderer chart;
+
+    private boolean showLabels;
 
     public XAxisDynamicRenderer ( final ChartRenderer chart )
     {
@@ -97,13 +104,24 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
     public void setFormat ( final String format )
     {
-        this.format = format != null ? format : "%s";
+        this.format = format;
         redraw ();
     }
 
     public String getFormat ()
     {
         return this.format;
+    }
+
+    public void setShowLabels ( final boolean showLabels )
+    {
+        this.showLabels = showLabels;
+        redraw ();
+    }
+
+    public boolean isShowLabels ()
+    {
+        return this.showLabels;
     }
 
     public int getHeight ()
@@ -156,22 +174,6 @@ public class XAxisDynamicRenderer extends AbstractRenderer
         }
     }
 
-    private long makeDynamicStep ( final int textWidth, final int clientWidth, final long valueWidth )
-    {
-        final long l = clientWidth / textWidth;
-        if ( l == 0 )
-        {
-            return 0;
-        }
-
-        return valueWidth / l;
-    }
-
-    private long stepValue ( final long value, final long step )
-    {
-        return (long) ( Math.floor ( (double)value / (double)step ) * step );
-    }
-
     @Override
     public void render ( final Graphics g, final Rectangle clientRectangle )
     {
@@ -204,28 +206,17 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
         // draw markers
 
-        final Point sampleLabelSize = g.textExtent ( String.format ( this.format, this.axis.getMin () ) );
-        final long step = this.step != null ? this.step : makeDynamicStep ( sampleLabelSize.x + this.labelSpacing, chartRect.width, this.axis.getMax () - this.axis.getMin () );
+        final DateFormat format = makeFormat ( this.axis.getMax () - this.axis.getMin () );
 
-        if ( step <= 0 )
+        final Point sampleLabelSize = g.textExtent ( format.format ( new Date () ) );
+
+        final List<Entry<Long>> markers = Helper.chartTimes ( this.axis.getMin (), this.axis.getMax (), chartRect.width, sampleLabelSize.x + this.textPadding, format );
+        for ( final Entry<Long> marker : markers )
         {
-            return;
-        }
-
-        long value = stepValue ( this.axis.getMin () - step /*previous step*/, step );
-
-        while ( value < this.axis.getMax () )
-        {
-            value = value + step;
-            final int x = chartRect.x + (int)this.axis.translateToClient ( chartRect.width, value );
-
-            final String label = String.format ( this.format, value );
-            final Point labelSize = g.textExtent ( label );
-
-            g.drawText ( label, x, this.bottom ? this.rect.y + this.markerSize + this.textPadding : this.rect.y + this.rect.height - ( labelSize.y + this.textPadding ), null );
+            final int x = chartRect.x + marker.position;
+            g.drawText ( marker.label, x, this.bottom ? this.rect.y + this.markerSize + this.textPadding : this.rect.y + this.rect.height - ( sampleLabelSize.y + this.textPadding ), null );
             g.drawLine ( x, y, x, this.bottom ? y + this.markerSize : y - this.markerSize );
         }
-
     }
 
     @Override
@@ -245,15 +236,36 @@ public class XAxisDynamicRenderer extends AbstractRenderer
         }
     }
 
+    private DateFormat makeFormat ( final long timeRange )
+    {
+        if ( this.format != null && !this.format.isEmpty () )
+        {
+            try
+            {
+                return new SimpleDateFormat ( this.format );
+            }
+            catch ( final IllegalArgumentException e )
+            {
+                return DateFormat.getInstance ();
+            }
+        }
+        else
+        {
+            return Helper.makeFormat ( timeRange );
+        }
+    }
+
     private int calcHeight ()
     {
         final GC gc = new GC ( Display.getCurrent () );
         try
         {
-            final Point size = getExtent ( gc, String.format ( this.format, new Date () ) );
+            final DateFormat format = makeFormat ( this.axis.getMax () - this.axis.getMin () );
+
+            final Point markerSize = getExtent ( gc, format.format ( new Date () ) );
             final Point labelSize = getExtent ( gc, this.axis.getLabel () );
 
-            int height = size.y + labelSize.y + this.textPadding * 2 + this.markerSize;
+            int height = markerSize.y + labelSize.y + this.textPadding * 2 + this.markerSize;
 
             if ( labelSize.y > 0 )
             {

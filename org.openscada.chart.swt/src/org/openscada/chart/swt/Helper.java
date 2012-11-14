@@ -19,13 +19,26 @@
 
 package org.openscada.chart.swt;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This is a helper class implementing the "nice axis number" according to Paul
+ * S. Heckbert and Edward Tufte.
+ * Also see <a href=
+ * "http://books.google.com/books?id=fvA7zLEFWZgC&pg=PA61&lpg=PA61#v=onepage&q&f=false"
+ * >Graphics gems, Page 61</a> and <a
+ * href="http://www.edwardtufte.com/tufte/books_vdqi">The visual display of
+ * quantitative information</a>.
+ */
 public class Helper
 {
 
-    public static double nice ( final double value, final boolean round )
+    public static double niceNum ( final double value, final boolean round )
     {
         final int exp = (int)Math.floor ( Math.log10 ( value ) );
 
@@ -101,8 +114,13 @@ public class Helper
     {
         final int nticks = pixels / labelHeight;
 
-        final double range = nice ( max - min, false );
-        final double d = nice ( range / ( nticks - 1 ), true );
+        if ( nticks <= 1 )
+        {
+            return Collections.emptyList ();
+        }
+
+        final double range = niceNum ( max - min, false );
+        final double d = niceNum ( range / ( nticks - 1 ), true );
 
         final double graphmin = Math.floor ( min / d ) * d;
         final double graphmax = Math.ceil ( max / d ) * d;
@@ -125,5 +143,59 @@ public class Helper
         }
 
         return result;
+    }
+
+    public static List<Entry<Long>> chartTimes ( final long min, final long max, final int pixels, final int labelWidth, final DateFormat format )
+    {
+        final int nticks = pixels / labelWidth;
+
+        if ( nticks <= 1 )
+        {
+            return Collections.emptyList ();
+        }
+
+        final long range = (long)niceNum ( max - min, false );
+        final long step = (long)Helper.niceNum ( range / ( nticks - 1 ), true );
+
+        final long graphmin = (long) ( Math.floor ( min / step ) * step );
+        final long graphmax = (long) ( Math.ceil ( max / step ) * step );
+
+        final List<Entry<Long>> result = new LinkedList<Entry<Long>> ();
+
+        for ( long x = graphmin; x <= graphmax + 0.5 * step; x += step )
+        {
+            final int position = (int) ( (double)pixels / (double) ( max - min ) * ( x - min ) );
+            try
+            {
+                result.add ( new Entry<Long> ( format.format ( new Date ( x ) ), x, position ) );
+            }
+            catch ( final Exception e )
+            {
+                result.add ( new Entry<Long> ( new Date ( x ).toString (), x, position ) );
+            }
+        }
+
+        return result;
+    }
+
+    public static DateFormat makeFormat ( final long range )
+    {
+        if ( range <= 1000 ) // second 
+        {
+            return new SimpleDateFormat ( "ss.SSS" );
+        }
+        else if ( range <= 1000 * 60 ) // minute
+        {
+            return new SimpleDateFormat ( "mm:ss.SSS" );
+        }
+        else if ( range <= 1000 * 60 * 60 ) // hour
+        {
+            return new SimpleDateFormat ( "HH:mm:ss" );
+        }
+        else if ( range <= 1000 * 60 * 60 * 24 ) // day
+        {
+            return new SimpleDateFormat ( "MM-dd HH:mm" );
+        }
+        return new SimpleDateFormat ( "yyyy-MM-dd HH:mm" );
     }
 }
