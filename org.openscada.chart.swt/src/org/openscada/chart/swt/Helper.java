@@ -89,6 +89,12 @@ public class Helper
             this.value = value;
             this.position = position;
         }
+
+        @Override
+        public String toString ()
+        {
+            return String.format ( "%s - %s - %s", this.label, this.value, this.position );
+        }
     }
 
     public static List<Entry> chartValues ( final double min, final double max, final int pixels, final int labelHeight )
