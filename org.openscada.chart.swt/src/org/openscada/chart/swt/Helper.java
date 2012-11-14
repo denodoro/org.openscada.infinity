@@ -148,22 +148,32 @@ public class Helper
 
     public static long niceTimeRounded ( final long value )
     {
-        if ( value > TimeUnit.DAYS.toMillis ( 1 ) )
+        final TimeUnit tu;
+
+        if ( value >= TimeUnit.DAYS.toMillis ( 1 ) )
         {
-            final long v = value / TimeUnit.DAYS.toMillis ( 1 ) + 1;
-            return v * TimeUnit.DAYS.toMillis ( 1 );
+            tu = TimeUnit.DAYS;
         }
-        if ( value > TimeUnit.HOURS.toMillis ( 1 ) )
+        else if ( value >= TimeUnit.HOURS.toMillis ( 1 ) )
         {
-            final long v = value / TimeUnit.HOURS.toMillis ( 1 ) + 1;
-            return v * TimeUnit.HOURS.toMillis ( 1 );
+            tu = TimeUnit.HOURS;
         }
-        if ( value > TimeUnit.MINUTES.toMillis ( 1 ) )
+        else if ( value >= TimeUnit.MINUTES.toMillis ( 1 ) )
         {
-            final long v = value / TimeUnit.MINUTES.toMillis ( 1 ) + 1;
-            return v * TimeUnit.MINUTES.toMillis ( 1 );
+            tu = TimeUnit.MINUTES;
         }
-        return (long)niceNum ( value, true );
+        else if ( value >= TimeUnit.SECONDS.toMillis ( 1 ) )
+        {
+            tu = TimeUnit.SECONDS;
+        }
+        else
+        {
+            tu = TimeUnit.MILLISECONDS;
+        }
+
+        double v = (double)value / (double)tu.toMillis ( 1 );
+        v = niceNum ( v, true );
+        return (long) ( v * tu.toMillis ( 1 ) );
     }
 
     public static List<Entry<Long>> chartTimes ( final long min, final long max, final int pixels, final int labelWidth, final DateFormat format )
@@ -215,7 +225,7 @@ public class Helper
         }
         else if ( range <= 1000 * 60 * 60 * 24 ) // day
         {
-            return new SimpleDateFormat ( "MM-dd HH:mm" );
+            return new SimpleDateFormat ( "yyyy-MM-dd HH:mm" );
         }
         return new SimpleDateFormat ( "yyyy-MM-dd HH:mm" );
     }

@@ -67,7 +67,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
     private boolean showLabels;
 
-    private final int markerSpacing = 20;
+    private final int markerSpacing = 0;
 
     public XAxisDynamicRenderer ( final ChartRenderer chart )
     {
@@ -212,7 +212,7 @@ public class XAxisDynamicRenderer extends AbstractRenderer
 
         final Point sampleLabelSize = g.textExtent ( format.format ( new Date () ) );
 
-        final List<Entry<Long>> markers = Helper.chartTimes ( this.axis.getMin (), this.axis.getMax (), chartRect.width, sampleLabelSize.x + this.markerSpacing, format );
+        final List<Entry<Long>> markers = Helper.chartTimes ( this.axis.getMin (), this.axis.getMax (), chartRect.width, 2 * sampleLabelSize.x + this.markerSpacing, format );
         for ( final Entry<Long> marker : markers )
         {
             final int x = chartRect.x + marker.position;
